@@ -1,5 +1,5 @@
 * Library and model files
-.include gpdk90nm_fs.cir
+.include gpdk90nm_tt.cir
                   
 * --------------------------------------------------------------
 * 2-Input NAND Gate
@@ -59,14 +59,14 @@
 
 * Device parameters for N-MOSFETs
 .param N_Length = .3u
-.param N_Width= 1.5u 
+.param N_Width= 0.3u 
 
 
 * Device parameters for P-MOSFETs
 .param P_Length = .3u
-.param P_Width= 1.5u 
+.param P_Width= 0.3u 
 
-.param vdd_value = 1
+.param vdd_value = 0.6
 
 * Pulse signal parameters for input waveforms
 .param pDelayT= 0       
@@ -79,38 +79,39 @@
 vdd 1 0 vdd_value        
 
 * DC voltage sources for test purposes
-*v_A Clk 0 1V               
-*v_B Data 0 1V               
-*v_C Reset 0 0V               
+vclk Clk 0 0               
+vd Data 0 0
+vres Reset 0 vdd_value
 
 
 xDFF Clk Data Reset Out NandOut3 1 0 DFF
 
 
 *Waveform 1: To Test Data Sampling and Clock Edge
-*vclk Clk 0 pulse (0 1 5n 0.1n 0.1n 10n 20n)     
-*vres Reset 0 pulse (0 1 0 0.1n 0.1n 39n 39n)       
-*vd  Data 0 pulse (0 1 10n pRiseT pFallT 20n 40n) 
+*vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
+*vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 39n 39n)       
+*vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 20n 40n) 
 
 
 *Waveform 2: To Test the Asynchronous Reset
-*vclk Clk 0 pulse (0 1 5n 0.1n 0.1n 10n 20n)     
-*vres Reset 0 pulse (0 1 0 0.1n 0.1n 35n 36n)       
-*vd  Data 0 pulse (0 1 10n pRiseT pFallT 20n 40n)
+*vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
+*vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 35n 36n)       
+*vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 20n 40n)
 
 *Waveform 3: To Test the Datasampling when Data stays the same for a few Clock Edges
-vclk Clk 0 pulse (0 1 5n 0.1n 0.1n 10n 20n)     
-vres Reset 0 pulse (0 1 0 0.1n 0.1n 0n 0n)       
-vd  Data 0 pulse (0 1 10n pRiseT pFallT 35n 80n) 
+*vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
+*vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 0n 0n)       
+*vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 35n 80n) 
 
 
 *****Simulation******
-.tran 0.01n 200n 0
+.tran 0.00001n 200n 1n
 .plot v(Data) v(Clk) v(Out)
+.plot i(vdd)
 * --------------------------------------------------------------
 * Plotting drain currents for MOSFETs in the DFF subcircuit
 * --------------------------------------------------------------
-
+#com
 * Drain currents for MOSFETs in NAND instance N21 within DFF
 .plot id(M:DFF:N21:MP1:1) id(M:DFF:N21:MP2:1)  * PMOS transistor in N21
 .plot id(M:DFF:N21:MN1:1) id(M:DFF:N21:MN2:1) * NMOS transistor in N21
@@ -136,7 +137,6 @@ vd  Data 0 pulse (0 1 10n pRiseT pFallT 35n 80n)
 .plot id(M:DFF:N34:MP1:1) id(M:DFF:N34:MP2:1) id(M:DFF:N34:MP3:1) * PMOS transistor in N34
 .plot id(M:DFF:N34:MN1:1) id(M:DFF:N34:MN2:1) id(M:DFF:N34:MN3:1) * NMOS transistor in N34
 
-
 * Drain currents for MOSFETs in NAND instance N21 within DFF
 .print id(M:DFF:N21:MP1:1) id(M:DFF:N21:MP2:1)  * PMOS transistor in N21
 .print id(M:DFF:N21:MN1:1) id(M:DFF:N21:MN2:1) * NMOS transistor in N21
@@ -153,7 +153,6 @@ vd  Data 0 pulse (0 1 10n pRiseT pFallT 35n 80n)
 .print id(M:DFF:N32:MP1:1) id(M:DFF:N32:MP2:1) id(M:DFF:N32:MP3:1) * PMOS transistor in N32
 .print id(M:DFF:N32:MN1:1) id(M:DFF:N32:MN2:1) id(M:DFF:N32:MN3:1) * NMOS transistor in N32
 
-
 * Drain currents for MOSFETs in NAND_3 instance N33 within DFF
 .print id(M:DFF:N33:MP1:1) id(M:DFF:N33:MP2:1) id(M:DFF:N33:MP3:1) * PMOS transistor in N33
 .print id(M:DFF:N33:MN1:1) id(M:DFF:N33:MN2:1) id(M:DFF:N33:MN3:1) * NMOS transistor in N33
@@ -161,7 +160,4 @@ vd  Data 0 pulse (0 1 10n pRiseT pFallT 35n 80n)
 * Drain currents for MOSFETs in NAND_3 instance N34 within DFF
 .print id(M:DFF:N34:MP1:1) id(M:DFF:N34:MP2:1) id(M:DFF:N34:MP3:1) * PMOS transistor in N34
 .print id(M:DFF:N34:MN1:1) id(M:DFF:N34:MN2:1) id(M:DFF:N34:MN3:1) * NMOS transistor in N34
-
-
-
-.option TEMP=0
+#endcom
