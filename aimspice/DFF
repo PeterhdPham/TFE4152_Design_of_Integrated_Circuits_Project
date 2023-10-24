@@ -1,0 +1,167 @@
+* Library and model files
+.include gpdk90nm_fs.cir
+                  
+* --------------------------------------------------------------
+* 2-Input NAND Gate
+* Ports: A, B (Inputs), Out (Output), Vdd (Positive Supply), Vss (Ground)
+* --------------------------------------------------------------
+.subckt NAND A B Out Vdd Vss
+
+    * PMOS transistors
+    XMP1 Out A Vdd Vdd pmos1v w=P_Width l=P_Length 
+    XMP2 Out B Vdd Vdd pmos1v w=P_Width l=P_Length 
+
+    * NMOS transistors
+    XMN1 Out A NS1 Vss nmos1v w=N_Width l=N_Length 
+    XMN2 NS1 B Vss Vss nmos1v w=N_Width l=N_Length 
+
+.ends
+
+* --------------------------------------------------------------
+* 3-Input NAND Gate
+* Ports: InputA, InputB, InputC (Inputs), Output (Output), Vdd (Positive Supply), Vss (Ground)
+* --------------------------------------------------------------
+.subckt NAND_3 InputA InputB InputC Output Vdd Vss
+
+    * PMOS transistors
+    XMP1 Output InputA Vdd Vdd pmos1v w=P_Width l=P_Length 
+    XMP2 Output InputB Vdd Vdd pmos1v w=P_Width l=P_Length
+    XMP3 Output InputC Vdd Vdd pmos1v w=P_Width l=P_Length
+
+    * NMOS transistors
+    XMN1 Output InputA N1 Vss nmos1v w=N_Width l=N_Length 
+    XMN2 N1 InputB N2 Vss nmos1v w=N_Width l=N_Length
+    XMN3 N2 InputC Vss Vss nmos1v w=N_Width l=N_Length  
+
+.ends
+
+
+* --------------------------------------------------------------
+* DFF with asynchronous reset circuit
+* Ports: CLK, InputData, Reset, Output, Vdd, Vss
+* --------------------------------------------------------------
+.subckt DFF CLK D Res Output NandOut3 Vdd Vss
+
+    * 2-Input NAND Gate
+    XN21 NandOut1 SetNode NandOut2 Vdd Vss NAND
+    XN22 SetNode NandOut3 Output Vdd Vss NAND
+
+    * 3-Input NAND Gate
+    XN31 NandOut2 CLK Res SetNode Vdd Vss NAND_3 
+    XN32 SetNode CLK NandOut1 ResetNode Vdd Vss NAND_3 
+    XN33 ResetNode D Res NandOut1 Vdd Vss NAND_3 
+    XN34 Output ResetNode Res NandOut3 Vdd Vss NAND_3 
+
+.ends
+
+* --------------------------------------------------------------
+
+
+* Device parameters for N-MOSFETs
+.param N_Length = .3u
+.param N_Width= 1.5u 
+
+
+* Device parameters for P-MOSFETs
+.param P_Length = .3u
+.param P_Width= 1.5u 
+
+.param vdd_value = 1
+
+* Pulse signal parameters for input waveforms
+.param pDelayT= 0       
+.param pRiseT= 0.1n    
+.param pFallT= 0.1n     
+.param pPulseWidth= 10n
+.param pPeriod= 20n    
+
+* Power supply definition
+vdd 1 0 vdd_value        
+
+* DC voltage sources for test purposes
+*v_A Clk 0 1V               
+*v_B Data 0 1V               
+*v_C Reset 0 0V               
+
+
+xDFF Clk Data Reset Out NandOut3 1 0 DFF
+
+
+*Waveform 1: To Test Data Sampling and Clock Edge
+*vclk Clk 0 pulse (0 1 5n 0.1n 0.1n 10n 20n)     
+*vres Reset 0 pulse (0 1 0 0.1n 0.1n 39n 39n)       
+*vd  Data 0 pulse (0 1 10n pRiseT pFallT 20n 40n) 
+
+
+*Waveform 2: To Test the Asynchronous Reset
+*vclk Clk 0 pulse (0 1 5n 0.1n 0.1n 10n 20n)     
+*vres Reset 0 pulse (0 1 0 0.1n 0.1n 35n 36n)       
+*vd  Data 0 pulse (0 1 10n pRiseT pFallT 20n 40n)
+
+*Waveform 3: To Test the Datasampling when Data stays the same for a few Clock Edges
+vclk Clk 0 pulse (0 1 5n 0.1n 0.1n 10n 20n)     
+vres Reset 0 pulse (0 1 0 0.1n 0.1n 0n 0n)       
+vd  Data 0 pulse (0 1 10n pRiseT pFallT 35n 80n) 
+
+
+*****Simulation******
+.tran 0.01n 200n 0
+.plot v(Data) v(Clk) v(Out)
+* --------------------------------------------------------------
+* Plotting drain currents for MOSFETs in the DFF subcircuit
+* --------------------------------------------------------------
+
+* Drain currents for MOSFETs in NAND instance N21 within DFF
+.plot id(M:DFF:N21:MP1:1) id(M:DFF:N21:MP2:1)  * PMOS transistor in N21
+.plot id(M:DFF:N21:MN1:1) id(M:DFF:N21:MN2:1) * NMOS transistor in N21
+
+* Drain currents for MOSFETs in NAND instance N22 within DFF
+.plot id(M:DFF:N22:MP1:1) id(M:DFF:N22:MP2:1) * PMOS transistor in N22
+.plot id(M:DFF:N22:MN1:1) id(M:DFF:N22:MN2:1) * NMOS transistor in N22
+
+* Drain currents for MOSFETs in NAND_3 instance N31 within DFF
+.plot id(M:DFF:N31:MP1:1) id(M:DFF:N31:MP2:1) id(M:DFF:N31:MP3:1) * PMOS transistor in N31
+.plot id(M:DFF:N31:MN1:1) id(M:DFF:N31:MN2:1) id(M:DFF:N31:MN3:1) * NMOS transistor in N31
+
+* Drain currents for MOSFETs in NAND_3 instance N32 within DFF
+.plot id(M:DFF:N32:MP1:1) id(M:DFF:N32:MP2:1) id(M:DFF:N32:MP3:1) * PMOS transistor in N32
+.plot id(M:DFF:N32:MN1:1) id(M:DFF:N32:MN2:1) id(M:DFF:N32:MN3:1) * NMOS transistor in N32
+
+
+* Drain currents for MOSFETs in NAND_3 instance N33 within DFF
+.plot id(M:DFF:N33:MP1:1) id(M:DFF:N33:MP2:1) id(M:DFF:N33:MP3:1) * PMOS transistor in N33
+.plot id(M:DFF:N33:MN1:1) id(M:DFF:N33:MN2:1) id(M:DFF:N33:MN3:1) * NMOS transistor in N33
+
+* Drain currents for MOSFETs in NAND_3 instance N34 within DFF
+.plot id(M:DFF:N34:MP1:1) id(M:DFF:N34:MP2:1) id(M:DFF:N34:MP3:1) * PMOS transistor in N34
+.plot id(M:DFF:N34:MN1:1) id(M:DFF:N34:MN2:1) id(M:DFF:N34:MN3:1) * NMOS transistor in N34
+
+
+* Drain currents for MOSFETs in NAND instance N21 within DFF
+.print id(M:DFF:N21:MP1:1) id(M:DFF:N21:MP2:1)  * PMOS transistor in N21
+.print id(M:DFF:N21:MN1:1) id(M:DFF:N21:MN2:1) * NMOS transistor in N21
+
+* Drain currents for MOSFETs in NAND instance N22 within DFF
+.print id(M:DFF:N22:MP1:1) id(M:DFF:N22:MP2:1) * PMOS transistor in N22
+.print id(M:DFF:N22:MN1:1) id(M:DFF:N22:MN2:1) * NMOS transistor in N22
+
+* Drain currents for MOSFETs in NAND_3 instance N31 within DFF
+.print id(M:DFF:N31:MP1:1) id(M:DFF:N31:MP2:1) id(M:DFF:N31:MP3:1) * PMOS transistor in N31
+.print id(M:DFF:N31:MN1:1) id(M:DFF:N31:MN2:1) id(M:DFF:N31:MN3:1) * NMOS transistor in N31
+
+* Drain currents for MOSFETs in NAND_3 instance N32 within DFF
+.print id(M:DFF:N32:MP1:1) id(M:DFF:N32:MP2:1) id(M:DFF:N32:MP3:1) * PMOS transistor in N32
+.print id(M:DFF:N32:MN1:1) id(M:DFF:N32:MN2:1) id(M:DFF:N32:MN3:1) * NMOS transistor in N32
+
+
+* Drain currents for MOSFETs in NAND_3 instance N33 within DFF
+.print id(M:DFF:N33:MP1:1) id(M:DFF:N33:MP2:1) id(M:DFF:N33:MP3:1) * PMOS transistor in N33
+.print id(M:DFF:N33:MN1:1) id(M:DFF:N33:MN2:1) id(M:DFF:N33:MN3:1) * NMOS transistor in N33
+
+* Drain currents for MOSFETs in NAND_3 instance N34 within DFF
+.print id(M:DFF:N34:MP1:1) id(M:DFF:N34:MP2:1) id(M:DFF:N34:MP3:1) * PMOS transistor in N34
+.print id(M:DFF:N34:MN1:1) id(M:DFF:N34:MN2:1) id(M:DFF:N34:MN3:1) * NMOS transistor in N34
+
+
+
+.option TEMP=0

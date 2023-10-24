@@ -1,0 +1,29 @@
+%%% Define the homeworkProblem environment
+\newcommand{\enterProblemHeader}[1]{
+    \nobreak\extramarks{}{Oppgave \arabic{#1} continued on next page\ldots}\nobreak{}
+    \nobreak\extramarks{Oppgave \arabic{#1} (fortsetter)}{Oppgave \arabic{#1} fortsetter på neste side\ldots}\nobreak{}
+}
+
+\newcommand{\exitProblemHeader}[1]{
+    \nobreak\extramarks{Oppgave \arabic{#1} (fortsetter)}{Oppgave \arabic{#1} fortsetter på neste side\ldots}\nobreak{}
+    \stepcounter{#1}
+    \nobreak\extramarks{Oppgave \arabic{#1}}{}\nobreak{}
+}
+
+\setcounter{secnumdepth}{0}
+\newcounter{partCounter}
+\newcounter{homeworkProblemCounter}
+\setcounter{homeworkProblemCounter}{1}
+\nobreak\extramarks{Oppgave \arabic{homeworkProblemCounter}}{}\nobreak{}
+
+
+\newenvironment{homeworkProblem}[1][-1]{
+    \ifnum#1>0
+        \setcounter{homeworkProblemCounter}{#1}
+    \fi
+    \section{Oppgave \arabic{homeworkProblemCounter}}
+    \enterProblemHeader{homeworkProblemCounter}
+}{
+    \exitProblemHeader{homeworkProblemCounter}
+    \stepcounter{homeworkProblemCounter}
+}
