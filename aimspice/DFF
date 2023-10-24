@@ -104,5 +104,5 @@ vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 20n 40n)
 
 *****Simulation******
 .tran 0.00001n 200n 1n
-.include gpdk90nm_fs.cir
-.option temp=0
+.include gpdk90nm_tt.cir
+.option temp=70
