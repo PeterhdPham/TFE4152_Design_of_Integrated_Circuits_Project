@@ -27,10 +27,11 @@ def generate_title(filepath):
         return f"Leakage current for {corner} corner at {temp} degrees"
 
 # Dictionary to map filenames to descriptions
-test_descriptions = {
-    'W1': 'Data Sampling and Clock Edge',
+simulation_descriptions = {
+    'W1': 'Datasampling and Clock Edge',
     'W2': 'Asynchronous Reset',
-    'W3': 'Datasampling when Data stays the same for a few Clock Edges',
+    'W3': 'Data sampling during stable clock edges.',
+    'W4': 'Synchronous Reset',
     'I': 'Leakage current'
 }
 
@@ -41,13 +42,13 @@ for dirpath, dirnames, filenames in os.walk(base_dir):
         if filename.endswith('.csv'):
             filepath = os.path.join(dirpath, filename)
 
-            # Extract corner, temperature, and test type
+            # Extract corner, temperature, and simulation type
             corner = os.path.basename(os.path.dirname(os.path.dirname(filepath)))
             temperature = os.path.basename(os.path.dirname(filepath))
-            test_type = filename.split('.')[0]
+            simulation_type = filename.split('.')[0]
 
             # Create title
-            title = f"Corner: {corner}, Temperature: {temperature}°C, Test: {test_descriptions[test_type]}"
+            title = f"Corner: {corner}, Temperature: {temperature}°C, Simulation: {simulation_descriptions[simulation_type]}"
             
             # Check and remove unwanted lines
             with open(filepath, 'r') as f:
