@@ -1,2 +1,68 @@
-\section{Method}
+\section{Verilog VHDL}
+\subsection{Half-adderer}
+\importimagewcaption{Half-adderer.png}{}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+    \hline
+    \(A\) & \(B\) & \(S\) & \(C\) \\
+    \hline
+    0 & 0 & 0 & 0 \\
+    0 & 1 & 1 & 0 \\
+    1 & 0 & 1 & 0 \\
+    1 & 1 & 0 & 1 \\
+    \hline
+    \end{tabular}
+    \caption{Truthtable for Half Adder}
+    \end{table}
+\subsection{Adderer}
+\importimagewcaption{Test-Adder.png}{}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+    \hline
+    \(A\) & \(B\) & \(C_{\text{in}}\) & \(S\) & \(C_{\text{out}}\) \\
+    \hline
+    0 & 0 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 1 & 0 \\
+    1 & 0 & 0 & 1 & 0 \\
+    1 & 1 & 0 & 0 & 1 \\
+    0 & 0 & 1 & 1 & 0 \\
+    0 & 1 & 1 & 0 & 1 \\
+    1 & 0 & 1 & 0 & 1 \\
+    1 & 1 & 1 & 1 & 1 \\
+    \hline
+    \end{tabular}
+    \caption{Sannhetstabell for Full Adder}
+    \end{table}
+    
 
+\subsection{Mulitplikator}
+\importimagewcaption{Test-Mulitplikator.png}{}
+\begin{table}[h]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|c|c|c|}
+    \hline
+    \(A_1\) & \(A_0\) & \(B_1\) & \(B_0\) & \(C_3\) & \(C_2\) & \(C_1\) & \(C_0\) \\
+    \hline
+    0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 0 & 1 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 0 & 1 & 1 & 0 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 \\
+    0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 \\
+    0 & 1 & 1 & 1 & 0 & 0 & 1 & 1 \\
+    1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+    1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
+    1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
+    1 & 0 & 1 & 1 & 0 & 1 & 1 & 0 \\
+    1 & 1 & 0 & 0 & 0 & 0 & 1 & 0 \\
+    1 & 1 & 0 & 1 & 0 & 1 & 0 & 1 \\
+    1 & 1 & 1 & 0 & 0 & 1 & 1 & 0 \\
+    1 & 1 & 1 & 1 & 1 & 0 & 0 & 1 \\
+    \hline
+    \end{tabular}
+    \caption{Sannhetstabell for 2-bit multiplikator}
+    \end{table}
+    
