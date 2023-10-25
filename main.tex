@@ -1,7 +1,6 @@
-\documentclass[a4paper,12pt,norsk]{article}
+\documentclass{article}
 \usepackage{packages} % imports the packages.tex file from the preamble directory
  % imports the packages.tex file from the preamble directory
-\input{preamble/environments.tex} % imports the environments.tex file from the preamble directory
 \input{preamble/macros.tex} % imports the macros.tex file from the preamble directory
 \input{preamble/settings.tex} % imports the settings.tex file from the preamble directory
 \input{preamble/titlepage.tex} % imports the titlepage.tex file from the preamble directory
@@ -39,12 +38,15 @@
 \pagebreak
 \import{./Sections/}{02theory.tex}
 \pagebreak
+\import{./Sections/}{02aimspice.tex}
+\pagebreak
 \import{./Sections/}{03method.tex}
 \pagebreak
 \import{./Sections/}{04results.tex}
 \pagebreak
 \import{./Sections/}{05discussion.tex}
 \pagebreak
+
 \import{./Sections/}{06conclusion.tex}
 \printbibliography
 \end{document}
