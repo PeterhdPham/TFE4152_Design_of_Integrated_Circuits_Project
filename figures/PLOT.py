@@ -3,7 +3,7 @@ import matplotlib.pyplot as plt
 import re
 
 # Filename
-csv_file = 'figures/aimspice/DFF.csv'
+csv_file = 'DFF.csv'
 
 
 # Preprocess the CSV to ensure the first row is comma-separated
