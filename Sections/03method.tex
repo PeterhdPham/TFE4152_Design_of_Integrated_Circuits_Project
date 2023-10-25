@@ -23,7 +23,7 @@
 \importimagewcaption{Verilog-Adder.png}{}
 \importimagewcaptionw{Test-Adder.png}{}{1}
 \begin{table}[h]
-    
+    \centering
     \begin{tabular}{|c|c|c|c|c|}
     \hline
     \(A\) & \(B\) & \(C_{\text{in}}\) & \(S\) & \(C_{\text{out}}\) \\
@@ -41,9 +41,10 @@
     \caption{Sannhetstabell for Full Adder}
     \end{table}
     
-
-\subsection{Mulitplikator}
-\importimagewcaption{Test-Mulitplikator.png}{}
+    
+    \subsection{Mulitplikator}
+    \importimagewcaption{Verilog-Multiplikator.png}{}
+    \importimagewcaption{Test-Mulitplikator.png}{}
 \begin{table}[h]
     \centering
     \begin{tabular}{|c|c|c|c|c|c|c|c|}
@@ -58,6 +59,7 @@
     0 & 1 & 0 & 1 & 0 & 0 & 0 & 1 \\
     0 & 1 & 1 & 0 & 0 & 0 & 1 & 0 \\
     0 & 1 & 1 & 1 & 0 & 0 & 1 & 1 \\
+    
     1 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
     1 & 0 & 0 & 1 & 0 & 0 & 1 & 0 \\
     1 & 0 & 1 & 0 & 0 & 1 & 0 & 0 \\
@@ -70,5 +72,19 @@
     \end{tabular}
     \caption{Sannhetstabell for 2-bit multiplikator}
     \end{table}
-    
+
+
+\subsection{D-flip flop with asychron reset}
+    \importimagewcaption{Verilog-D-flipflop.png}{}
+    \importimagewcaption{D-flipflop.png}{}
+    \centering
+        \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \(D\) & \text{CLK (edge)} & \(R\) & \(Q \text{ (next)}\) & \(\overline{Q} \text{ (next)}\) \\
+        \hline
+        x & \(\downarrow\) or no change & 1 & \(Q \text{ (prev)}\) & \(\overline{Q} \text{ (prev)}\) \\
+        x & \(\uparrow\) & 1 & \(D\) & \(\overline{D}\) \\
+        x & x & 0 & 0 & 1 \\
+        \hline
+        \end{tabular}
  
