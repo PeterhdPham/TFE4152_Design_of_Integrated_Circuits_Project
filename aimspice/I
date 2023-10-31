@@ -2,10 +2,11 @@
 * NAND Gates Implementation using PMOS and NMOS transistors
 * --------------------------------------------------------------
 * Global parameters and supply definitions
-.include gpdk90nm_ff.cir
-.param vdd_value = 0.32
+.include gpdk90nm_fs.cir
+.option temp=70
+.param vdd_value = 0.33
 vdd 1 0 vdd_value
-.option temp=0
+
 
 * Device parameters for N-MOSFETs
 .param N_Length = 0.1u
@@ -58,18 +59,9 @@ xNAND_3 1 0 out2 1 0 NAND_3
 * Simulation directives and plot commands
 * --------------------------------------------------------------
 .tran 0.0001n 2000n 500n
+
+* Plots for NMOS current
 .plot id(m:nand_2:mn1:1) id(m:nand_3:mn1:1)  
-
-* Plots for 2-Input NAND Gate
-.plot id(m:nand_2:mn1:1) id(m:nand_2:mn2:1)  
-.plot id(m:nand_2:mp1:1) id(m:nand_2:mp2:1) 
-.plot v(out1)
-
-* Plots for 3-Input NAND Gate
-.plot id(m:nand_3:mn1:1) id(m:nand_3:mn2:1) id(m:nand_3:mn3:1) 
-.plot id(m:nand_3:mp1:1) id(m:nand_3:mp2:1) id(m:nand_3:mp3:1)
-.plot v(out2)
-
 
 
 

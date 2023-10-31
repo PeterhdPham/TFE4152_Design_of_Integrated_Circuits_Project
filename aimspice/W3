@@ -2,9 +2,10 @@
 * Global parameters and supply definitions
 * --------------------------------------------------------------
 .include gpdk90nm_ss.cir
-.param vdd_value = 0.33
-vdd 1 0 vdd_value
 .option temp=70
+.param vdd_value = 0.337
+vdd 1 0 vdd_value
+
 
 * Device parameters for N-MOSFETs
 .param N_Length = 0.1u
@@ -79,14 +80,15 @@ xDFF Clk Data Reset Out 1 0 DFF
 .param pPeriod= 20n    
 
 
-*Waveform 3: To Test the Datasampling when Data stays the same for a few Clock Edges
+
+*Waveform 3: To Test the Synchronous Reset
 vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
-vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 0n 0n)       
-vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 35n 80n) 
+vres Reset 0 pulse (vdd_value 0 5n 0.1n 0.1n 10n 40n)       
+vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 40n 40n)
 
 
 * --------------------------------------------------------------
 * Simulation directives and plot commands
 * --------------------------------------------------------------
 .tran 0.00001n 200n 10n
-.plot v(Data) v(Clk) v(Out)
+.plot v(Data) v(Clk) v(Out) v(Reset)

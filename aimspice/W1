@@ -2,9 +2,10 @@
 * Global parameters and supply definitions
 * --------------------------------------------------------------
 .include gpdk90nm_ss.cir
-.param vdd_value = 0.33
-vdd 1 0 vdd_value
 .option temp=70
+.param vdd_value = 0.337
+vdd 1 0 vdd_value
+
 
 * Device parameters for N-MOSFETs
 .param N_Length = 0.1u
@@ -82,8 +83,6 @@ xDFF Clk Data Reset Out 1 0 DFF
 vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
 vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 39n 39n)       
 vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 20n 40n) 
-
-
 
 * --------------------------------------------------------------
 * Simulation directives and plot commands
