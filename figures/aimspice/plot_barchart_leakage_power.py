@@ -43,20 +43,22 @@ for dirpath, dirnames, filenames in os.walk(base_dir):
             data = pd.read_csv(filepath, delimiter=",", header=0)
             
             # Calculate the required value
-            avg_current = np.abs(data[data.columns[1]]).mean() 
+            avg_current2 = np.abs(data[data.columns[1]]).mean()
+            avg_current3 = np.abs(data[data.columns[2]]).mean()
             
             # Add the data to the dictionary
             if temperature not in leakage_data:
                 leakage_data[temperature] = {}
-            leakage_data[temperature][corner] = avg_current
+            tot_current = 2*avg_current2+4*avg_current3
+            leakage_data[temperature][corner] = tot_current
 
 # Sort the leakage_data by temperature for proper plotting
 sorted_temperatures = sorted(leakage_data.keys(), key=int)
 
-corners = ['FF', 'FS', 'SF', 'SS', 'TT']
+corners = ['FS','SS', 'TT', 'SF',  'FF']
 bar_width = 0.15
 index = np.arange(len(sorted_temperatures))
-colors = ['red', 'blue', 'green', 'yellow', 'purple']
+colors = ['salmon', 'paleturquoise', 'palegoldenrod', 'palegreen',  'palevioletred']
 
 fig, ax = plt.subplots()
 
@@ -65,11 +67,13 @@ for idx, corner in enumerate(corners):
     ax.bar(index + idx * bar_width, leakage_values, bar_width, label=corner, color=colors[idx])
 
 ax.set_xlabel('Temperature')
-ax.set_ylabel('Adjusted Leakage Current')
+ax.set_ylabel('Leakage Current')
 # ax.set_title('Leakage Current Comparison across Temperatures and Corners')
 ax.set_xticks(index + bar_width * 2)
 ax.set_xticklabels(sorted_temperatures)
 ax.legend()
 
 plt.tight_layout()
-plt.show()
+save_path = os.path.join(os.path.dirname(os.path.abspath(__file__)), "leakage_current.png")
+plt.savefig(save_path)
+# plt.show()
