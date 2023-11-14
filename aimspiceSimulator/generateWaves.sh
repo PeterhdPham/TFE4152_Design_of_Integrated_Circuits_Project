@@ -26,6 +26,7 @@ for corner in "${corners[@]}"; do
       xdotool key Return
       xdotool type ".include wave${wave}.cir"
       xdotool key Return
+      xdotool type ".tran 0.001n 200n 10n" 
 
       # Check if the wave scenario is W3 and include v(Reset) if it is
       if [ "$wave" == "W3" ]; then

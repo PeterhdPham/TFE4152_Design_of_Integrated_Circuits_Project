@@ -42,7 +42,6 @@ vdd 1 0 vdd_value
 * Instantiation of NAND gates
 xNAND_2 1 0 out1 1 0 NAND_2
 xNAND_3 1 0 out2 1 0 NAND_3
-
 * --------------------------------------------------------------
 * Simulation directives and plot commands
 * --------------------------------------------------------------
