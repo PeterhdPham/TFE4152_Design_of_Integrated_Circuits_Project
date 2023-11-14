@@ -1,0 +1,8 @@
+#!/bin/sh
+dirname=`dirname $0`
+tmp="${dirname#?}"
+if [ "${dirname%$tmp}" != "/" ]; then
+dirname=$PWD/$dirname
+fi
+export QT_QPA_PLATFORM=xcb
+$dirname/aimspice64

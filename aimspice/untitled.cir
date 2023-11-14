@@ -1,0 +1,4 @@
+.include DFF_ff
+.optiuon temp=00
+.include wave2
+.plot v(Data) v(Clk) v(Out)

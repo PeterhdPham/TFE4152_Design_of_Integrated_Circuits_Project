@@ -1,0 +1,5 @@
+*Waveform 3: To Test the Synchronous Reset
+vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
+vres Reset 0 pulse (vdd_value 0 5n 0.1n 0.1n 10n 40n)       
+vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 40n 40n)
+.tran 0.001n 200n 10n

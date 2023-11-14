@@ -1,0 +1,56 @@
+.include gpdk90nm_fs.cir
+.include param.cir
+
+vdd 1 0 vdd_value
+.subckt NAND_2 A B Out Vdd Vss
+
+    * PMOS transistors
+    XMP1 Out A Vdd Vdd pmos1v w=P_Width l=P_Length 
+    XMP2 Out B Vdd Vdd pmos1v w=P_Width l=P_Length 
+
+    * NMOS transistors
+    XMN1 Out A NS1 Vss nmos1v w=N_Width l=N_Length 
+    XMN2 NS1 B Vss Vss nmos1v w=N_Width l=N_Length 
+
+.ends
+
+
+.subckt NAND_3 A B C Out Vdd Vss
+
+    * PMOS transistors
+    XMP1 Out A Vdd Vdd pmos1v w=P_Width l=P_Length 
+    XMP2 Out B Vdd Vdd pmos1v w=P_Width l=P_Length
+    XMP3 Out C Vdd Vdd pmos1v w=P_Width l=P_Length
+
+    * NMOS transistors
+    XMN1 Out A N1 Vss nmos1v w=N_Width l=N_Length 
+    XMN2 N1 B N2 Vss nmos1v w=N_Width l=N_Length
+    XMN3 N2 C Vss Vss nmos1v w=N_Width l=N_Length  
+
+.ends
+
+
+.subckt DFF CLK D Res Out Vdd Vss
+
+    * 2-Input NAND Gate
+    XNAND_21 N33 N31 N21 Vdd Vss NAND_2
+    XNAND_22 N31 N34 Out Vdd Vss NAND_2
+
+    * 3-Input NAND Gate
+    XNAND_31 N21 CLK Res N31 Vdd Vss NAND_3 
+    XNAND_32 N31 CLK N33 N32 Vdd Vss NAND_3 
+    XNAND_33 N32 D Res N33 Vdd Vss NAND_3 
+    XNAND_34 Out N32 Res N34 Vdd Vss NAND_3 
+
+.ends
+xDFF Clk Data Reset Out 1 0 DFF
+
+
+* Pulse signal parameters
+.param pDelayT= 0       
+.param pRiseT= 0.1n    
+.param pFallT= 0.1n     
+.param pPulseWidth= 10n
+.param pPeriod= 20n    
+
+
