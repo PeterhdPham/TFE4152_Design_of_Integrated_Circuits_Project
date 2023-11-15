@@ -2,7 +2,29 @@ import os
 import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
-output_dir = "../figures/aimspice"
+
+
+# Function to extract parameters from the .cir file
+def extract_params_from_cir(filepath):
+    params = {}
+    with open(filepath, 'r') as file:
+        for line in file:
+            if line.startswith('.param'):
+                key, value = line.split('=')[0].strip().split()[-1], line.split('=')[1].strip()
+                params[key] = value
+    return params
+
+# Read the param.cir file and extract parameters
+param_file_path = './param.cir'
+params = extract_params_from_cir(param_file_path)
+
+# Construct folder name from parameters
+folder_name = f"{params['vdd_value']}V_{params['N_Width']}x{params['N_Length']}_{params['P_Width']}x{params['P_Length']}".replace("u", "")
+output_dir = f"../figures/aimspice/{folder_name}"
+
+# Ensure the output directory exists
+if not os.path.exists(output_dir):
+    os.makedirs(output_dir)
 
 
 leakage_data = {}
