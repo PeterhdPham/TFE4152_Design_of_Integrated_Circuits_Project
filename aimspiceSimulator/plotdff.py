@@ -3,7 +3,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import numpy as np
 import re
-
+import shutil 
 
 # Function to extract parameters from the .cir file
 def extract_params_from_cir(filepath):
@@ -26,6 +26,11 @@ output_dir = f"../figures/aimspice/{folder_name}"
 # Ensure the output directory exists
 if not os.path.exists(output_dir):
     os.makedirs(output_dir)
+
+# New: Define and ensure the existence of the CSV subfolder
+csv_output_dir = os.path.join(output_dir, "CSV")
+if not os.path.exists(csv_output_dir):
+    os.makedirs(csv_output_dir)
 
 # Helper function to process the file
 def preprocess_file(filepath):
@@ -71,7 +76,7 @@ for filename in csv_files:
     with open(filepath, 'w') as f:
         for line in lines:
             f.write(f"{line}\n")
-
+    shutil.copy(filepath, os.path.join(csv_output_dir, filename))
     # Plotting
     data = pd.read_csv(filepath, delimiter=",", header=0)  # Assuming the first row contains the headers
     fig, ax = plt.subplots(figsize=(10, 6))

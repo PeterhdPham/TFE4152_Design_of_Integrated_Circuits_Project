@@ -54,3 +54,4 @@ xDFF Clk Data Reset Out 1 0 DFF
 .param pPeriod= 20n    
 
 
+.tran 0.0001n 200n 10n

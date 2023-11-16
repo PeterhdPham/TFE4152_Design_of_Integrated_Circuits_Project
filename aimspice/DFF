@@ -98,5 +98,5 @@ vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 35n 80n)
 * --------------------------------------------------------------
 * Simulation directives and plot commands
 * --------------------------------------------------------------
-.tran 0.00001n 200n 10n
+.tran 0.01n 200n 10n
 
