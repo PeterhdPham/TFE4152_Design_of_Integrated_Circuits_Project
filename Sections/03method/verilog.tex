@@ -3,14 +3,16 @@
 
 We need to assemble the circuits: the combinational circuits in the FSM, and the arithmetic circuits within the MAC unit. Additionally, we must implement an 8-bit register. Using Verilog, we'll ensure that all components operate in sync as intended.
 
-\subsection{Half-adderer}
-\importimagewcaption{verilog/Verilog-Half-adder.png}{}
-\importimagewcaptionw{verilog/Half-adderer.png}{}{1}
+\subsection{ADDERS}
+A natural start making a MAC-unit, is an adder. They are used to perform addition, which is a basic arithmetic operation. Where adding is a escential part of its job.
+\subsubsection{HALF-ADDER}
+A simple adder with two 1-bits inputs and a 1-bit sum and carry output, is known as a \textbf{Half adder}. By making a Truthtable for the half-adder we can get the bolean expresion and make a circuit out of it.- refferer til DATDIG, og chatgbt dette
 \begin{table}[H]
+    \caption{Truthtable for Half Adder}                 
     \centering
     \begin{tabular}{|c|c|c|c|}
     \hline
-    \(A\) & \(B\) & \(S\) & \(C\) \\
+    \(A\) & \(B\) & \(Sum\) & \(Carry\) \\
     \hline
     0 & 0 & 0 & 0 \\
     0 & 1 & 1 & 0 \\
@@ -18,8 +20,38 @@ We need to assemble the circuits: the combinational circuits in the FSM, and the
     1 & 1 & 0 & 1 \\
     \hline
 \end{tabular}
-\caption{Truthtable for Half Adder}                 
 \end{table}
+From the Truthtable we can this expresion:
+\begin{equation}
+    \begin{aligned}
+        Sum&=\overline{A}B+A\overline{B}\\
+        \Rightarrow&A\oplus B\\
+        Carry&=AB\\ 
+    \end{aligned}
+\end{equation}
+\begin{lstlisting}
+    //{module {HALF_ADDER}}	 
+`timescale 1 ns / 1 ps
+module HALF_ADDER ( A ,B ,SUM ,CARRY );
+
+input A ;
+wire A ;
+input B ;
+wire B ;
+output SUM ;
+wire SUM ;
+output CARRY ;
+wire CARRY ;
+
+
+xor(SUM, A, B);
+and(CARRY, A, B);
+
+endmodule
+\end{lstlisting}
+\importimagewcaption{verilog/Verilog-Half-adder.png}{}
+\importimagewcaptionw{verilog/Half-adderer.png}{}{1}
+
 
 
 \subsection{Adderer}
