@@ -2,4 +2,4 @@
 vclk Clk 0 pulse    (0  vdd_value    4n     0.1n    0.1n    5000n     5001n)     
 vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
 vres Reset 0 pulse  (0  vdd_value    3n     0.1n    0.1n    5000n     5001n)   
-vpeak PEAK 0 pulse  (-0.2  0.8         5n     0.1n    0.1n    500000n   500001n)
+.tran 0.01 8000n 6000n
