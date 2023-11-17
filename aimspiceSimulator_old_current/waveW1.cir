@@ -1,0 +1,5 @@
+*Waveform 1: To Test Data Sampling and Clock Edge
+vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
+vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 39n 39n)       
+vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 20n 40n) 
+
