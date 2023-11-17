@@ -1,0 +1,35 @@
+
+* --------------------------------------------------------------
+* 2-Input NAND Gate
+* Ports: inputA, inputB, Out, Vdd, Vss
+* --------------------------------------------------------------
+.subckt NAND_2 A B Out Vdd Vss
+
+    * PMOS transistors
+    XMP1 Out A Vdd Vdd pmos1v w=P_Width l=P_Length 
+    XMP2 Out A Vdd Vdd pmos1v w=P_Width l=P_Length 
+
+    * NMOS transistors
+    XMN1 Out B N1 Vss nmos1v w=N_Width l=N_Length 
+    XMN2 N1 B Vss Vss nmos1v w=N_Width l=N_Length 
+
+.ends
+
+* --------------------------------------------------------------
+* 3-Input NAND Gate
+* Ports: InputA, InputB, InputC, Output, Vdd, Vss
+* --------------------------------------------------------------
+.subckt NAND_3 A B Output Vdd Vss
+
+    * PMOS transistors
+    XMP1 Output A Vdd Vdd pmos1v w=P_Width l=P_Length 
+    XMP2 Output A Vdd Vdd pmos1v w=P_Width l=P_Length
+    XMP3 Output A Vdd Vdd pmos1v w=P_Width l=P_Length
+
+    * NMOS transistors
+    XMN1 Output B N1 Vss nmos1v w=N_Width l=N_Length 
+    XMN2 N1 B N2 Vss nmos1v w=N_Width l=N_Length
+    XMN3 N2 B Vss Vss nmos1v w=N_Width l=N_Length  
+
+.ends
+
