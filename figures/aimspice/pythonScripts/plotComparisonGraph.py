@@ -6,7 +6,7 @@ from sklearn.linear_model import LinearRegression
 from numpy.polynomial.polynomial import Polynomial
 
 # Function to plot and save graphs with polynomial fit
-def plot_and_save_graph_poly(data, simulation_id, output_dir, degree=4):
+def plot_and_save_graph_poly(data, simulation_id, output_dir, degree=5):
     plt.figure()
     for (temp, corner), group_data in data.groupby(['Temperature', 'Corner']):
         # Extract VDD and Power values
