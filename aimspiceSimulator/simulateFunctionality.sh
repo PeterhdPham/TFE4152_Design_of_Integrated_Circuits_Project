@@ -114,6 +114,7 @@ for scenario in "${scenarios[@]}"; do
 	      xdotool key alt+F4
 	      sleep 0.5
           # MODIFICATION: Move the CSV file to the appropriate directory
+		  rm "${corner}${temp}${wave}.log"
           mv "$csv_file" "../figures/aimspice/${scenario_dir}/CSV/functionality"		  
 	      current_iteration=$((current_iteration + 1))
           percentage=$(echo "scale=2; $current_iteration / $total_iterations * 100" | bc)

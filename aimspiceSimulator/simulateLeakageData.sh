@@ -100,7 +100,8 @@ for scenario in "${scenarios[@]}"; do
                 sleep 0.5
                 xdotool key alt+F4
                 sleep 0.5
-                # MODIFICATION: Move the CSV file to the appropriate directory
+                # # MODIFICATION: Move the CSV file to the appropriate directory
+                rm "${corner}${temp}${static}.log"
                 mv "$csv_file" "../figures/aimspice/${scenario_dir}/CSV/leakage_current"	            
                 current_iteration=$((current_iteration + 1))
                 percentage=$(echo "scale=2; $current_iteration / $total_iterations * 100" | bc)

@@ -79,24 +79,53 @@ def plot_leakage_data(leakage_data, ylabel, output_filename, output_leakage_curr
     plt.close(fig)
 
 def append_to_csv(data, csv_filepath):
+    # Define the two possible sets of required keys
+    key_set_1 = ['N_W', 'N_L', 'P_W', 'P_L', 'Corner', 'Temperature', 'Power']
+    key_set_2 = ['VDD', 'Corner', 'Temperature', 'Power']
+
+    # Determine which set of keys to use based on the keys present in 'data'
+    if all(key in data for key in key_set_1):
+        required_keys = key_set_1
+    elif all(key in data for key in key_set_2):
+        required_keys = key_set_2
+    else:
+        raise ValueError("Data dictionary does not match the expected key sets.")
+
     if os.path.exists(csv_filepath):
         existing_data = pd.read_csv(csv_filepath)
-        # Check if the entry with the same VDD, corner, and temperature already exists
-        if not existing_data[(existing_data['VDD'] == data['VDD']) & 
-                             (existing_data['Corner'] == data['Corner']) & 
-                             (existing_data['Temperature'] == data['Temperature'])].empty:
-            return  # Entry exists, do nothing
+        # Ensure the DataFrame has the required columns
+        for key in required_keys:
+            if key not in existing_data.columns:
+                existing_data[key] = None
+
+        # For key_set_2, check if the entry with the same VDD, corner, and temperature already exists
+        if required_keys == key_set_2:
+            if not existing_data[(existing_data['VDD'] == data['VDD']) & 
+                                 (existing_data['Corner'] == data['Corner']) & 
+                                 (existing_data['Temperature'] == data['Temperature'])].empty:
+                return  # Entry exists, do nothing
     else:
-        existing_data = pd.DataFrame(columns=['VDD', 'Corner', 'Temperature', 'Power'])
+        # Initialize DataFrame with required columns if file doesn't exist
+        existing_data = pd.DataFrame(columns=required_keys)
 
     # Append new data
-    existing_data = pd.concat([existing_data, pd.DataFrame([data])], ignore_index=True)
+    new_data = pd.DataFrame([data])
+    existing_data = pd.concat([existing_data, new_data], ignore_index=True)
     existing_data.to_csv(csv_filepath, index=False)
 
 
 # Navigate to the main directory
 main_dir = 'figures/aimspice'
 config_dirs = [os.path.join(main_dir, d) for d in os.listdir(main_dir) if os.path.isdir(os.path.join(main_dir, d))]
+# Calculate the total number of CSV files to be processed, considering only existing directories
+total_files = 0
+for config in config_dirs:
+    csv_functionality_path = os.path.join(config, 'CSV', 'leakage_current')
+    if os.path.exists(csv_functionality_path):
+        total_files += len([f for f in os.listdir(csv_functionality_path) if f.endswith('.csv')])
+
+# Initialize a counter for processed files
+processed_files = 0
 for config in config_dirs:
     try:
         params = extract_params_from_config_name(os.path.basename(config))
@@ -150,17 +179,43 @@ for config in config_dirs:
                         'Power': leakage_power
                     }
                     append_to_csv(data, csv_filepath)
-                if params['vdd_value'] == '0.6': 
-                    os.makedirs(variable_vdd_csv_path, exist_ok=True)
-                    csv_filename = f'static_leakage_power_{simulation_id}.csv'  # Unique filename for each simulation
-                    csv_filepath = os.path.join(variable_vdd_csv_path, csv_filename)
+                if params['vdd_value'] == '0.60': 
+                    variable_param_csv_path = os.path.join(main_dir, 'variableParam', 'CSV')
+                    os.makedirs(variable_param_csv_path, exist_ok=True)
+                    csv_filename = f'static_leakage_power_0.6_{simulation_id}.csv'  # Unique filename for each simulation
+                    csv_filepath = os.path.join(variable_param_csv_path, csv_filename)
                     data = {
-                        'VDD': params['vdd_value'],
+                        'N_W': params['N_Width'],
+                        'N_L': params['N_Length'],
+                        'P_W': params['P_Width'],
+                        'P_L': params['P_Length'],
                         'Corner': corner,
                         'Temperature': temperature,
                         'Power': leakage_power
                     }
-                    append_to_csv(data, csv_filepath)                
+                    append_to_csv(data, csv_filepath)   
+                if params['vdd_value'] == '0.75': 
+                    variable_param_csv_path = os.path.join(main_dir, 'variableParam', 'CSV')
+                    os.makedirs(variable_param_csv_path, exist_ok=True)
+                    csv_filename = f'static_leakage_power_0.75_{simulation_id}.csv'  # Unique filename for each simulation
+                    csv_filepath = os.path.join(variable_param_csv_path, csv_filename)
+                    data = {
+                        'N_W': params['N_Width'],
+                        'N_L': params['N_Length'],
+                        'P_W': params['P_Width'],
+                        'P_L': params['P_Length'],
+                        'Corner': corner,
+                        'Temperature': temperature,
+                        'Power': leakage_power
+                    }
+                    append_to_csv(data, csv_filepath) 
+        # Update the count of processed files
+        processed_files += 1
+
+        # Calculate and display the remaining percentage
+        remaining_percentage = ((processed_files) / total_files) * 100 if total_files > 0 else 0
+        print(f"Status: {remaining_percentage:.2f}%")     
+        print(f"{processed_files}/{total_files}")
 
         sorted_temperatures = sorted(leakage_current_data.keys(), key=int)
         # plot_leakage_data(leakage_current_data, 'Leakage Current (A)', f"leakage_current_{simulation_id}.png", output_leakage_data_path, corners)

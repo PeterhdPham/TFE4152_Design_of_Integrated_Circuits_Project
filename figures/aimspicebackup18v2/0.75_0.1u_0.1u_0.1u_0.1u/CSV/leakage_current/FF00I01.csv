@@ -1,0 +1,5 @@
+
+.nclude DFFFF.cir
+.include I01.cir
+.option temp=00
+.plot i(vdd)
