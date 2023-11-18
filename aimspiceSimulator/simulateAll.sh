@@ -1,4 +1,4 @@
 #!/bin/bash
 
-./simulateAndSaveCSVLeakageData.sh
-./simulateAndSaveCSVFunctionality.sh
+./simulateLeakageData.sh
+./simulateFunctionality.sh
