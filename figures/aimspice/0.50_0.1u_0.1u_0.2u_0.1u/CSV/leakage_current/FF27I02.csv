@@ -1,8 +1,4 @@
-AIM-Spice kernel Version 2022.100  (Built on Aug 12 2022)
-Circuit: 
-Analysis: Transient Analysis
-Started on: fre. nov. 17 20:29:32 2023
-Time i(vdd)
+Time,i(vdd)
 6.03113735798157e-06,2.15737072434023e-07
 6.07113735798157e-06,-2.22314288948268e-07
 6.11113735798157e-06,2.14212267485643e-07

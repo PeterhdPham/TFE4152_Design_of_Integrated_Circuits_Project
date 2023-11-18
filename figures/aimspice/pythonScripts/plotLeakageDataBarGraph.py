@@ -163,8 +163,8 @@ for config in config_dirs:
                     append_to_csv(data, csv_filepath)                
 
         sorted_temperatures = sorted(leakage_current_data.keys(), key=int)
-        # plot_leakage_data(leakage_current_data, 'Leakage Current (A)', f"leakage_current_{simulation_id}.png", output_leakage_data_path, corners)
-        # plot_leakage_data(leakage_power_data, 'Leakage Power (W)', f"leakage_power_{simulation_id}.png", output_leakage_data_path, corners)
+        plot_leakage_data(leakage_current_data, 'Leakage Current (A)', f"leakage_current_{simulation_id}.png", output_leakage_data_path, corners)
+        plot_leakage_data(leakage_power_data, 'Leakage Power (W)', f"leakage_power_{simulation_id}.png", output_leakage_data_path, corners)
 
 
 

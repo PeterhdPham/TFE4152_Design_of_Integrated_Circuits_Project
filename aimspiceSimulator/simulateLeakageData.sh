@@ -20,21 +20,21 @@ static_scenarios=("I02" "I04" "I07" "I09"  "I11" "I12")
 
 # Define specific scenarios
 scenarios=(
-    "0.45 0.1u 0.1u 0.2u 0.1u"
+#    "0.45 0.1u 0.1u 0.2u 0.1u"
     "0.475 0.1u 0.1u 0.2u 0.1u"
-    "0.50 0.1u 0.1u 0.2u 0.1u"
+#    "0.50 0.1u 0.1u 0.2u 0.1u"
     "0.525 0.1u 0.1u 0.2u 0.1u"
-    "0.55 0.1u 0.1u 0.2u 0.1u"
+#    "0.55 0.1u 0.1u 0.2u 0.1u"
     "0.575 0.1u 0.1u 0.2u 0.1u"
-    "0.60 0.1u 0.1u 0.2u 0.1u"
+#    "0.60 0.1u 0.1u 0.2u 0.1u"
     "0.625 0.1u 0.1u 0.2u 0.1u"
-    "0.65 0.1u 0.1u 0.2u 0.1u"
+#    "0.65 0.1u 0.1u 0.2u 0.1u"
     "0.675 0.1u 0.1u 0.2u 0.1u"
-    "0.70 0.1u 0.1u 0.2u 0.1u"
+#    "0.70 0.1u 0.1u 0.2u 0.1u"
     "0.725 0.1u 0.1u 0.2u 0.1u"
-    "0.75 0.1u 0.1u 0.2u 0.1u"
+#    "0.75 0.1u 0.1u 0.2u 0.1u"
     "0.775 0.1u 0.1u 0.2u 0.1u"
-    "0.80 0.1u 0.1u 0.2u 0.1u"
+#    "0.80 0.1u 0.1u 0.2u 0.1u"
     "0.825 0.1u 0.1u 0.2u 0.1u"
 #    "0.60 0.1u 0.1u 0.1u 0.1u"
 #    "0.60 0.1u 0.1u 0.3u 0.1u"
@@ -49,7 +49,7 @@ for scenario in "${scenarios[@]}"; do
     scenario_dir=$(echo "$scenario" | tr ' ' '_')
 
     # MODIFICATION: Create the necessary directories
-    mkdir -p "../figures/aimspice/${scenario_dir}/CSV"    
+    mkdir -p "../figures/aimspice/${scenario_dir}/CSV/leakage_current"    
     # Update param.cir file
     update_param_cir "$vdd" "$n_width" "$n_length" "$p_width" "$p_length"
 
@@ -88,6 +88,7 @@ for scenario in "${scenarios[@]}"; do
                 percentage=$(echo "scale=2; $current_iteration / $total_iterations * 100" | bc)
                 echo "$current_iteration / $total_iterations"
                 echo "Progress: $percentage% completed."
+                echo "${scenario_dir}"
             done
         done
     done
