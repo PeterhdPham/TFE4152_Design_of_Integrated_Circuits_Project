@@ -16,7 +16,10 @@ EOF
 # List of all corner and temperature combinations
 corners=("FF" "TT")
 temperatures=("00" "27" "70")
-static_scenarios=("I02" "I04" "I07" "I09"  "I11" "I12")
+# static_scenarios=("I02" "I04" "I07" "I09"  "I11" "I12")
+# static_scenarios=("I01" "I05" "I06" "I07"  "I08" "I10")
+# static_scenarios=("I01" "I02""I03" "I04" "I05" "I06" "I07" "I08" "I09" "I10""I11" "I12")
+static_scenarios=("I05" "I07" "I09" "I11")
 
 # Define specific scenarios
 scenarios=(
@@ -38,9 +41,26 @@ scenarios=(
     # "0.825 0.1u 0.1u 0.2u 0.1u"
     # "0.60 0.1u 0.1u 0.1u 0.1u"
     # "0.60 0.1u 0.1u 0.3u 0.1u"
-    "0.75 0.1u 0.1u 0.1u 0.1u"
-    "0.75 0.1u 0.1u 0.3u 0.1u"
-    "0.75 0.1u 0.1u 0.4u 0.1u"
+    "0.60 0.1u 0.1u 0.1u 0.1u"
+    "0.60 0.1u 0.1u 0.125u 0.1u"
+    "0.60 0.1u 0.1u 0.15u 0.1u"
+    "0.60 0.1u 0.1u 0.175u 0.1u"
+    "0.60 0.1u 0.1u 0.2u 0.1u"
+    "0.60 0.1u 0.1u 0.225u 0.1u"
+    "0.60 0.1u 0.1u 0.25u 0.1u"
+    "0.60 0.1u 0.1u 0.275u 0.1u"
+    "0.60 0.1u 0.1u 0.3u 0.1u"
+    "0.60 0.1u 0.1u 0.325u 0.1u"
+    "0.60 0.1u 0.1u 0.35u 0.1u"
+    "0.60 0.1u 0.1u 0.375u 0.1u"
+    "0.60 0.1u 0.1u 0.4u 0.1u"
+    "0.60 0.1u 0.1u 0.425u 0.1u"
+    "0.60 0.1u 0.1u 0.45u 0.1u"
+    "0.60 0.1u 0.1u 0.475u 0.1u"
+    "0.60 0.1u 0.1u 0.5u 0.1u"
+    "0.60 0.1u 0.1u 0.525u 0.1u"
+    "0.60 0.1u 0.1u 0.55u 0.1u"
+    "0.60 0.1u 0.1u 0.575u 0.1u"
 )
 
 total_iterations=$(( ${#scenarios[@]} * ${#corners[@]} * ${#temperatures[@]}* ${#static_scenarios[@]}))
@@ -85,7 +105,8 @@ for scenario in "${scenarios[@]}"; do
                 sleep 0.5
                 xdotool key alt+F4
                 sleep 0.5
-                # MODIFICATION: Move the CSV file to the appropriate directory
+                # # MODIFICATION: Move the CSV file to the appropriate directory
+                rm "${corner}${temp}${static}.log"
                 mv "$csv_file" "../figures/aimspice/${scenario_dir}/CSV/leakage_current"	            
                 current_iteration=$((current_iteration + 1))
                 percentage=$(echo "scale=2; $current_iteration / $total_iterations * 100" | bc)

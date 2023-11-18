@@ -33,7 +33,14 @@ simulation_descriptions = {
 # Navigate to the main directory
 main_dir = 'figures/aimspice'
 config_dirs = os.listdir(main_dir)
+total_files = 0
+for config in config_dirs:
+    csv_functionality_path = os.path.join(main_dir, config, 'CSV', 'functionality')
+    if os.path.exists(csv_functionality_path):
+        total_files += len([f for f in os.listdir(csv_functionality_path) if f.endswith('.csv')])
 
+# Initialize a counter for processed files
+processed_files = 0
 for config in config_dirs:
     csv_functionality_path = os.path.join(main_dir, config, 'CSV', 'functionality')
     output_functionality_path = os.path.join(main_dir, config, 'functionality')
@@ -44,6 +51,7 @@ for config in config_dirs:
         csv_files = [f for f in os.listdir(csv_functionality_path) if f.endswith('.csv')]
 
         for filename in csv_files:
+            processed_files += 1
             filepath = os.path.join(csv_functionality_path, filename)
             
             # Create title
@@ -97,6 +105,8 @@ for config in config_dirs:
                 plot_filename_w1 = os.path.splitext(filename)[0] + "SC.png"
                 plt.savefig(os.path.join(output_functionality_path, plot_filename_w1))
                 plt.close()
-
+            remaining_percentage = ((processed_files) / total_files) * 100 if total_files > 0 else 0
+            print(f"Status: {remaining_percentage:.2f}%")
+            print(f"{processed_files}/{total_files}")
 print("Processing of CSV files completed.")
 

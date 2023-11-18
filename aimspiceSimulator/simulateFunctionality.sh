@@ -27,9 +27,10 @@ scenarios=(
     # "0.55 0.1u 0.1u 0.2u 0.1u"
     # "0.60 0.1u 0.1u 0.2u 0.1u"
     # "0.65 0.1u 0.1u 0.2u 0.1u"
-    "0.75 0.1u 0.1u 0.4u 0.1u"
-    "0.75 0.1u 0.1u 0.1u 0.1u"
-    "0.75 0.1u 0.1u 0.3u 0.1u"
+    # "0.75 0.1u 0.1u 0.4u 0.1u"
+    # "0.75 0.1u 0.1u 0.1u 0.1u"
+    # "0.75 0.1u 0.1u 0.3u 0.1u"
+	"0.75 0.1u 0.1u 0.2u 0.1u"
 )
 total_iterations=$(( ${#scenarios[@]} * ${#corners[@]} * ${#temperatures[@]} * ${#wave_scenarios[@]} ))
 current_iteration=0
@@ -86,6 +87,7 @@ for scenario in "${scenarios[@]}"; do
 	      xdotool key alt+F4
 	      sleep 0.5
           # MODIFICATION: Move the CSV file to the appropriate directory
+		  rm "${corner}${temp}${wave}.log"
           mv "$csv_file" "../figures/aimspice/${scenario_dir}/CSV/functionality"		  
 	      current_iteration=$((current_iteration + 1))
           percentage=$(echo "scale=2; $current_iteration / $total_iterations * 100" | bc)
