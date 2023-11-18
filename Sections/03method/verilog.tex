@@ -49,33 +49,68 @@ and(CARRY, A, B);
 
 endmodule
 \end{lstlisting}
+
+\begin{lstlisting}
+    module TEST_HALF_ADDER;
+	reg a;
+	reg b;
+	wire sum;
+	wire carry;
+	
+	HALF_ADDER TESTHA( .A(a) ,.B(b) ,.SUM(sum) ,.CARRY(carry ));
+	initial begin
+		a=1'b0;
+		forever #30	a=~a;
+	end	
+	initial begin
+		b=1'b0;
+		forever #15	b=~b;
+	end	
+	
+	initial begin
+		#60 $finish;
+	end	  
+endmodule
+\end{lstlisting}
+
+
 \importimagewcaption{verilog/Verilog-Half-adder.png}{}
 \importimagewcaptionw{verilog/Half-adderer.png}{}{1}
 
 
 
 \subsection{Adderer}
-\importimagewcaption{verilog/Verilog-Adder.png}{}
-\importimagewcaptionw{verilog/Test-Adder.png}{}{1}
+As the Half-adder get handle the lower order bit, we need a full adder wich get handle the carry. 
 \begin{table}[H]
     \centering
     \begin{tabular}{|c|c|c|c|c|}
-    \hline
-    \(A\) & \(B\) & \(C_{\text{in}}\) & \(S\) & \(C_{\text{out}}\) \\
-    \hline
-    0 & 0 & 0 & 0 & 0 \\
-    0 & 1 & 0 & 1 & 0 \\
-    1 & 0 & 0 & 1 & 0 \\
-    1 & 1 & 0 & 0 & 1 \\
-    0 & 0 & 1 & 1 & 0 \\
-    0 & 1 & 1 & 0 & 1 \\
-    1 & 0 & 1 & 0 & 1 \\
-    1 & 1 & 1 & 1 & 1 \\
-    \hline
+        \hline
+        \(A\) & \(B\) & \(C_{\text{in}}\) & \(S\) & \(C_{\text{out}}\) \\
+        \hline
+        0 & 0 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 1 & 0 \\
+        1 & 0 & 0 & 1 & 0 \\
+        1 & 1 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 1 & 0 \\
+        0 & 1 & 1 & 0 & 1 \\
+        1 & 0 & 1 & 0 & 1 \\
+        1 & 1 & 1 & 1 & 1 \\
+        \hline
     \end{tabular}
     \caption{Sannhetstabell for Full Adder}
-    \end{table}
-    
+\end{table}
+From the truth table we get this bolean expresion
+\begin{equation}
+    \begin{aligned}
+        Sum&=\overline{A}B\overline{C}+A\overline{B}\overline{C_{\text{in}}}+\overline{A}\overline{B}C_{\text{in}}+ABC_{\text{in}}\\
+        \Rightarrow&A\oplus B\oplus C_{\text{in}}\\
+        C_{\text{out}}&=AB\overline{C_{\text{in}}}+\overline{A}BC_{\text{in}}+A\overline{B}C_{\text{in}}+ABC_{\text{in}}\\ 
+        \Rightarrow&AB+C_{\text{in}}(A\oplus B)\\
+    \end{aligned}
+\end{equation}
+
+\importimagewcaption{verilog/Verilog-Adder.png}{}
+\importimagewcaptionw{verilog/Test-Adder.png}{}{1}
     
     \subsection{Mulitplikator}
     \importimagewcaption{verilog/Verilog-Multiplikator.png}{}
