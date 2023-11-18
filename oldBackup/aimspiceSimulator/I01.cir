@@ -1,0 +1,5 @@
+*Waveform: 0000
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)
+.tran 0.01 8000n 6000n
