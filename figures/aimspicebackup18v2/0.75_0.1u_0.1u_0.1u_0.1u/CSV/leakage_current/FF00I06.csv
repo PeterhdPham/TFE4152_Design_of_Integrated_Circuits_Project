@@ -1,0 +1,4 @@
+lude DFFFF.cir
+.include I06.cir
+.option temp=00
+.plot i(vdd)

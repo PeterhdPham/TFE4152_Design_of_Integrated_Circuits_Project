@@ -4,5 +4,5 @@
 .param N_Length = 0.1u
 
 * Device parameters for P-MOSFETs
-.param P_Width= 0.3u                   
+.param P_Width= 0.1u                   
 .param P_Length = 0.1u

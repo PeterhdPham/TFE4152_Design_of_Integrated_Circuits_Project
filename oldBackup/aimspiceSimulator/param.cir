@@ -1,0 +1,8 @@
+.param vdd_value = 0.75
+* Device parameters for N-MOSFETs
+.param N_Width= 0.1u 
+.param N_Length = 0.1u
+
+* Device parameters for P-MOSFETs
+.param P_Width= 0.3u                   
+.param P_Length = 0.1u
