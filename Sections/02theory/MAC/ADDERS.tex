@@ -1,0 +1,67 @@
+
+\subsubsection{ADDERS}
+Addition is a fundamental arithmetic operation and a cruical component of the MAC's functionality. Two ways to buildblocks for a bigger adder is with the use of half-adder and full-adder as building blocks (refer til datdig)
+
+
+The \textbf{Half Adder} is a fundamental component in digital electronics, characterized by its ability to process two single-bit inputs and produce a one-bit sum and a one-bit carry as outputs. By analyzing the Table \ref{Truthtable for Half Adder} we can derivate the Boolean expresiion that define the actual circuit for the Half Adder.
+
+
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|}
+        \hline
+        \(A\) & \(B\) & \(Sum\) & \(Carry\) \\
+        \hline
+        0 & 0 & 0 & 0 \\
+        0 & 1 & 1 & 0 \\
+        1 & 0 & 1 & 0 \\
+        1 & 1 & 0 & 1 \\
+        \hline
+        
+    \end{tabular}
+    \caption{Truthtable for Half Adder}\label{Truthtable for Half Adder}                 
+\end{table}
+
+From the Table \ref{Truthtable for Half Adder},  we get this Boolean expresion:
+\begin{equation}
+    \begin{aligned}
+        Sum&=\overline{A}B+A\overline{B}\\
+        \Rightarrow&A\oplus B\\
+        Carry&=AB\\ 
+    \end{aligned}
+\end{equation}
+
+
+
+
+While the Half-Adder is adept at managing basic binary addition involving two single-bit inputs, it lacks the capability to handle $Carry$ from previous additions, which is crucial in multi-bit arithmetic operations.
+Unlike the Half Adder, a \textbf{Full Adder} not only processes two input bits, like the Half Adder, but it also has an additional input for the carry bit from previous additions. This feature makes the Full Adder an essential component in more complex arithmetic logic, as it can manage both the current and carried values. By analyzing the Table \ref{Truthtable for Full Adder} we can derivate the Boolean expresiion that define the actual circuit for the Half Adder. 
+\begin{table}[H]
+    \centering
+    \begin{tabular}{|c|c|c|c|c|}
+        \hline
+        \(A\) & \(B\) & \(C_{\text{in}}\) & \(S\) & \(C_{\text{out}}\) \\
+        \hline
+        0 & 0 & 0 & 0 & 0 \\
+        0 & 1 & 0 & 1 & 0 \\
+        1 & 0 & 0 & 1 & 0 \\
+        1 & 1 & 0 & 0 & 1 \\
+        0 & 0 & 1 & 1 & 0 \\
+        0 & 1 & 1 & 0 & 1 \\
+        1 & 0 & 1 & 0 & 1 \\
+        1 & 1 & 1 & 1 & 1 \\
+        \hline
+    \end{tabular}
+    \caption{Truthtable for Full Adder} \label{Truthtable for Full Adder}
+    
+\end{table}
+From Table \ref{Truthtable for Half Adder}, we get this Boolean expresion:
+\begin{equation}
+    \begin{aligned}
+        Sum&=\overline{A}B\overline{C}+A\overline{B}\overline{C_{\text{in}}}+\overline{A}\overline{B}C_{\text{in}}+ABC_{\text{in}}\\
+        \Rightarrow&A\oplus B\oplus C_{\text{in}}\\
+        C_{\text{out}}&=AB\overline{C_{\text{in}}}+\overline{A}BC_{\text{in}}+A\overline{B}C_{\text{in}}+ABC_{\text{in}}\\ 
+        \Rightarrow&AB+C_{\text{in}}(A\oplus B)\\
+    \end{aligned}
+\end{equation}
+

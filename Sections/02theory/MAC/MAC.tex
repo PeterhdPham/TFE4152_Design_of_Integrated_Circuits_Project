@@ -1,0 +1,10 @@
+\subsection{MAC}
+The Mac(multiply-accumulate opperation)- operations can be described by Equation \ref{eq:MAC}
+\begin{equation} \label{eq:MAC}
+    C\leftarrow C+A*B
+\end{equation}
+Since the Mac have both addition and multiplication opperations, a natural way forward will be implementing arithmetic circiuts with adders and multipliers. In addition the \emph{accumulate} aspect of the MAC necessitates a mechanism for retaining the previous value of  \textbf{C}. This has to be stored somehow, and implies that storage or memory functionality is an integral part of the MAC operation.  
+
+
+\import{./MAC}{ADDERS.tex}
+\import{./MAC}{Multipliers.tex}
