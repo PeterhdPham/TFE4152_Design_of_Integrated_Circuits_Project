@@ -4,10 +4,19 @@ MOS short for metal-oxide semiconductor are as of now, the most used technology 
 \importimagewcaptionw{figures/Analog_Integrated_Circuit_Design/cross_section_NMOS.png}{Cross section of a typical NMOS\cite[p. 14]{carusone_2012_analog}}{0.8}
 
 
-MOS transistors consist mainly of $n^+$ source and drain region 
+As seen in Fig. \ref{fig:figures/Analog_Integrated_Circuit_Design/cross_section_NMOS.png} MOS transistors consist mainly of $n^+$ source and drain region, sepparated by a $p^-$ substrate in the middle there is a gate made of Polysilicon. Depending on if whenever it is a PMOS or NMOS the transistors works as a switch where the gate voltage $V_G$ controlls current from the source region to drain region. 
+
+The properties of a MOS transistor are mainly affected of distance between tha source and drain region called channel length (L) and the width of the channel (W). The supply voltage does also affect the properties ot the transistor. 
 
 
 
 \subsubsection{NMOS}
+For not so long ago the MOS processes were only made using NMOS transistors, these are ``on'' when $V_G < V_{tn}$ where $V_{tn}$ is the transistor treshold voltage of the NMOS. As seen in Fig. \ref{fig:figures/Analog_Integrated_Circuit_Design/cross_section_NMOS.png} there is a thin layer of silicon dioxide ($\text{SiO}_2$) working as a insulator between the gate and the substrate. This makes the gate and the surface of the silicon behave like parallel plate capacitor. Whenever $V_G\ll0$ as seen in Fig. \ref{subfig:figures/Analog_Integrated_Circuit_Design/NMOS_off.png} the positive charge in the substrate wil be attracted to the channel region, forming the \textit{accumulated channel}. This is because the substrate is doped $p^-$ leading to the nagative voltage has increasing the channel doping to $p^+$. In this state the only current that flow between the source and drain is the leakage current.
 
-\imageontop{figures/Analog_Integrated_Circuit_Design/NMOS_off.png}{When $V_G\ll0$ there is an accumulated channel resulting in no current flow}{figures/Analog_Integrated_Circuit_Design/NMOS_on.png}{When $V_G\gg0$ there is a channel present resulting in a current flow from drain to source}{NMOS transistor \cite[p. 17]{carusone_2012_analog}}{NMOS_transistor_on_off}{0.7}
+In the case where $V_G\gg0$ as shown in Fig. \ref{subfig:figures/Analog_Integrated_Circuit_Design/NMOS_on.png}, the opposite happens. Now the positive voltage leads to an attraction of negative charge from the source and drain regions leading to a current flow between source and drain \cite[p. 16]{carusone_2012_analog}.
+
+\imageontop{figures/Analog_Integrated_Circuit_Design/NMOS_off.png}{When $V_G\ll0$, there is an \textit{accumulated channel} resulting in no current flow(other than leakage current).}{figures/Analog_Integrated_Circuit_Design/NMOS_on.png}{When $V_G\gg0$, there is a channel present resulting in a current flow from drain to source}{NMOS transistor \cite[p. 17]{carusone_2012_analog}}{NMOS_transistor_on_off}{0.7}
+
+
+
+\subsubsection{PMOS}
