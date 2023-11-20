@@ -2,14 +2,14 @@
 \newcommand{\importimage}[1]{
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7 \textwidth]{figures/#1}
+        \includegraphics[width=0.7 \textwidth]{#1}
         \label{fig:#1}
     \end{figure}}
 
 \newcommand{\importimagewcaption}[2]{
     \begin{figure}[H]
         \centering
-        \includegraphics[width=0.7 \textwidth]{figures/#1}
+        \includegraphics[width=0.7 \textwidth]{#1}
         \caption{#2}
         \label{fig:#1}
     \end{figure}}
@@ -17,7 +17,7 @@
     \newcommand{\importimagewcaptionw}[3]{
     \begin{figure}[H]
         \centering
-        \includegraphics[width=#3 \textwidth]{figures/#1}
+        \includegraphics[width=#3 \textwidth]{#1}
         \caption{#2}
         \label{fig:#1}
     \end{figure}}
@@ -40,4 +40,60 @@
 \renewcommand{\subsubsection}[1]{%
     \oldsubsubsection{#1}%
     \label{sec:#1}%
+}
+
+
+
+% Macro for placing two images on top of each other
+% #1: Path to the first image
+% #2: Caption for the first image
+% #3: Path to the second image
+% #4: Caption for the second image
+% #5: General caption for the figure
+% #6: Label for the entire figure
+% #7: Width factor for the subfigures (as a fraction of \textwidth)
+\newcommand{\imageontop}[7]{
+\begin{figure}[H]
+    \centering
+    \begin{subfigure}{#7 \textwidth}
+        \includegraphics[width=\linewidth]{#1}
+        \caption{}
+        \label{fig:#1}
+    \end{subfigure}
+    
+    \begin{subfigure}{#7 \textwidth}
+        \includegraphics[width= \linewidth]{#3}
+        \caption{}
+        \label{fig:#3}
+    \end{subfigure}
+    \caption{#5 (a) #2 (b) #4}
+    \label{fig:#6}
+\end{figure}}
+
+% Macro for placing two images side by side
+% #1: Path to the first image
+% #2: Caption for the first image
+% #3: Path to the second image
+% #4: Caption for the second image
+% #5: General caption for the figure
+% #6: Label for the entire figure
+% #7: Width factor for the subfigures (as a fraction of \textwidth)
+\newcommand{\imagesidebyside}[7]{
+\begin{figure}[H]
+    \begin{subfigure}{#7\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{#1}
+        \caption{}
+        \label{fig:#1}
+    \end{subfigure}
+    \hfill % This adds a little space between the images
+    \begin{subfigure}{#7\textwidth}
+        \centering
+        \includegraphics[width=\linewidth]{#3}
+        \caption{}
+        \label{fig:#3}
+    \end{subfigure}
+    \caption{#5 (a) #2 (b) #4}
+    \label{fig:#6}
+\end{figure}
 }
