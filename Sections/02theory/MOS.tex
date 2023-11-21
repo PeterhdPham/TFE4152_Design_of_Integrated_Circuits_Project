@@ -64,7 +64,8 @@ This gives us the static leakage power \cite{departmentofelectronicsystemsntnu_2
     P_{stat}=I_{off}\cdot V_{DD}
 \end{equation}
 
-One technique used to reduce the static leakage power is to use static CMOS. This technique utilizes the PMOS as pull-up (PUN) and NMOS as pull-down (PDN), this the output will be directly connected to either the $V_{DD}$ or ground with an exeption of when it is switching. This way there will never be a direct path from $V_{DD}$ to ground. \cite{a2018}
+One technique used to reduce the static leakage power is to use static CMOS. This technique utilizes the PMOS as pull-up (PUN) and NMOS as pull-down (PDN), this the output will be directly connected to either the $V_{DD}$ or ground with an exeption of when it is switching. This way there will never be a direct path from $V_{DD}$ to ground \cite{a2018}. From figure \ref{fig:static_cmos_nand} we can see an implementation of 2-input NAND and 3-Input NAND that are a typical example of a logic gate that usilizes Static CMOS.
+\imagesidebyside{figures/drawio/Transistor/transisotr_nand2.png}{2 input NAND}{figures/drawio/Transistor/transistor_nand3.png}{3 input NAND}{Implementation of 2- and 3- input NANDS using static CMOS}{static_cmos_nand}{0.4}
 
 \subsubsection{MOS speeeeeeeeeeeeeeeeeeed}
 Another thing that needs to be taken into consideration is the timings of the CMOS circuit. Which in this case is (equation below are with respect to an inverter using Static CMOS) \cite{departmentofelectronicsystemsntnu_2023_delay}
@@ -111,3 +112,6 @@ and fall time
 \end{equation}
 
 where $\tau_p=R_pC_{out}$ and $\tau_n=R_nC_{out}$, $C_{out}$ being all the capacitances. \cite{departmentofelectronicsystemsntnu_2023_delay}
+
+\subsubsection{Process corners}
+When applying an integrated circuit (IC) design to a silicon wafer, it is important to simulate processcorners that represetns the extreme scenarios of the parameters in the circuit. This is because a circuit utilising these ICs may run slower or faster then specified. To ensure that the designed ID will handle the extreme scenarios,  front end of line (FEOL) process corners are used to stresstest the IC in the scematic domain. There are 5 different corners: typical-typical (TT), fast-fast (FF), slow-slow (SS), fast-slow (FS), and slow-fast (SF) where the first letter refer to the NMOS corner and the second letter refers to the PMOS corner. These corners will simulate how the IC behaves at different switchtime speeds.
