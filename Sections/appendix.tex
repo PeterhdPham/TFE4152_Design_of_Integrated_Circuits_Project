@@ -1,112 +1,156 @@
 \section{Appendix}
 \subsection{Aimspice}
+
 \begin{lstlisting}
+* --------------------------------------------------------------
+* 2-Input NAND Gate
+* Ports: A, B (Inputs), Out (Output), Vdd (Positive Supply), Vss (Ground)
+* --------------------------------------------------------------
+.subckt NAND A B Out Vdd Vss
 
-    * Library and model files
+    * PMOS transistors
+    XMP1 Out A Vdd Vdd pmos1v w=P_Width l=P_Length 
+    XMP2 Out B Vdd Vdd pmos1v w=P_Width l=P_Length 
 
-                  
-    * --------------------------------------------------------------
+    * NMOS transistors
+    XMN1 Out A NS1 Vss nmos1v w=N_Width l=N_Length 
+    XMN2 NS1 B Vss Vss nmos1v w=N_Width l=N_Length 
+
+.ends
+
+* --------------------------------------------------------------
+* 3-Input NAND Gate
+* Ports: InputA, InputB, InputC (Inputs), Output (Output), 
+* Vdd (Positive Supply), Vss (Ground)
+* --------------------------------------------------------------
+.subckt NAND_3 InputA InputB InputC Output Vdd Vss
+
+    * PMOS transistors
+    XMP1 Output InputA Vdd Vdd pmos1v w=P_Width l=P_Length 
+    XMP2 Output InputB Vdd Vdd pmos1v w=P_Width l=P_Length
+    XMP3 Output InputC Vdd Vdd pmos1v w=P_Width l=P_Length
+
+    * NMOS transistors
+    XMN1 Output InputA N1 Vss nmos1v w=N_Width l=N_Length 
+    XMN2 N1 InputB N2 Vss nmos1v w=N_Width l=N_Length
+    XMN3 N2 InputC Vss Vss nmos1v w=N_Width l=N_Length  
+
+.ends
+
+* --------------------------------------------------------------
+* DFF with asynchronous reset circuit
+* Ports: CLK, InputData, Reset, Output, Vdd, Vss
+* --------------------------------------------------------------
+.subckt DFF CLK D Res Output NandOut3 Vdd Vss
+
     * 2-Input NAND Gate
-    * Ports: A, B (Inputs), Out (Output), Vdd (Positive Supply), Vss (Ground)
-    * --------------------------------------------------------------
-    .subckt NAND A B Out Vdd Vss
-    
-        * PMOS transistors
-        XMP1 Out A Vdd Vdd pmos1v w=P_Width l=P_Length 
-        XMP2 Out B Vdd Vdd pmos1v w=P_Width l=P_Length 
-    
-        * NMOS transistors
-        XMN1 Out A NS1 Vss nmos1v w=N_Width l=N_Length 
-        XMN2 NS1 B Vss Vss nmos1v w=N_Width l=N_Length 
-    
-    .ends
-    
-    * --------------------------------------------------------------
+    XN21 NandOut1 SetNode NandOut2 Vdd Vss NAND
+    XN22 SetNode NandOut3 Output Vdd Vss NAND
+
     * 3-Input NAND Gate
-    * Ports: InputA, InputB, InputC (Inputs), Output (Output), 
-    * Vdd (Positive Supply), Vss (Ground)
-    * --------------------------------------------------------------
-    .subckt NAND_3 InputA InputB InputC Output Vdd Vss
-    
-        * PMOS transistors
-        XMP1 Output InputA Vdd Vdd pmos1v w=P_Width l=P_Length 
-        XMP2 Output InputB Vdd Vdd pmos1v w=P_Width l=P_Length
-        XMP3 Output InputC Vdd Vdd pmos1v w=P_Width l=P_Length
-    
-        * NMOS transistors
-        XMN1 Output InputA N1 Vss nmos1v w=N_Width l=N_Length 
-        XMN2 N1 InputB N2 Vss nmos1v w=N_Width l=N_Length
-        XMN3 N2 InputC Vss Vss nmos1v w=N_Width l=N_Length  
-    
-    .ends
-    
-    
+    XN31 NandOut2 CLK Res SetNode Vdd Vss NAND_3 
+    XN32 SetNode CLK NandOut1 ResetNode Vdd Vss NAND_3 
+    XN33 ResetNode D Res NandOut1 Vdd Vss NAND_3 
+    XN34 Output ResetNode Res NandOut3 Vdd Vss NAND_3 
 
-    
-    * --------------------------------------------------------------
-    xDFF Clk Data Reset Out NandOut3 1 0 DFF
-    
-    * Device parameters for N-MOSFETs
-    .param N_Length = .3u
-    .param N_Width= 0.3u 
-    
-    
-    * Device parameters for P-MOSFETs
-    .param P_Length = .3u
-    .param P_Width= 0.3u 
-    
-    .param vdd_value = 0.6
-    
-    * Pulse signal parameters for input waveforms
-    .param pDelayT= 0       
-    .param pRiseT= 0.1n    
-    .param pFallT= 0.1n     
-    .param pPulseWidth= 10n
-    .param pPeriod= 20n    
-    
-    * Power supply definition
-    vdd 1 0 vdd_value        
-    
-    * DC voltage sources for test purposes
-    vclk Clk 0 0               
-    vd Data 0 vdd_value
-    vres Reset 0 vdd_value
-    .plot i(vdd)
-    
-    *Waveform 1: To Test Data Sampling and Clock Edge
-    *vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
-    *vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 39n 39n)       
-    *vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 20n 40n) 
-    
-    *Waveform 3: To Test the Data sampling during stable clock edges
-    *vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
-    *vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 0n 0n)       
-    *vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 35n 80n) 
-    *.plot v(Data) v(Clk) v(Out)
-    
-    *Waveform 2: To Test the Asynchronous Reset
-    *vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
-    *vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 34n 38n)       
-    *vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 20n 40n)
-    
-    
-    *Waveform 4: To Test the Synchronous Reset
-    *vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
-    *vres Reset 0 pulse (vdd_value 0 5n 0.1n 0.1n 10n 40n)       
-    *vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 20n 40n)
-    *.plot v(Data) v(Clk) v(Out) v(Reset)
-    
-    
-    *****Simulation******
-    .tran 0.00001n 200n 2n
-    .include gpdk90nm_ss.cir
-    .option temp=0
-    
+.ends
 \end{lstlisting}
-% \lstinputlisting[language=Python]{../figures/Problem1.py}
 
-% \subsection*{Python Code for problem2}
-% \lstinputlisting[language=Python]{../figures/Problem3.py}
+\begin{lstlisting}
+*inputScenarioW1.cir:
 
-% \subsection*{Python Code for problem5}
-% \lstinputlisting[language=Python]{../figures/Problem4.py}
+*Waveform: To Test Data Sampling and Clock Edge
+vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
+vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 39n 39n)       
+vd  Data 0 pulse (0 vdd_value 10n 0.1n 0.1n 20n 40n)
+.tran 0.0001n 200n 10n
+\end{lstlisting}
+
+\begin{lstlisting}
+*inputScenarioW2.cir:
+
+*Waveform: To Test the Datasampling when Data stays the same for a few Clock Edges
+vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
+vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 0n 0n)       
+vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 35n 80n)     
+.tran 0.0001n 200n 10n
+\end{lstlisting}
+
+inputScenarioW3.cir:
+\begin{lstlisting}
+*Waveform: To Test the Synchronous Reset
+vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
+vres Reset 0 pulse (vdd_value 0 5n 0.1n 0.1n 10n 40n)       
+vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 40n 40n)
+.tran 0.0001n 200n 10n
+\end{lstlisting}
+
+\begin{lstlisting}
+*inputScenarioS1.cir:
+*Waveform: To test static leacage current when Clk:0, Data:0, Reset:1, Q:1
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   
+.tran 0.01 9000n 5100n
+\end{lstlisting}
+
+\begin{lstlisting}
+*inputScenarioS1.cir:
+*Waveform: To test static leacage current when Clk:0, Data:1, Reset:1, Q:0
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   
+.tran 0.01 9000n 5100n
+\end{lstlisting}
+
+\begin{lstlisting}
+*inputScenarioS1.cir:
+*Waveform: To test static leacage current when Clk:0, Data:1, Reset:1, Q:1
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   
+.tran 0.01 9000n 5100n
+\end{lstlisting}
+
+\begin{lstlisting}
+*inputScenarioS1.cir:
+*Waveform: To test static leacage current when Clk:0, Data:0, Reset:1, Q:0
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   
+.tran 0.01 9000n 5100n
+\end{lstlisting}
+
+\begin{lstlisting}
+    * param.cir:
+    
+    * Scenarios:
+    .include gpdk90nm_#1.cir 
+    .include DFF.cir
+    .include inputScenario#3
+    .option temp= #5
+    
+    * Device global parameters:
+    .param vdd_value = #4
+    vdd 1 0 vdd_value
+    
+    * Device parameters for N-MOSFETs:
+    .param N_Width= #6
+    .param N_Length = #7
+    
+    * Device parameters for P-MOSFETs:
+    .param P_Width= #8
+    .param P_Length = #9
+    \end{lstlisting}
+    
+    To streamline the the simulation process a bash script has been used to simulate all the scenarios and then saved the CSV file generated. The process began with running simulations for different VDD values below 1V while the MOSFET parameters were:
+    
+    \begin{lstlisting}
+    * Device parameters for N-MOSFETs:
+    .param N_Width= 0.1u
+    .param N_Length = 0.1u
+    
+    * Device parameters for P-MOSFETs:
+    .param P_Width= 0.3u
+    .param P_Length = 0.1u
+    \end{lstlisting}
