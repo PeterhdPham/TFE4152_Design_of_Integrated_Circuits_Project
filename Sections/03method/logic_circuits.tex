@@ -4,4 +4,6 @@
 \importimagewcaptionw{figures/drawio/Logic/LOGIC_FULLADDER.png}{Fulladder}{0.6}
 \importimagewcaptionw{figures/drawio/Logic/LOGIC_HALFADDER.png}{Fulladder}{0.4}
 \importimagewcaptionw{figures/drawio/RTL/RTL_FSM.png}{FSM}{1}
-\importimagewcaptionw{figures/drawio/Logic/LOGIC_DFF_with_reset.png}{DFF with asynchronous reset}{0.7}
+
+We aim to utilise a register are edge triggered and able to reset on command. As we are to consider the static leakage power consumption, we want a register that utilize static CMOS mentioned in sec \ref{sec:Subthreshold leakage}. A D Flip Flop (DFF) as shown in Fig. \ref{fig:figures/drawio/Logic/LOGIC_DFF_with_reset.png} is a fitting component to store each bit of the register as it has the option to reset, consist only of NAND gates and are edge triggered. The advantages of this DFF is that it is a very simple design, they are fast compared to other flipflops and requires few components which again will lead to a reduced static power leakage. We need to keep in mind that DFF are prone to glitches when input varies fast. \cite{a2023_d}.
+\importimagewcaptionw{figures/drawio/Logic/LOGIC_DFF_with_reset.png}{DFF with asynchronous reset \cite{a2022_figure}}{0.7}
