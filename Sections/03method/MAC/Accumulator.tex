@@ -1,6 +1,9 @@
 \subsubsection{Method for Accumulater}
-
+ 
 The \textbf{D-flip flop with asychron} circuit is based on figure ...ref.. in section.... By assembling eight D-flip flop with eight data inputs $b[0:7]$ and corresponding $q[0:7]$ outputs, we make an \textbf{(8-bit register)}. The registers are connected in parallell by having shared $RESET$ and $CLK$ input. 
+!SKRIV MER OM REGISTER-BEGGE SIN DEL SKAL KOMME HER!
+
+
 
 The \textbf{Half Adder} and the \textbf{Full Adder} was designed on based on \ref{sec:ADDERS}, see Figure..(figure av Half Adder og Full Adder)
 
@@ -10,7 +13,7 @@ The \textbf{Half Adder} and the \textbf{Full Adder} was designed on based on \re
 
 Since the output from the 2X2-bits Multiplier is a 4-bit value(denoted as $C$), and the register is a 8 bit-register, with an 8-bit output(reffered as $q$)- we have to assemble half adder and full adder in a series. This arrangement ensures that the $SUM$ output of each adder stage contributes to the updated value of the register. The output from the Multiplier is labeled as $C$, with $C[3]$ assigned as the least significant bit (LSB) and $C[0]$ as the most significant bit (MSB). Conversely, the output from the register, known as $q$, assigns $q[7]$ as the LSB and $q[0]$ as the MSB. In other way, we are using the number scheme MSb 0 [kilde].
 
-For the LSB for both $C$ and $q$ there is abscence of a carry input, therefor only necessesary with a half-adder with two inputs for q[7] and C[3]. For the next three following bits, the requirement for three inputs emerges. Therefore, a full adder is employed for each of the following stages, adding a bit from $C[2]$ to $C[0]$ and the corresponding bits from $q[6]$ to $q[4]$, along with the carry from the previous adder stage. With no more remaining bits from $C$ after the fourth bit, we have absence of an input, therefor it will only be a necessity with the use of a half adders with inouts of the remainig q-bits and carry from the previous adder stage. MSB $q[0]$ does not require a dual-output, as there no no more half adders to transfer a carry bit to, and its only necessesary with SUM parrt of the half adde, wich is simply an XOR-gate.
+For the LSB for both $C$ and $q$ there is abscence of a carry input, therefor only necessesary with a half-adder with two inputs for q[7] and C[3]. For the next three following bits, the requirement for three inputs emerges. Therefore, a full adder is employed for each of the following stages, adding a bit from $C[2]$ to $C[0]$ and the corresponding bits from $q[6]$ to $q[4]$, along with the carry from the previous adder stage. With no more remaining bits from $C$ after the fourth bit, we have absence of an input, therefor it will only be a necessity with the use of a half adders with inputs of the remainig q-bits and carry from the previous adder stage. MSB $q[0]$ does not require a dual-output, as there no no more half adders to transfer a carry bit to, and its only necessesary with SUM part of the half adder, wich is simply an XOR-gate.
 
  
 

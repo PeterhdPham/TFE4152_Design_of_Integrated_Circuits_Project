@@ -1,6 +1,27 @@
 \subsubsection{Method for Multiplier} \label{Method-Multiplier}
 As discussed in section \ref{sec:Multiplier} and illustrated in Figure (refferer til multiplier kretsen), our circuit desing is based on this model . With two 2-bits input, $A$ and $B$, and a 4-bit output $C$. To test and simulate this we used the program $Active-HDL Student Edition$ as a simulation tool, and programed in verilog. 
 
-Legg til figur av multiplieren(med navn)
+Legg til figur av multiplieren(med navn) PETER!
 
 Legg til verilog koden (legg til verilog, kommenteret hva som LSB, MSB)
+
+Figure illustrates a multiplier with the output denoted as $C[0:3]$. $C[3]$ is assigned as the least significant bit (LSB) and $C[0]$ as the most significant bit (MSB). Similiar with the input $A[0:1]$ and $B[0:1]$, where $A[0] $ and $B[0]$ are MSb, and $A[1]$ and $B[0]$ are LSb. In other way, we are using the number scheme \emph{MSb 0} \cite{wikipediacontributors_2023_bit}, in this project.
+
+\begin{lstlisting}
+    //{module {Multiplier}}	
+`timescale 1 ns / 1 ps
+module Multiplier ( A, B, C );
+input [0:1] A;
+input [0:1] B;
+output [0:3] C;
+
+and(C[3], A[1], B[1]);
+and(OUT_1, A[0], B[0]);
+and(OUT_2, A[0], B[1]);
+and(OUT_3, A[1], B[0]);
+and(OUT_4, OUT_2, OUT_3);
+xor(C[2], OUT_2, OUT_3); 
+xor(C[1], OUT_4, OUT_1);
+and(C[0], OUT_1, OUT_4);
+endmodule
+\end{lstlisting}
