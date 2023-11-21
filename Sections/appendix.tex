@@ -41,23 +41,7 @@
     .ends
     
     
-    * --------------------------------------------------------------
-    * DFF with asynchronous reset circuit
-    * Ports: CLK, InputData, Reset, Output, Vdd, Vss
-    * --------------------------------------------------------------
-    .subckt DFF CLK D Res Output NandOut3 Vdd Vss
-    
-        * 2-Input NAND Gate
-        XN21 NandOut1 SetNode NandOut2 Vdd Vss NAND
-        XN22 SetNode NandOut3 Output Vdd Vss NAND
-    
-        * 3-Input NAND Gate
-        XN31 NandOut2 CLK Res SetNode Vdd Vss NAND_3 
-        XN32 SetNode CLK NandOut1 ResetNode Vdd Vss NAND_3 
-        XN33 ResetNode D Res NandOut1 Vdd Vss NAND_3 
-        XN34 Output ResetNode Res NandOut3 Vdd Vss NAND_3 
-    
-    .ends
+
     
     * --------------------------------------------------------------
     xDFF Clk Data Reset Out NandOut3 1 0 DFF

@@ -67,7 +67,7 @@ This gives us the static leakage power \cite{departmentofelectronicsystemsntnu_2
 One technique used to reduce the static leakage power is to use static CMOS. This technique utilizes the PMOS as pull-up (PUN) and NMOS as pull-down (PDN), this the output will be directly connected to either the $V_{DD}$ or ground with an exeption of when it is switching. This way there will never be a direct path from $V_{DD}$ to ground \cite{a2018}. From figure \ref{fig:static_cmos_nand} we can see an implementation of 2-input NAND and 3-Input NAND that are a typical example of a logic gate that usilizes Static CMOS.
 \imagesidebyside{figures/drawio/Transistor/transisotr_nand2.png}{2 input NAND}{figures/drawio/Transistor/transistor_nand3.png}{3 input NAND}{Implementation of 2- and 3- input NANDS using static CMOS}{static_cmos_nand}{0.4}
 
-\subsubsection{MOS speeeeeeeeeeeeeeeeeeed}
+\subsubsection{Delays}
 Another thing that needs to be taken into consideration is the timings of the CMOS circuit. Which in this case is (equation below are with respect to an inverter using Static CMOS) \cite{departmentofelectronicsystemsntnu_2023_delay}
 \begin{itemize}
     \item \textbf{Propagnation delay low-high} ($t_{pLH}$)
@@ -86,6 +86,7 @@ Another thing that needs to be taken into consideration is the timings of the CM
 As described in sec \ref{sec:NMOS} the gate and surface of the silicon behaves like parallel plate capasitor, the gate capacitance $C_g$ is given by \cite[p. 18]{carusone_2012_analog}
 \begin{equation}
     C_g=WLC_{ox}
+    \label{eq:gate_capacitance}
 \end{equation}
 
 where $C_{ox}$ is the gate capacitance per unit area. This is important as a bigger capacitans means longer charge up and charge down time. This combined with the parasitic resistance of the MOSFET given by \cite{departmentofelectronicsystemsntnu_2023_delay}
@@ -95,6 +96,7 @@ where $C_{ox}$ is the gate capacitance per unit area. This is important as a big
     & R_n=\frac{1}{\beta_n\left(V_{G S^{-}} V_{t n}\right)} \\
     & R_p=\frac{1}{\beta_p\left(V_{S G}-\left|V_{t p}\right|\right)}
     \end{aligned}
+    \label{eq:parasitic_resistance}
 \end{equation}
 
 Where $R_p$ is the parasitic resistance of the PMOS, $R_n$ is the parasitic resistance of the NMOS. and $\beta=\mu C_{ox}\frac{W}{L}$. This gives us the rise time
