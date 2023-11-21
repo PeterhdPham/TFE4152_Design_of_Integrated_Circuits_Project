@@ -87,8 +87,8 @@ for scenario in "${scenarios[@]}"; do
 
 	      # Simulate keyboard input using xdotool (or similar tool)
 	      xdotool key Return
-		  sleep 0.03
-		  xdotool type ".include DFF${corner}.cir"
+		    sleep 0.03
+		    xdotool type ".include DFF${corner}.cir"
 	      xdotool key Return
 	      sleep 0.03
 	      xdotool type ".option temp=${temp}"

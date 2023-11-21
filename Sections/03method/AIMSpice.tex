@@ -2,9 +2,12 @@
 The AIMSpice part focuses on keeping the static leakage power consumption while keeping the functionality for all the corners mentioned in sec \ref{sec:Process corners} and the temperatures $0^o C$, $27^o C$ and $70^o C$. We do also want to keep in mind the timings mentioned in sec \ref{sec:Delays} as we can see from the equations \ref{eq:subthreshold_leakage}, \ref{eq:gate_capacitance} and \ref{eq:parasitic_resistance}, a change in the parameters $V_{DD}$ and $\frac{W}{L}$ both affect the static power consumption and the timing of the circuit. This way we want to find the sweetspot where we keep a low power without compensating to much on the timings.
 
 \subsubsection{AIMSpice-implementation}
-Gpdk 90nm technology were used to implement the DFF. First the logic gates were implemented as subcircuits
+The DFF were implemented using gpdk 90nm technology, where the implementation at a transistor level can be seen in Fig. \ref{fig:figures/drawio/Transistor/transistor_circuit_DFF.png} First the logic gates were implemented as subcircuits
+
+\importimagewcaptionh{figures/drawio/Transistor/transistor_circuit_DFF.png}{The implemented DFF at a transistor level}{0.9}
 
 \begin{lstlisting}
+*DFF.cir:
 * --------------------------------------------------------------
 * 2-Input NAND Gate
 * Ports: A, B (Inputs), Out (Output), Vdd (Positive Supply), Vss (Ground)
@@ -20,9 +23,7 @@ Gpdk 90nm technology were used to implement the DFF. First the logic gates were 
     XMN2 NS1 B Vss Vss nmos1v w=N_Width l=N_Length 
 
 .ends
-\end{lstlisting}
 
-\begin{lstlisting}
 * --------------------------------------------------------------
 * 3-Input NAND Gate
 * Ports: InputA, InputB, InputC (Inputs), Output (Output), 
@@ -41,9 +42,7 @@ Gpdk 90nm technology were used to implement the DFF. First the logic gates were 
     XMN3 N2 InputC Vss Vss nmos1v w=N_Width l=N_Length  
 
 .ends
-\end{lstlisting}
 
-\begin{lstlisting}
 * --------------------------------------------------------------
 * DFF with asynchronous reset circuit
 * Ports: CLK, InputData, Reset, Output, Vdd, Vss
@@ -63,33 +62,12 @@ Gpdk 90nm technology were used to implement the DFF. First the logic gates were 
 .ends
 \end{lstlisting}
 
-The mobility of the NMOS and PMOS are diffrent, therfore the subcircuit were implemented with an option to edit the parameters for both $\frac{W_N}{L_N}$ and $\frac{W_P}{L_P}$.
-
-
-\begin{lstlisting}
-* param.cir:
-
-* Global parameters
-.include gpdk90nm_#1.cir
-.param vdd_value = #2
-.option temp= #4
-
-* Device parameters for N-MOSFETs
-.param N_Width= #5
-.param N_Length = #6
-
-
-* Device parameters for P-MOSFETs
-.param P_Width= #7
-.param P_Length = #8
-\end{lstlisting}
-
 The fuctionality were simulated using three different wave pulses to show how the DFF samples alternating data at rising edge, how it samples data when data stays the same for a few clock cycles and lastly the reset functionality:
 
 \begin{lstlisting}
-*waveW1:
+*inputScenarioW1.cir:
 
-*Waveform 1: To Test Data Sampling and Clock Edge
+*Waveform: To Test Data Sampling and Clock Edge
 vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
 vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 39n 39n)       
 vd  Data 0 pulse (0 vdd_value 10n 0.1n 0.1n 20n 40n)
@@ -97,22 +75,116 @@ vd  Data 0 pulse (0 vdd_value 10n 0.1n 0.1n 20n 40n)
 \end{lstlisting}
 
 \begin{lstlisting}
-*waveW2:
+*inputScenarioW2.cir:
 
-*Waveform 2: To Test the Datasampling when Data stays the same for a few Clock Edges
+*Waveform: To Test the Datasampling when Data stays the same for a few Clock Edges
 vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
 vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 0n 0n)       
 vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 35n 80n)     
 .tran 0.0001n 200n 10n
 \end{lstlisting}
 
+inputScenarioW3.cir:
 \begin{lstlisting}
-*waveW3:
-
-*Waveform 3: To Test the Synchronous Reset
+*Waveform: To Test the Synchronous Reset
 vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
 vres Reset 0 pulse (vdd_value 0 5n 0.1n 0.1n 10n 40n)       
 vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 40n 40n)
 .tran 0.0001n 200n 10n
 \end{lstlisting}
 
+As shown in table \ref{tab:static_states} we can se that the DFF may be at 12 different static states (output and reset can't both be 0). Given $3+1$ pattern specified in the task in addition to the option of pause we know that the states where Clk=0 will occour more. With the assumption that the active low Reset state will be high more often than low. We end up with 4 states that Well look at when computing the static leakage power. These are the highlighted states in table \ref{tab:static_states}.'
+
+\begin{table}[H]
+    \centering
+    \caption{Static states of the DFF}
+    \label{tab:static_states}
+    \begin{tabular}{cccc}
+        \hline
+        \multicolumn{3}{c}{Input}                                 & Output                          \\ \hline
+        Clk                             & Data       & Reset      & Q                               \\ \hline
+        0                               & 0          & 0          & 0                               \\
+        0                               & 1          & 0          & 0                               \\
+        1                               & 0          & 0          & 0                               \\
+        1                               & 1          & 0          & 0                               \\ \hline
+        \multicolumn{1}{|c}{\textbf{0}} & \textbf{0} & \textbf{1} & \multicolumn{1}{c|}{\textbf{0}} \\ \hline
+        \multicolumn{1}{|c}{\textbf{0}} & \textbf{1} & \textbf{1} & \multicolumn{1}{c|}{\textbf{0}} \\ \hline
+        1                               & 0          & 1          & 0                               \\
+        1                               & 1          & 1          & 0                               \\ \hline
+        \multicolumn{1}{|c}{\textbf{0}} & \textbf{0} & \textbf{1} & \multicolumn{1}{c|}{\textbf{1}} \\ \hline
+        \multicolumn{1}{|c}{\textbf{0}} & \textbf{1} & \textbf{1} & \multicolumn{1}{c|}{\textbf{1}} \\ \hline
+        1                               & 0          & 1          & 1                               \\
+        1                               & 1          & 1          & 1                              
+        \end{tabular}
+\end{table}
+
+\begin{lstlisting}
+*inputScenarioS1.cir:
+*Waveform: To test static leacage current when Clk:0, Data:0, Reset:1, Q:1
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   
+.tran 0.01 9000n 5100n
+\end{lstlisting}
+\begin{lstlisting}
+*inputScenarioS1.cir:
+*Waveform: To test static leacage current when Clk:0, Data:1, Reset:1, Q:0
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   
+.tran 0.01 9000n 5100n
+\end{lstlisting}
+\begin{lstlisting}
+*inputScenarioS1.cir:
+*Waveform: To test static leacage current when Clk:0, Data:1, Reset:1, Q:1
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   
+.tran 0.01 9000n 5100n
+\end{lstlisting}
+\begin{lstlisting}
+*inputScenarioS1.cir:
+*Waveform: To test static leacage current when Clk:0, Data:0, Reset:1, Q:0
+vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
+vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
+vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   
+.tran 0.01 9000n 5100n
+\end{lstlisting}
+
+The mobility of the NMOS and PMOS are diffrent, therfore the subcircuit were implemented with an option to edit the parameters for both $\frac{W_N}{L_N}$ and $\frac{W_P}{L_P}$. $\#1-\#9$ are switched out with different parameter values to simulate the spesific physical parameters at different corners, temperatures and wave scenarios.
+
+\begin{lstlisting}
+* param.cir:
+
+* Scenarios:
+.include gpdk90nm_#1.cir 
+.include DFF.cir
+.include inputScenario#3
+.option temp= #5
+
+* Device global parameters:
+.param vdd_value = #4
+vdd 1 0 vdd_value
+
+* Device parameters for N-MOSFETs:
+.param N_Width= #6
+.param N_Length = #7
+
+* Device parameters for P-MOSFETs:
+.param P_Width= #8
+.param P_Length = #9
+\end{lstlisting}
+
+To streamline the the simulation process a bash script has been used to simulate all the scenarios and then saved the CSV file generated. The process began with running simulations for different VDD values below 1V while the MOSFET parameters were:
+
+\begin{lstlisting}
+* Device parameters for N-MOSFETs:
+.param N_Width= 0.1u
+.param N_Length = 0.1u
+
+* Device parameters for P-MOSFETs:
+.param P_Width= 0.3u
+.param P_Length = 0.1u
+\end{lstlisting}
+
+The increased PMOS channel Width is to compensate for the lower mobility of the PMOS given the equation \ref{eq:parasitic_resistance} in terms of delays. After simulating the for different VDD values, we simulated for different values for device parameters. After all the simulations the CSV files were used to plot the funtionality and computising the delays and the static leakage powers at the different states and scenarios. 

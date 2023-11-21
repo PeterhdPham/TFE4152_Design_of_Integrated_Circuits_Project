@@ -35,7 +35,7 @@ def plot_and_save_graph_poly(data, simulation_id, output_dir, VDD, degree=4):
 
 # Main directory and simulation IDs
 main_dir = 'figures/aimspice/variableParam/CSV'
-simulation_ids = ['I05',  'I07',  'I09', 'I11', ]
+simulation_ids = ['I1',  'I2',  'I3', 'I4', ]
 
 for simulation_id in simulation_ids:
     csv_filepath = os.path.join(main_dir, f'static_leakage_power_0.6_{simulation_id}.csv')

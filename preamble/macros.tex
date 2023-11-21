@@ -29,15 +29,21 @@
         \label{fig:#1}
     \end{figure}}
 
-    \newcommand{\importimagewcaptionw}[3]{
-    \begin{figure}[H]
-        \centering
-        \includegraphics[width=#3 \textwidth]{#1}
-        \caption{#2.}
-        \label{fig:#1}
-    \end{figure}}
+\newcommand{\importimagewcaptionw}[3]{
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=#3 \textwidth]{#1}
+    \caption{#2.}
+    \label{fig:#1}
+\end{figure}}
 
-
+\newcommand{\importimagewcaptionh}[3]{
+\begin{figure}[H]
+    \centering
+    \includegraphics[height=#3 \textheight]{#1}
+    \caption{#2.}
+    \label{fig:#1}
+\end{figure}}
 % Macro for placing two images on top of each other
 % #1: Path to the first image
 % #2: Caption for the first image
