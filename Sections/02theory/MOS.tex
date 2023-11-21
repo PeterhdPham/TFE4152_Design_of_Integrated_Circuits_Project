@@ -1,5 +1,5 @@
 \subsection{MOS}
-MOS short for metal-oxide semiconductor are as of now, the most used technology in microcircuits are MOS transistors. These circuits consist primarily of n-channel (NMOS) and p-channel (PMOS) transistors, and when a microcircuit consist of both NMOS and PMOS transistors it's called a complementary MOS (CMOS).\cite[p. 14]{carusone_2012_analog}
+MOS short for metal-oxide semiconductor are as of now, the most used technology in microcircuits are MOS transistors. These circuits consist primarily of n-channel (NMOS) and p-channel (PMOS) transistors, and when a microcircuit consist of both NMOS and PMOS transistors it's called a \textit{complementary} MOS (CMOS).\cite[p. 14]{carusone_2012_analog}
 
 \importimagewcaptionw{figures/Analog_Integrated_Circuit_Design/cross_section_NMOS.png}{Cross section of a typical NMOS\cite[p. 14]{carusone_2012_analog}}{0.8}
 
@@ -8,6 +8,10 @@ As seen in Fig. \ref{fig:figures/Analog_Integrated_Circuit_Design/cross_section_
 
 The properties of a MOS transistor are mainly affected of distance between the source and drain region called channel length (L) and the width of the channel (W). The supply voltage does also affect the properties ot the transistor. 
 
+Note the operation descriptions and charasteristics of the MOS transistors will be described with respect to a NMOS, PMOS wil behave mostly the same, but opposite and slower.
+
+\subsubsection{MOSFET}
+\textit{Metal-oxide-semiconductor field-effect transistor}, a voltage controlled field-effect transistor using the MOS structure. As it has almost has an infinite input impedance due to the insulating Polysilicon, there will be no current flow between the gate and the source or drain.
 
 
 \subsubsection{NMOS}
@@ -20,7 +24,7 @@ In the case where $V_G\gg0$ as shown in Fig. \ref{subfig:figures/Analog_Integrat
 
 
 \subsubsection{PMOS}
-PMOS transistors in terms of functionality works opposite of the NMOS, where it is ``on'' when $V_G > V_{tp}$. This is because it uses p-type dopants in the gate region.\cite{a2023_definition}.
+PMOS transistors in terms of functionality works opposite of the NMOS, where it is ``on'' when $V_G > V_{tp}$ because it uses p-type dopants in the gate region. \cite{a2023_definition}. It also differ from the NMOS by being a lot slower 2-3 times as the ``mobility of electrons are almost twice than of PMOS, the ON-resistance of NMOS will be half of PMOS(with same geometry and operating conditions).''\cite{kusumitha_2019_why}. From table 1.5 \cite[p. 53]{carusone_2012_analog} we get that the mobility of a NMOS ($\mu C_ox$) at $0.18\mu m$ is $270\frac{\mu A}{V^2}$ while the PMOS only has a value of $70\frac{\mu A}{V^2}$.
 
 \subsubsection{Subthreshold leakage}
 In terms of MOS fransistors, there are three leakage currents that we need to take into consideration: subthreshold leakage, gate leakage, and junction leakage. \cite[p. 42]{carusone_2012_analog} Especially subthreshold leakage. The MOS is in the subthreshold region when the \textit{effective gate-source voltage} ($V_{eff}$) \cite[p. 17]{carusone_2012_analog} given by
@@ -54,12 +58,56 @@ from equation \ref{eq:subthreshold_current} we can se that the current $I_{D(sub
     \label{eq:subthreshold_leakage}
 \end{equation}
 
+This gives us the static leakage power \cite{departmentofelectronicsystemsntnu_2023_dc}
+
+\begin{equation}
+    P_{stat}=I_{off}\cdot V_{DD}
+\end{equation}
+
+One technique used to reduce the static leakage power is to use static CMOS. This technique utilizes the PMOS as pull-up (PUN) and NMOS as pull-down (PDN), this the output will be directly connected to either the $V_{DD}$ or ground with an exeption of when it is switching. This way there will never be a direct path from $V_{DD}$ to ground. \cite{a2018}
+
 \subsubsection{MOS speeeeeeeeeeeeeeeeeeed}
-Another thing that needs to be taken into consideration is the timings of the CMOS circuit. Which in this case is 
+Another thing that needs to be taken into consideration is the timings of the CMOS circuit. Which in this case is (equation below are with respect to an inverter using Static CMOS) \cite{departmentofelectronicsystemsntnu_2023_delay}
 \begin{itemize}
-    \item Propagnation delay low-high ($t_{pLH}$)
-    \subitem 
-    \item Propagnation delay high-low ($t_{pHL}$)
-    \item Rise time ($t_r$) 
-    \item Fall time ($t_f$)
+    \item \textbf{Propagnation delay low-high} ($t_{pLH}$)
+    \subitem This is the delay between when the input signal is at 50\% of its destination value and when the output signal rises from low to 50\% of its high value.
+    \item \textbf{Propagnation delay high-low} ($t_{pHL}$)
+    \subitem This is the delay between when the input signal is at 50\% of its destination value value and when the output signal falls from high to 50\% of its low value.\cite{wikipediacontributors_2023_signal}
+    \item \textbf{Rise time} $\left(t_r\right)$
+    \subitem This is the time when the output signal rises from 10\% to 90\% of its max value.
+    \item \textbf{Fall time} $\left(t_f\right)$
+    \item \subitem This is the time when the output signal falls from 90\% to 10\% of its max value.
 \end{itemize}
+
+
+\importimagewcaptionw{figures/FromWeb/propagation_rise_fall.png}{The propagation delays, rise and falltimes of a NMOS transistor\cite{a2014_fig}}{0.7}
+
+As described in sec \ref{sec:NMOS} the gate and surface of the silicon behaves like parallel plate capasitor, the gate capacitance $C_g$ is given by \cite[p. 18]{carusone_2012_analog}
+\begin{equation}
+    C_g=WLC_{ox}
+\end{equation}
+
+where $C_{ox}$ is the gate capacitance per unit area. This is important as a bigger capacitans means longer charge up and charge down time. This combined with the parasitic resistance of the MOSFET given by \cite{departmentofelectronicsystemsntnu_2023_delay}
+
+\begin{equation}
+    \begin{aligned}
+    & R_n=\frac{1}{\beta_n\left(V_{G S^{-}} V_{t n}\right)} \\
+    & R_p=\frac{1}{\beta_p\left(V_{S G}-\left|V_{t p}\right|\right)}
+    \end{aligned}
+\end{equation}
+
+Where $R_p$ is the parasitic resistance of the PMOS, $R_n$ is the parasitic resistance of the NMOS. and $\beta=\mu C_{ox}\frac{W}{L}$. This gives us the rise time
+
+\begin{equation}
+    t_r=\tau_p \ln \left(\frac{V_{DD}}{0.9V_{DD}}\right)-\tau_p \ln \left(\frac{V_{DD}}{0.1V_{DD}}\right)
+    \label{eq:risetime}
+\end{equation}
+
+and fall time
+
+\begin{equation}
+    t_f=\tau_n \ln \left(\frac{V_{DD}}{0.9V_{DD}}\right)-\tau_n \ln \left(\frac{V_{DD}}{0.1V_{DD}}\right)
+    \label{eq:falltime}
+\end{equation}
+
+where $\tau_p=R_pC_{out}$ and $\tau_n=R_nC_{out}$, $C_{out}$ being all the capacitances. \cite{departmentofelectronicsystemsntnu_2023_delay}
