@@ -83,10 +83,6 @@ As mentioned we have to understand how our MAC works- the MAC is updated only by
 To generate a $Clk_{OUT}$ signal, we have to design a circuit using an AND gate with three inputs: $CLK$, $RUN$, $\overline{PAUSE}$. This configuration  ensure that we get a  modified clock singal that follows the 3+1 pattern. By combining this with the $RUN$ signal, we ensure that updates to the 8-bit register occur only as it supposed to be. It is important to note that $\overline{PAUSE}$ can still be active even when $RUN$ is deactivated (0), as it primarily controls the 3+1 operation pattern of the MAC. 
 
 
-
-since the only thing that updates the MAC is reset and the CLK input for 8-bit register. We need to modifi our FSM- so it comes out to input $CLK_out$ and $RESET_out$. The circuit design with $Clk_out$ is by making an AND gate with three inputs, $CLK$, $RUN$, $\overline{PAUSE}$. By designing this we make sure that it only gets updated by rising clock edge, since $PAUSE$ is updated by rising clockedge. By anding with $RUN$ we make sure that there are no updates in the 8-bit register, SInce $PAUSE$ still can be 0 even when $RUN$=0, cause it only controls the 3+1 pattern. 
-
-
 The $RESET_{OUT}$ is desigend by using the same flip-flop configuration as used in the state circuit. With this approach $RESET_OUT$, represented by the $\overline{Q}$ output from the Flip-Flops, is updated only on the rising clock edge. At the same time the $RESET$ in the equations in \ref{State equation}, is now the $Q$ output from this flip-flop. This setup ensures that the $PAUSE$ output does not update except on the rising edge of the clock.
 
 
