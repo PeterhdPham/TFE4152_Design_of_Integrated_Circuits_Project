@@ -1,36 +1,35 @@
 \subsection{Method for FSM}
-Designing our FSM, we followed step by inspired inspired from, ref[youtube vidoen av FSM]:
+In designing our FSM, we used a structured approach inspired by  [Reference: YouTube video on FSM]:
 \begin{enumerate}
     \item Define the purpose of the machine
     \item Draw a state diagram
-    \item Make a state table
-    \item Select type of flip-flop
-    \item Find the boolean func. for each flip-flop
+    \item Create a state table
+    \item Select type of Flip-Flop
+    \item Find the Boolean Functions for each Flip-Flop
     \item Draw a logic circuit
 \end{enumerate}
-For \textbf{defining the purpose of the purpose} we have to use the criteria for the project, at the same time understand our MAC, what kind of inputs is necessesary for it work as it suposed i henhold to the project. The projects criteria where:
+For \textbf{defining the purpose of the purpose} we have to considered the project's specific criteria and the functional necessities of our MAC unit. The key criteria include:
 \begin{enumerate}
-    \item The FSM has three inputs($CLK$, $RESET$, $RUN$). Reset: The reset signal, which is 1 when the circuit should reset and 0 otherwise. Clk: A clock signal which is 0 for half a period and then 1 for half a period. A signal that is 1 if your MAC unit should multiply and accumulate the answer,
-    and 0 if you should pause the accumulation (and continue when Run is 1 again).
-    \item multiply accumulate operation should be performed three (3) times in a row,
-    followed by a pause for one clock cycle
-    \item This 3+1 pattern should be repeated continously unless something else is indicated
+    \item The FSM has three inputs($CLK$, $RESET$, $RUN$).
     \begin{enumerate}
-        \item If Run=0, no MAC operation should be run. When Run=1 again the
-        MAC operation pattern should continue from where it left off (so if two operations are done and
-        then Run=0, the third operation should be performed when Run=1 again followed by a pause-cycle
-        before repeating the 3+1 pattern)
-        \item If Reset=1 the MAC-pattern (3+1) should be reset so that
-        whenever Reset goes low again we start with 3 operations followed by a pause regardless of where
-        in the pattern we were before Reset was set high.
+        \item $RESET$: A binary signal indicating when the circuit should reset
+        \item $CLK$: A clock signal oscillating between 0 and 1.
+        \item $RUN$: A control signal dictating whether to perform MAC operations or pause.
     \end{enumerate}
-    \item The FSM’s state should only be updated at the positive edge of the clock Clk
+    \item The FSM should execute a sequence of three consecutive MAC operations followed by a pause for one clock cycle. This 3+1 pattern repeats continuously, with exceptions for $RUN$ and $RESET$ conditions.
+    \begin{enumerate}
+        \item If $Run$=0, no MAC operation should be run, and resume from the interrupted point when 
+        $RUN$ is set to 1 again
+        \item If Reset=1, , the MAC sequence resets, restarting with three operations followed by a pause when $RESET$ return to 0
+    \end{enumerate}
+    \item The FSM’s state should only be updated at the positive edge of the $CLK$ signal.
 \end{enumerate}
-Our MAC only gets updated when our CLK-input to our 8-bit register has a risising edge. The further plan to give us a signal 1 when the pause state occur.
+
+Our MAC unit updates with the rising edge of the $CLK$ input to our 8-bit register. The plan is to generate a signal indicating the state where output $PAUSE$=1.
 
 For this we designed a \textbf{Statediagram} as shown in figure ... 
 
-The \textbf{State table}, table \ref{State Table FSM}, is based on the statediagram: $P_{0}$, $P_{1}$ are \emph{Present state 0} and \emph{Present state 1},  with corresponding $N_{0}$, $N_{1}$ are \emph{Next State 0} and \emph{Next State 1}. Inputs are $RESET$ and $RUN$ and output is $PAUSE$
+The \textbf{State table}, table \ref{State Table FSM}, is based on the statediagram. In Table \ref{State Table FSM}, $P_{0}$, $P_{1}$ represent the current states (Present State 0 and 1),  and $N_{0}$, $N_{1}$ are represent the next states (Next State 0 and 1). The inputs are $RESET$ and $RUN$, and the output is $PAUSE$
 
 \begin{table}[H]
     \centering
@@ -54,23 +53,44 @@ The \textbf{State table}, table \ref{State Table FSM}, is based on the statediag
     \end{tabular}
     \end{table}
 
-There are four states, therefor we need two flip flops, since we already have implemented d-flip flop with asychron reset, except we are not using the reset input and get a similiar circuit as the the asychron reset, see figure\dots
+
+
+The state diagram shown in figure..., have four states, and are using two flip flops to represent these states.Given that we have previously implemented D-flip flops with asynchronous reset (nevnt i 8-bits register), we adapted this design for our current needs. Notably, in this implementation, we are not using the reset input. This approach results in a circuit similiar to the one with the asynchronous reset, but without a reset input, shown in figure..
 
 figure av register
 
-From the Table \ref{State Table FSM} we can find the \textbf{boolean expresion for each flip flop inputs}, wich are \emph{Next States} values, $N_{0}$ and $N_{1}$. 
+From the Table \ref{State Table FSM} we can find the \textbf{boolean expresion for each Flip-Flop input}, wich are \emph{Next States} values, $N_{0}$ and $N_{1}$. 
 
-\begin{equation}
+\begin{equation} 
+    \label{State equation}
     \begin{aligned}
     N_{0}&= \overline{P_{1}} \, \overline{P_{0}} \, \text{RUN} \, \overline{\text{RESET}} + \overline{P_{1}} \, P_{0} \, \overline{\text{RUN}} \, \overline{\text{RESET}} + P_{1} \, \overline{P_{0}} \, \text{RUN} \, \overline{\text{RESET}} + P_{1} \, P_{0} \, \overline{\text{RUN}} \, \overline{\text{RESET}} + \text{RESET}\\
     \Rightarrow&P_{0}\oplus RUN+ RESET\\
     N_{1}&= \overline{P_{1}} P_{0} \text{RUN} \overline{\text{RESET}} + P_{1} \overline{P_{0}} \overline{\text{RUN}} \overline{\text{RESET}} + P_{1} \overline{P_{0}} \text{RUN} \overline{\text{RESET}} + P_{1} P_{0} \overline{\text{RUN}} \overline{\text{RESET}+ RESET}\\
     \Rightarrow&\overline{P_{1}} P_{0} \text{RUN} + P_{1}(\overline{P_{0}} + \overline{\text{RUN}}) + \text{RESET}\\
-    \text{PAUSE}&= P_{1} P_{0} \overline{\text{RUN}} \, \overline{\text{RESET}} + P_{1} P_{0} \text{RUN} \, \overline{\text{RESET}} + \text{RESET}
+    \text{PAUSE}&= P_{1} P_{0} \overline{\text{RUN}} \, \overline{\text{RESET}} + P_{1} P_{0} \text{RUN} \, \overline{\text{RESET}} + \text{RESET}\\
     \Rightarrow&P_{1} P_{0}+\text{RESET}\\
     \end{aligned}
 \end{equation}
 
+From the equations we can \ref{State equation} design a circuit with an output that is 1 when it should pause,  see figure ....
+
+
+figuren av fsm-en først
+
+As mentioned we have to understand how our MAC works- the MAC is updated only by the reset signal and the CLK input to our 8-bit register. We have to modify our Finite State Machine (FSM) with these requirements, and make it to output two specific signals: $Clk_{OUT}$ and $RESET_{OUT}$. 
+
+To generate a $Clk_{OUT}$ signal, we have to design a circuit using an AND gate with three inputs: $CLK$, $RUN$, $\overline{PAUSE}$. This configuration  ensure that we get a  modified clock singal that follows the 3+1 pattern. By combining this with the $RUN$ signal, we ensure that updates to the 8-bit register occur only as it supposed to be. It is important to note that $\overline{PAUSE}$ can still be active even when $RUN$ is deactivated (0), as it primarily controls the 3+1 operation pattern of the MAC. 
+
+
+
+since the only thing that updates the MAC is reset and the CLK input for 8-bit register. We need to modifi our FSM- so it comes out to input $CLK_out$ and $RESET_out$. The circuit design with $Clk_out$ is by making an AND gate with three inputs, $CLK$, $RUN$, $\overline{PAUSE}$. By designing this we make sure that it only gets updated by rising clock edge, since $PAUSE$ is updated by rising clockedge. By anding with $RUN$ we make sure that there are no updates in the 8-bit register, SInce $PAUSE$ still can be 0 even when $RUN$=0, cause it only controls the 3+1 pattern. 
+
+
+The $RESET_{OUT}$ is desigend by using the same flip-flop configuration as used in the state circuit. With this approach $RESET_OUT$, represented by the $\overline{Q}$ output from the Flip-Flops, is updated only on the rising clock edge. At the same time the $RESET$ in the equations in \ref{State equation}, is now the $Q$ output from this flip-flop. This setup ensures that the $PAUSE$ output does not update except on the rising edge of the clock.
+
+
+Figure av hele FSM
     
 
 
