@@ -3,21 +3,114 @@
 The \textbf{D-flip flop with asychron} circuit is based on figure ...ref.. in section.... By assembling eight D-flip flop with eight data inputs $b[0:7]$ and corresponding $q[0:7]$ outputs, we make an \textbf{(8-bit register)}. The registers are connected in parallell by having shared $RESET$ and $CLK$ input. 
 !SKRIV MER OM REGISTER-BEGGE SIN DEL SKAL KOMME HER!
 
+D-flip flop with asychron reset designed in verilog:
+\begin{lstlisting}
+module Dflipflop( CLK ,RESET ,DATA ,Q);
+input CLK ;
+input RESET ;
+input DATA ;
+output Q ;
 
+nand N1(OUT_1, RESET,DATA, OUT_2);
+nand N2(OUT_2, CLK, OUT_3, OUT_1);
+nand N3(OUT_3, CLK, RESET, OUT_4);
+nand N4(OUT_4, OUT_3, OUT_1);
+nand N5(NQ, Q, RESET, OUT_2);
+nand N6(Q, OUT_3, NQ);
+endmodule
+\end{lstlisting}
+And as described the 8-bit register will look like this:
 
-The \textbf{Half Adder} and the \textbf{Full Adder} was designed on based on \ref{sec:ADDERS}, see Figure..(figure av Half Adder og Full Adder)
+\begin{lstlisting}
+module EIGHT_B_REG( b ,CLK_Out ,RESET_Out ,q );
+input [0:7] b ;
+input CLK_Out ;
+input RESET_Out ;
+output [0:7] q ;
 
-(Få med verilog koden for Half Adder og Full Adder, skriv hva som er LSB og MSB)
+Dflipflop u0 (	.CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[0]) ,.Q(q[0])); 
+Dflipflop u1 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[1]) ,.Q(q[1]));
+Dflipflop u2 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[2]) ,.Q(q[2]));
+Dflipflop u3 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[3]) ,.Q(q[3]));
+Dflipflop u4 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[4]) ,.Q(q[4]));
+Dflipflop u5 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[5]) ,.Q(q[5]));
+Dflipflop u6 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[6]) ,.Q(q[6]));
+Dflipflop u7 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[7]) ,.Q(q[7]));
+endmodule
+\end{lstlisting}
 
+The \textbf{Half Adder} and the \textbf{Full Adder} was designed on verilog, based on \ref{sec:ADDERS}, with respectively figures \ref{fig:figures/drawio/Logic/LOGIC_HALFADDER.png} and \ref{fig:figures/drawio/Logic/LOGIC_FULLADDER.png}.
+\begin{lstlisting}
+module HALF_ADDER ( A ,B ,SUM ,CARRY );
+input A ;
+input B ;
+output SUM ;
+output CARRY ;
 
+xor(SUM, A, B);
+and(CARRY, A, B);
+endmodule
+\end{lstlisting}
+\begin{lstlisting}
+module FULL_ADDER ( C_in ,A ,B ,SUM ,C_out );
+input C_in ;
+input A ;
+input B ;
+output SUM ;
+output C_out ;
 
-Since the output from the 2X2-bits Multiplier is a 4-bit value(denoted as $C$), and the register is a 8 bit-register, with an 8-bit output(reffered as $q$)- we have to assemble half adder and full adder in a series. This arrangement ensures that the $SUM$ output of each adder stage contributes to the updated value of the register. The output from the Multiplier is labeled as $C$, with $C[3]$ assigned as the least significant bit (LSB) and $C[0]$ as the most significant bit (MSB). Conversely, the output from the register, known as $q$, assigns $q[7]$ as the LSB and $q[0]$ as the MSB. In other way, we are using the number scheme MSb 0 [kilde].
+xor(OUT_1, A, B);
+xor(SUM, C_in, OUT_1);
+and(OUT_2, A, B);
+and(OUT_3, OUT_1, C_in);
+or(C_out, OUT_2, OUT_3);
+endmodule
+\end{lstlisting}
 
-For the LSB for both $C$ and $q$ there is abscence of a carry input, therefor only necessesary with a half-adder with two inputs for q[7] and C[3]. For the next three following bits, the requirement for three inputs emerges. Therefore, a full adder is employed for each of the following stages, adding a bit from $C[2]$ to $C[0]$ and the corresponding bits from $q[6]$ to $q[4]$, along with the carry from the previous adder stage. With no more remaining bits from $C$ after the fourth bit, we have absence of an input, therefor it will only be a necessity with the use of a half adders with inputs of the remainig q-bits and carry from the previous adder stage. MSB $q[0]$ does not require a dual-output, as there no no more half adders to transfer a carry bit to, and its only necessesary with SUM part of the half adder, wich is simply an XOR-gate.
+Adding the 4-bit output ($C[0:3])$ from the 2x2 Multiplier with the 8-bit output($q[0:7]$) requires to assemble half adder and full adder in a series. This arrangement ensures that the $SUM$ output of each adder stage contributes to the updated value of the register. As mentioned the output from the Multiplier is labeled as $C$, with $C[3]$ assigned as LSb and $C[0]$ as MSb. Conversely, the output from the register, assigns $q[7]$ as the LSb and $q[0]$ as the MSb.
 
+\importimagewcaptionw{figures/drawio/Digital/adder_equation.png}{4-bit added with 8-bit equation}{0.6}
+
+Figure \ref{fig:figures/drawio/Digital/adder_equation.png} illustrates that LSb for both $C$ and $q$ there is abscence of a carry input, therefor only necessesary with a half-adder with two inputs for q[7] and C[3]. For the next three following bits, the requirement for three inputs emerges. Therefore, a full adder is employed for each of the following stages, adding a bit from $C[2]$ to $C[0]$ and the corresponding bits from $q[6]$ to $q[4]$, along with the carry from the previous adder stage. With no more remaining bits from $C$ after the fourth bit, we have absence of an input in the full adder, therefor it will only be a necessity with the use of a half adders with inputs of the remainig q-bits and carry from the previous adder stage. MSB $q[0]$ does not require a dual-output, as there no no more half adders to transfer a carry bit to, and its only necessesary with SUM part of the half adder, wich is simply an XOR-gate.
+
+From this our adder will look like this:
+\importimagewcaptionw{figures/drawio/Digital/Blokk_ADDER.png}{4-bit added with 8-bit circuit}{0.6}
+and our verilog code based on the circuit:
+\begin{lstlisting}
+module Accumulator ( q ,C ,b );
+input [0:7] q ;
+input [0:3] C ;
+output [0:7] b ;
+
+HALF_ADDER A1 (.A(C[3]) ,.B(q[7]) ,.SUM(b[7]) ,.CARRY(C_in0) );
+FULL_ADDER A2 (.C_in(C_in0) , .A(C[2]) , .B(q[6]) ,.SUM(b[6]) ,.C_out(C_in1));	
+FULL_ADDER A3 (.C_in(C_in1) , .A(C[1]) , .B(q[5]) ,.SUM(b[5]) ,.C_out(C_in2));	 
+FULL_ADDER A4 (.C_in(C_in2) , .A(C[0]) , .B(q[4]) ,.SUM(b[4]) ,.C_out(C_in3));
+HALF_ADDER A5 (.A(C_in3) ,.B(q[3]) ,.SUM(b[3]) ,.CARRY(C_in4) );  
+HALF_ADDER A6 (.A(C_in4) ,.B(q[2]) ,.SUM(b[2]) ,.CARRY(C_in5) );
+HALF_ADDER A7 (.A(C_in5) ,.B(q[1]) ,.SUM(b[1]) ,.CARRY(C_in6) );
+xor(b[0], C_in6, q[0]);
+endmodule
+\end{lstlisting}
+
+Since we know have made arithmetic circuits wich can multipy and add, as well an 8-bit register with the accumulated value in the MAC unit, we can know assemble these circuits. Se figure: 
+
+\importimagewcaptionw{figures/drawio/Digital/MAC.png}{4-bit added with 8-bit circuit}{0.6}
  
 
 
+\begin{lstlisting}
+module MAC ( A ,B ,Y ,CLK1 ,RESET );
+input [0:1] A ;
+input [0:1] B ;
+inout [0:7] Y ;
+input CLK1 ;
+input RESET ;
+wire [0:3] C ;
 
-
+Multiplier M1( .A(A), .B(B), .C(C) ); 
+Accumulator A1( .q(Y) ,.C(C) ,.b(b) ); 
+EIGHT_B_REG B1( .b(b) ,.CLK_Out(CLK1) ,.RESET_Out(RESET) ,.q(Y) );
+endmodule
+\end{lstlisting}
 

@@ -1,5 +1,5 @@
 \subsection{Method for FSM}
-In designing our FSM, we used a structured approach inspired by  [Reference: YouTube video on FSM]:
+In designing our FSM, we used a structured approach inspired by  \cite{allaboutelectronics_2023_sequence}:
 \begin{enumerate}
     \item Define the purpose of the machine
     \item Draw a state diagram
@@ -28,6 +28,8 @@ For \textbf{defining the purpose of the purpose} we have to considered the proje
 Our MAC unit updates with the rising edge of the $CLK$ input to our 8-bit register. The plan is to generate a signal indicating the state where output $PAUSE$=1.
 
 For this we designed a \textbf{Statediagram} as shown in figure ... 
+
+\importimagewcaptionw{figures/drawio/Digital/State_diagram.png}{State diagram with PAUSE output}{0.6}
 
 The \textbf{State table}, table \ref{State Table FSM}, is based on the statediagram. In Table \ref{State Table FSM}, $P_{0}$, $P_{1}$ represent the current states (Present State 0 and 1),  and $N_{0}$, $N_{1}$ are represent the next states (Next State 0 and 1). The inputs are $RESET$ and $RUN$, and the output is $PAUSE$
 
@@ -73,10 +75,10 @@ From the Table \ref{State Table FSM} we can find the \textbf{boolean expresion f
     \end{aligned}
 \end{equation}
 
-From the equations we can \ref{State equation} design a circuit with an output that is 1 when it should pause,  see figure ....
+From the equations we can \ref{State equation} design a circuit with an $PAUSE$ output that is 1 when it should pause,  see figure ....
 
 
-figuren av fsm-en først
+\importimagewcaption{figures/drawio/RTL/RTL_FSM_pause.png}{FSM with PAUSE output}
 
 As mentioned we have to understand how our MAC works- the MAC is updated only by the reset signal and the CLK input to our 8-bit register. We have to modify our Finite State Machine (FSM) with these requirements, and make it to output two specific signals: $Clk_{OUT}$ and $RESET_{OUT}$. 
 
