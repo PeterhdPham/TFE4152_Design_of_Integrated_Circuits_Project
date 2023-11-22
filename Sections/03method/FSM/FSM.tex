@@ -89,10 +89,45 @@ The $RESET_{OUT}$ is desigend by using the same flip-flop configuration as used 
 
 The rescult for this FSM is shown in Figure \ref{fig:figures/drawio/RTL/RTL_FSM_no_delay.png}
 
-\importimagewcaption{figures/drawio/RTL/RTL_FSM_no_delay.png}{FSM with two output: $RESET_{OUT$}, $CLK_{OUT$}}
+\importimagewcaption{figures/drawio/RTL/RTL_FSM_no_delay.png}{sj}
+The verilog code based on this circuit:
+\begin{lstlisting}
+module FSM3 ( RUN_ ,CLK ,RESET ,CLK_OUT, RESET_OUT );
+
+input RUN_ ;
+input CLK ;
+input RESET ;
+output CLK_OUT ;
+output RESET_OUT;
+//REGISTERS
+
+REGISTER REG1 ( .DATA(N1) ,.CLK(CLK) ,.Q(P1) ,.NQ(NP1) );
+REGISTER REG0 ( .DATA(N0) ,.CLK(CLK) ,.Q(P0) ,.NQ(NP0) ); 
+
+//N0
+xor(MIDN0, P0, RUN);
+or(N0, MIDN0, RESET_); 
+
+//N1
+and(A, NP1, P0, RUN);
+or(B, NP0, NOTRUN);
+and(C, B, P1);
+or(N1, C, A, RESET_);
+
+//PAUSE
+and(mid_pause, P1, P0);
+or(PAUSE, mid_pause, RESET_);
+not(NOTPAUSE, PAUSE);
+and(CLK_OUT, not_clk4, NOTPAUSE, RUN);
+
+REGISTER REGRUN ( .DATA(RUN_) ,.CLK(CLK) ,.Q(RUN) ,.NQ(NOTRUN) ); 
+REGISTER REGRESET ( .DATA(RESET) ,.CLK(not_clk4) ,.Q(RESET_) ,.NQ(RESET_OUT) ); 
+endmodule
+\end{lstlisting}
 
 
-Figure av hele FSM
+
+
     
 
 

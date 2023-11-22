@@ -8,4 +8,8 @@ The plan to set the dimmensions $W_P=3W_N=3L_N=3L_P$ has been proven to be effec
  \subsection{Static leakage power and speed vs supply voltage}
  From the figure \ref{fig:0.3_I1_I2} and \ref{fig:0.3_I3_I4} we can clearly se that it is a growing trend when increasing the voltage, and we would get a lower at a lower $V_{DD}$ value. However, as shown in figure \ref{fig:0.3_delay}, 0.6V marks the beginning of a plateau in regarding the delays, rise- and fall-times, implying that it's a further reductions in voltage will comes at the cost of significantly increased delays, rise- and fall-times within the device.
 
- 
+ \subsection{Verilog}
+ \subsubsection{MAC}
+ From \ref{sec:Result MAC}, we got results we were satisfied by.
+ \subsubsection{FSM}
+ From \ref{sec:Result FSM}, we got results that were unexcepted after combining the FSM to the MAC. This was probably casued by delta delay in the Active HDL. Only requirements the FSM had was that $RESET$ had to be high by the start of the first cycle. This isn't an issue in a application by initializing a restart has to be pressed on before it can run properly. Something that was not beneficial with the FSM was how many logig gates were implemented, specially by include a D- Flip Flop for $RUN$ and $RESET$ input. This increase the use of area and power consumtion, wich in our case is not ideal scince the project aimed a low static-leakage current MAC-unit. In the same time, while the static-leakage power has to be low, we still desire a fully functional application. Something we could have done in the FSM, pursuiting less logic gates, was to find some symetries in the input for the gates that might repeat, use of a asychron reset Flip Flop rather then a D Flip Flop, make a different state diagram with another logic output for this project.
