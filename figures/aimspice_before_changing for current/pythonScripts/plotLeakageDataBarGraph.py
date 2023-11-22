@@ -24,10 +24,10 @@ def generate_title(filename):
 
 # Dictionary to map simulation identifiers to descriptions
 simulation_descriptions = {
-    'I05': 'Static power leakage when D:0, Clk:0, Res:1, Q:0',
-    'I07': 'Static power leakage when D:1, Clk:0, Res:1, Q:0',
-    'I09': 'Static power leakage when D:0, Clk:0, Res:1, Q:1',
-    'I11': 'Static power leakage when D:1, Clk:0, Res:1, Q:1',
+    'I05': 'Static D:0, Clk:0, Res:1, Q:0',
+    'I07': 'Static D:1, Clk:0, Res:1, Q:0',
+    'I09': 'Static D:0, Clk:0, Res:1, Q:1',
+    'I11': 'Static D:1, Clk:0, Res:1, Q:1',
     }
 
 corners = ['TT', 'FF'] 
@@ -51,7 +51,8 @@ def extract_params_from_config_name(config_name):
     }
     return params
 
-def plot_leakage_data(leakage_data, ylabel, output_filename, output_leakage_current_path, corners):
+def plot_leakage_data(leakage_data, ylabel, output_filename, sim_id, output_leakage_current_path, corners):
+    title ={simulation_descriptions[sim_id]}
     bar_width = 0.15
     index = np.arange(len(sorted_temperatures))
     colors = ['salmon', 'paleturquoise', 'palegoldenrod', 'palegreen', 'palevioletred']
@@ -66,7 +67,7 @@ def plot_leakage_data(leakage_data, ylabel, output_filename, output_leakage_curr
     ax.set_xticks(index + bar_width * 2)
     ax.set_xticklabels(sorted_temperatures)
     ax.legend()
-
+    ax.set_title(f"Simulation {title}")
     plt.tight_layout()
     plt.savefig(os.path.join(output_leakage_current_path, output_filename))
     plt.close(fig)
@@ -171,7 +172,7 @@ for config in config_dirs:
                         'Temperature': temperature,
                         'Power': leakage_power
                     }
-                    append_to_csv(data, csv_filepath)
+                    # append_to_csv(data, csv_filepath)
                 if params['vdd_value'] == '0.600': 
                     variable_param_csv_path = os.path.join(main_dir, 'variableParam', 'CSV')
                     os.makedirs(variable_param_csv_path, exist_ok=True)
@@ -186,7 +187,7 @@ for config in config_dirs:
                         'Temperature': temperature,
                         'Power': leakage_power
                     }
-                    append_to_csv(data, csv_filepath)   
+                    # append_to_csv(data, csv_filepath)   
         # Update the count of processed files
         processed_files += 1
 
@@ -196,8 +197,8 @@ for config in config_dirs:
         print(f"{processed_files}/{total_files}")
 
         sorted_temperatures = sorted(leakage_current_data.keys(), key=int)
-        plot_leakage_data(leakage_current_data, 'Leakage Current (A)', f"leakage_current_{simulation_id}.png", output_leakage_data_path, corners)
-        plot_leakage_data(leakage_power_data, 'Leakage Power (W)', f"leakage_power_{simulation_id}.png", output_leakage_data_path, corners)
+        # plot_leakage_data(leakage_current_data, 'Leakage Current (A)', f"leakage_current_{simulation_id}.png", simulation_id, output_leakage_data_path, corners)
+        plot_leakage_data(leakage_power_data, 'Leakage Power (W)', f"leakage_power_{simulation_id}.png", simulation_id, output_leakage_data_path, corners)
 
 
 

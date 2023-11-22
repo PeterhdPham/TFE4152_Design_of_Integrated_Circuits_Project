@@ -1,19 +1,58 @@
-\subsection{Aimspice results} 
-After running all the simulations we ended up with the power consumption shown in the figures \ref{fig:0.3_I1_I2}, \ref{fig:0.3_I3_I4} \ref{fig:0.6_I1_I2} and \ref{fig:0.6_I3_I4}. The dotes are the actual values simulated while the the lines are plotted using python function Polynomial.fit at 5 degrees to give us aid in visualise the trends regardig the variables.
+\subsection{Aimspice results}
 
-\imagesidebyside{figures/aimspice/variableVDD/CSV/static_power_leakage_graph_I1.png}{Clk:0, Data:0, Reset:1, Q:1}{figures/aimspice/variableVDD/CSV/static_power_leakage_graph_I2.png}{Clk:0, Data:1, Reset:1, Q:0}{Static leakage power when  $N_W=0.1u$, $N_L=0.1u$, $P_W=0.3u$ and $P_L=0.1u$}{0.3_I1_I2}{0.49}
+After running a few simulations with different voltages and dimmensions we ended up with the prefered parameters in table \ref{tab:MOSFET_parameters}. Note: the some plots have a typo where it says P\_W instead of $W_P$.
 
-\imagesidebyside{figures/aimspice/variableVDD/CSV/static_power_leakage_graph_I3.png}{Clk:0, Data:1, Reset:1, Q:1}{figures/aimspice/variableVDD/CSV/static_power_leakage_graph_I4.png}{Clk:0, Data:0, Reset:1, Q:0}{Static leakage power when  $N_W=0.1u$, $N_L=0.1u$, $P_W=0.3u$ and $P_L=0.1u$}{0.3_I3_I4}{0.49}
+\begin{table}[H]
+    \centering
+    \caption{MOSFET parameters}
+    \label{tab:MOSFET_parameters}
+    \begin{tabular}{ll}
+    \hline
+    Parameter & Value \\ \hline
+        $V_{DD}$& 0.6V  \\
+        $W_N$ & 100nm \\
+        $L_N$ & 100nm \\
+        $W_P$ & 300nm \\
+        $L_P$ & 100nm     
+    \end{tabular}
+\end{table}
 
-\imagesidebyside{figures/aimspice/variableParam/CSV/static_power_leakage_graph_0.6_I1.png}{Clk:0, Data:0, Reset:1, Q:1}{figures/aimspice/variableParam/CSV/static_power_leakage_graph_0.6_I2.png}{Clk:0, Data:1, Reset:1, Q:0}{Static leakage power when $VDD=0.6V$, $N_W=0.1u$, $N_L=0.1u$ and $P_L=0.1u$}{0.6_I1_I2}{0.49}
+The static leakage power can be seen in the bargraphs on figure \ref{fig:static_leakage_power_bar}.
 
-\imagesidebyside{figures/aimspice/variableParam/CSV/static_power_leakage_graph_0.6_I3.png}{Clk:0, Data:1, Reset:1, Q:1}{figures/aimspice/variableParam/CSV/static_power_leakage_graph_0.6_I4.png}{Clk:0, Data:0, Reset:1, Q:0}{Static leakage power when $VDD=0.6V$, $N_W=0.1u$, $N_L=0.1u$ and $P_L=0.1u$}{0.6_I3_I4}{0.49}
+\begin{figure}[H]
+    \centering
+    \includegraphics[height= 0.21\textheight]{figures/aimspice/0.600_0.1u_0.1u_0.300u_0.1u/leakage_data/leakage_power_I05.png}
+    \vspace{5pt}
+    \includegraphics[height= 0.21\textheight]{figures/aimspice/0.600_0.1u_0.1u_0.300u_0.1u/leakage_data/leakage_power_I07.png}
+    \vspace{5pt}
+    \includegraphics[height= 0.21\textheight]{figures/aimspice/0.600_0.1u_0.1u_0.300u_0.1u/leakage_data/leakage_power_I09.png}
+    \vspace{5pt}
+    \includegraphics[height= 0.21\textheight]{figures/aimspice/0.600_0.1u_0.1u_0.300u_0.1u/leakage_data/leakage_power_I11.png}
+    \vspace{5pt}
+    \caption{Computed static leakage power.}
+    \label{fig:static_leakage_power_bar}
+\end{figure}
 
-After computing the delays and 
+The mean of the static leakage power for every scenario I1-I4 are presented in table \ref{tab:leakage_power}.
 
-\imagesidebyside{figures/aimspice/variableVDD/CSV_time/propagation_delays_graph.png}{Clk:0, Data:0, Reset:1, Q:1}{figures/aimspice/variableVDD/CSV_time/rise_fall_times_graph.png}{Clk:0, Data:1, Reset:1, Q:0}{Static leakage power when $N_W=0.1u$, $N_L=0.1u$, $P_W=0.3u$ and $P_L=0.1u$}{0.6_I1_I2}{0.49}
+\begin{table}[H]
+    \centering
+    \caption{Mean static leakage power}
+    \label{tab:leakage_power}
+    \begin{tabular}{ccc}
+    \hline
+    \textbf{Corner} & \textbf{Temperature} & \textbf{Mean Leakage Power} \\
+    \hline
+    TT & 0  & $1.560 nW$\\
+    TT & 27 & $1.278 nW$\\
+    TT & 70 & $3.042 nW$\\
+    FF & 0  & $1.065 nW$\\
+    FF & 27 & $2.243 nW$\\
+    FF & 70 & $3.894 nW$\\
+    \end{tabular}
+\end{table}
 
-\imagesidebyside{figures/aimspice/variableParam/CSV_time/propagation_delays_graph.png}{Clk:0, Data:0, Reset:1, Q:1}{figures/aimspice/variableParam/CSV_time/rise_fall_times_graph.png}{Clk:0, Data:1, Reset:1, Q:0}{Static leakage power when $VDD=0.6V$, $N_W=0.1u$, $N_L=0.1u$ and $P_L=0.1u$}{0.6_I1_I2}{0.49}
+The functionality for each corner can be seen on the figures \ref{fig:aimspice_W1_0} to \ref{fig:aimspice_W3_70}
 
 \begin{figure}[H]
     \centering
@@ -168,3 +207,18 @@ After computing the delays and
     \label{fig:aimspice_W3_70}
 \end{figure}
 
+The computed static leakage power with respect to the chosen $V_{DD}\pm 0.2V$ and with respect to the chosen $W_P$ can be seen in the figures \ref{fig:0.3_I1_I2}, \ref{fig:0.3_I3_I4} \ref{fig:0.6_I1_I2} and \ref{fig:0.6_I3_I4}. The dotes are the actual values computed while the the lines are fitted line with a degree of 5 to aid in the visualisation of the trends regardig the variables.
+
+\imagesidebyside{figures/aimspice/variableVDD/CSV/static_power_leakage_graph_I1.png}{I1}{figures/aimspice/variableVDD/CSV/static_power_leakage_graph_I2.png}{I2}{Static leakage power when  $W_N=0.1u$, $L_N=0.1u$, $P_W=0.3u$ and $L_P=0.1u$}{0.3_I1_I2}{0.49}
+
+\imagesidebyside{figures/aimspice/variableVDD/CSV/static_power_leakage_graph_I3.png}{I3}{figures/aimspice/variableVDD/CSV/static_power_leakage_graph_I4.png}{I4}{Static leakage power when  $W_N=0.1u$, $L_N=0.1u$, $P_W=0.3u$ and $L_P=0.1u$}{0.3_I3_I4}{0.49}
+
+\imagesidebyside{figures/aimspice/variableParam/CSV/static_power_leakage_graph_0.6_I1.png}{I1}{figures/aimspice/variableParam/CSV/static_power_leakage_graph_0.6_I2.png}{I2}{Static leakage power when $V_{DD}=0.6V$, $W_N=0.1u$, $L_N=0.1u$ and $L_P=0.1u$}{0.6_I1_I2}{0.49}
+
+\imagesidebyside{figures/aimspice/variableParam/CSV/static_power_leakage_graph_0.6_I3.png}{I3}{figures/aimspice/variableParam/CSV/static_power_leakage_graph_0.6_I4.png}{I4}{Static leakage power when $V_{DD}=0.6V$, $W_N=0.1u$, $L_N=0.1u$ and $L_P=0.1u$}{0.6_I3_I4}{0.49}
+
+The computed delays with respect to the chosen $V_{DD}\pm 0.2V$ and with respect to the chosen $W_P$ can be seen in the figures \ref{fig:0.3_delay}, \ref{fig:0.3_delay} \ref{fig:0.6_delay} and \ref{fig:0.6_delay}. The dotes are the actual values computed while the the lines are fitted line with a degree of 5 to aid in the visualisation of the trends regardig the variables.
+
+\imagesidebyside{figures/aimspice/variableVDD/CSV_time/propagation_delays_graph.png}{Propagnation delay}{figures/aimspice/variableVDD/CSV_time/rise_fall_times_graph.png}{Rise and fall time}{Delay and times when $W_N=0.1u$, $L_N=0.1u$, $P_W=0.3u$ and $L_P=0.1u$}{0.6_delay}{0.49}
+
+\imagesidebyside{figures/aimspice/variableParam/CSV_time/propagation_delays_graph.png}{Propagnation delay}{figures/aimspice/variableParam/CSV_time/rise_fall_times_graph.png}{Rise and fall time}{Delay and times when $V_{DD}=0.6V$, $W_N=0.1u$, $L_N=0.1u$ and $L_P=0.1u$}{0.3_delay}{0.49}

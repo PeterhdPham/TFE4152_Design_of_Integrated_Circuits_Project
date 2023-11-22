@@ -24,10 +24,10 @@ def generate_title(filename):
 
 # Dictionary to map simulation identifiers to descriptions
 simulation_descriptions = {
-    'I05': 'Static power leakage when D:0, Clk:0, Res:1, Q:0',
-    'I07': 'Static power leakage when D:1, Clk:0, Res:1, Q:0',
-    'I09': 'Static power leakage when D:0, Clk:0, Res:1, Q:1',
-    'I11': 'Static power leakage when D:1, Clk:0, Res:1, Q:1',
+    'I05': 'Static power leakage for simulation I1',
+    'I07': 'Static power leakage for simulation I2',
+    'I09': 'Static power leakage for simulation I3',
+    'I11': 'Static power leakage for simulation I4',
     }
 
 corners = ['TT', 'FF'] 
@@ -51,7 +51,7 @@ def extract_params_from_config_name(config_name):
     }
     return params
 
-def plot_leakage_data(leakage_data, ylabel, output_filename, output_leakage_current_path, corners):
+def plot_leakage_data(leakage_data, ylabel, output_filename, output_leakage_current_path, corners, sim):
     bar_width = 0.15
     index = np.arange(len(sorted_temperatures))
     colors = ['salmon', 'paleturquoise', 'palegoldenrod', 'palegreen', 'palevioletred']
@@ -66,7 +66,7 @@ def plot_leakage_data(leakage_data, ylabel, output_filename, output_leakage_curr
     ax.set_xticks(index + bar_width * 2)
     ax.set_xticklabels(sorted_temperatures)
     ax.legend()
-
+    ax.set_title(f"{simulation_descriptions[sim]}")
     plt.tight_layout()
     plt.savefig(os.path.join(output_leakage_current_path, output_filename))
     plt.close(fig)
@@ -196,8 +196,8 @@ for config in config_dirs:
         print(f"{processed_files}/{total_files}")
 
         sorted_temperatures = sorted(leakage_current_data.keys(), key=int)
-        plot_leakage_data(leakage_current_data, 'Leakage Current (A)', f"leakage_current_{simulation_id}.png", output_leakage_data_path, corners)
-        plot_leakage_data(leakage_power_data, 'Leakage Power (W)', f"leakage_power_{simulation_id}.png", output_leakage_data_path, corners)
+        plot_leakage_data(leakage_current_data, 'Leakage Current (A)', f"leakage_current_{simulation_id}.png", output_leakage_data_path, corners, simulation_id)
+        plot_leakage_data(leakage_power_data, 'Leakage Power (W)', f"leakage_power_{simulation_id}.png", output_leakage_data_path, corners, simulation_id)
 
 
 
