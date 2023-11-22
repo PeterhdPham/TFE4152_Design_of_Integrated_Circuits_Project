@@ -5,5 +5,22 @@
 
 
 \import{./FSM}{FSM.tex}
+The full system will look like this figure: 
+\importimagewcaption{figures/drawio/Digital/FULL.PNG}{Total System}
+The verilog code is based on the figure above: 
+\begin{lstlisting}
+    module AWESOME_VOL_3 ( A ,B, C ,RUN ,CLK ,RESET );	
+    input [0:1] A ;
+    input [0:1] B ;
+    input RUN ;
+    input CLK ;
+    input RESET ;
+    inout [0:7] C ; 
+    
+    FSM3 TEST_fsm ( .RUN_(RUN) ,.CLK(CLK) ,.RESET(RESET) ,.CLK_OUT(clk_out), .RESET_OUT(RESET_OUT));
+    MAC MAC1( .A(A) ,.B(B) ,.Y(C) ,.CLK1(clk_out) ,.RESET(RESET_OUT) );   
+    endmodule
+\end{lstlisting}
+
 \import{./}{AIMSpice.tex}
 
