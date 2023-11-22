@@ -1,7 +1,7 @@
 \subsubsection{Result MAC}
 For testing the MAC-unit, we tested the subcirciuts, multipliers, adder, and 8-bit register seperarly.
 
-For testing the\textbf{multiplier} we tested it with all possible combination of two 2-bit product, as shown in the testbench.. 
+For testing the \textbf{multiplier} we tested it with all possible combination of two 2-bit product, as shown in the testbench.. 
 \begin{lstlisting}
     `timescale 1 ns / 1 ps
 module TESTMULTIPLIER;
@@ -30,11 +30,11 @@ module TESTMULTIPLIER;
 	end
 endmodule
 \end{lstlisting}
-
-The simulations showed excepted output($C$) value, of all $A$ and $B$ input, showed in figure
 \importimagewcaption{figures/Verylog/Simulation_multiplier.PNG}{Simulation of the multiplier}
 
-For testing the \textbf{8-bit register} we set the input($b[0:7]$) to a random 8-bit value. As the same time sent in a reset input in the middle of the clk- signal to check the asychron reset. 
+The simulations showed excepted product output($C$) value, of all $A$ and $B$ inputs combination, showed in Figure \ref{fig:figures/Verylog/Simulation_multiplier.PNG}.
+
+For testing the \textbf{8-bit register} we set the input($b[0:7]$) to a random 8-bit value for every 12$ns$. The input was set to $RESET_{OUT}=0$ in the middle of the inputsignal $CLK_{OUT}$ - this way we could ceritfy that it is in fact asychron reset. 
 
 \begin{lstlisting}
 module TESTEIGHTBREG;
@@ -60,9 +60,10 @@ endmodule
 \end{lstlisting}
 
 \importimagewcaption{figures/Verylog/Simulation_register.PNG}{Simulation of the 8-bits register}
+The result for the 8-bit register, illustrated in Figure  \ref{fig:figures/Verylog/Simulation_register.PNG} happened as excepted: The $RESET_{OUT}$ inputsignal, were in fact asychron as it reset the output in the middle of $CLK_{OUT}$ signal, marked with a red circle on the Figure \ref{fig:figures/Verylog/Simulation_register.PNG}. The 8-bit register got also only updated in the rising clock edge of $CLK_{OUT}$, offcours when $RESET_{OUT}=1$. 
 
 
-For testing the \textbf{Adding} part, we set first two extrem scenarios on the testbench, and then random inputs- to see if it behaved as it should do
+For testing the \textbf{Adding} part, we inteded to test two extreme scenario where both input, $q$ and $C$ were zero, and when $q$=255 and $C$=1, by testing this we would see what would happend in the begining and in the end (if the MAC-unit output gets up to 255 in the 8-bit register). Afterward we set in random inputs for - to see if it behaved as it should do for any random number, this was updated in every 10ns, as shown in the testbench.
 
 \begin{lstlisting}
 module TEST_ACCUMULATOR;
@@ -87,6 +88,7 @@ module TEST_ACCUMULATOR;
 endmodule	
 \end{lstlisting}
 \importimagewcaption{figures/Verylog/Simulation_adder.PNG}{Simulation of the adder}
+The output, illustrated in Figure \ref{fig:figures/Verylog/Simulation_MAC.PNG} as excepted. Testing the extremal values both had both an output 00, this is excepted since we are not considering overflow in the project, refferering to 255+1. The other values also had excepted output from the two inputs. 
 
 For testing the \textbf{MAC}, we used random inputs and tested the asychron reset.
 \begin{lstlisting}
