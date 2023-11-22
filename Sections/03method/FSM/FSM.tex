@@ -82,10 +82,14 @@ From the equations we can \ref{State equation} design a circuit with an $PAUSE$ 
 
 As mentioned we have to understand how our MAC works- the MAC is updated only by the reset signal and the CLK input to our 8-bit register. We have to modify our Finite State Machine (FSM) with these requirements, and make it to output two specific signals: $Clk_{OUT}$ and $RESET_{OUT}$. 
 
-To generate a $Clk_{OUT}$ signal, we have to design a circuit using an AND gate with three inputs: $CLK$, $RUN$, $\overline{PAUSE}$. This configuration  ensure that we get a  modified clock singal that follows the 3+1 pattern. By combining this with the $RUN$ signal, we ensure that updates to the 8-bit register occur only as it supposed to be. It is important to note that $\overline{PAUSE}$ can still be active even when $RUN$ is deactivated (0), as it primarily controls the 3+1 operation pattern of the MAC. 
+To generate a $Clk_{OUT}$ signal, we have to design a circuit using an AND gate with three inputs: $CLK$, $RUN$, $\overline{PAUSE}$. This configuration  ensure that we get a  modified clock singal that follows the 3+1 pattern. By combining this with the $RUN$ signal, we ensure that updates to the 8-bit register occur only as it supposed to be. It is important to note that $\overline{PAUSE}$ can still be active even when $RUN$ is deactivated (0), as it primarily controls the 3+1 operation pattern of the MAC. To synch the $RUN$ with the $CLK$ we also have made an D-flip flop. The $RUN$ in the equations in \ref{State equation}, is now the $Q$ output from this D-flip flop, and the $\overline{Q}$ output is $\overline{\text{RUN}}$  .
 
 
 The $RESET_{OUT}$ is desigend by using the same flip-flop configuration as used in the state circuit. With this approach $RESET_{OUT}$, represented by the $\overline{Q}$ output from the Flip-Flops, is updated only on the rising clock edge. At the same time the $RESET$ in the equations in \ref{State equation}, is now the $Q$ output from this flip-flop. This setup ensures that the $PAUSE$ output does not update except on the rising edge of the clock.
+
+The rescult for this FSM is shown in Figure \ref{fig:figures/drawio/RTL/RTL_FSM_no_delay.png}
+
+\importimagewcaption{figures/drawio/RTL/RTL_FSM_no_delay.png}{FSM with two output: $RESET_{OUT$}, $CLK_{OUT$}}
 
 
 Figure av hele FSM
