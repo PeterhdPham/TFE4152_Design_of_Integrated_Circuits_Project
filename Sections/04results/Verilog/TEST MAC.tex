@@ -88,9 +88,10 @@ module TEST_ACCUMULATOR;
 endmodule	
 \end{lstlisting}
 \importimagewcaption{figures/Verylog/Simulation_adder.PNG}{Simulation of the adder}
-The output, illustrated in Figure \ref{fig:figures/Verylog/Simulation_MAC.PNG} as excepted. Testing the extremal values both had both an output 00, this is excepted since we are not considering overflow in the project, refferering to 255+1. The other values also had excepted output from the two inputs. 
+The output, illustrated in Figure \ref{fig:figures/Verylog/Simulation_adder.PNG} as excepted. Testing the extremal values both had both an output 00, this is excepted since we are not considering overflow in the project, refferering to 255+1. The other values also had excepted output from the two inputs. 
 
-For testing the \textbf{MAC}, we used random inputs and tested the asychron reset.
+
+For testing the \textbf{MAC}, we used similiar method in the testbench for the Accumulator and 8-bits register. The input value, $A$ and $B$ were set to a random value every 10ns, as well as we set $RESET=0$ in the middle of the $CLK1$ signal.
 \begin{lstlisting}
     `timescale 1 ns / 1 ps
 module TEST_MAC;
@@ -121,5 +122,6 @@ module TEST_MAC;
 endmodule	
 \end{lstlisting}
 \importimagewcaption{figures/Verylog/Simulation_MAC.PNG}{Simulation of the MAC}
+The result for the MAC, illustrated in Figure \ref{Simulation of the MAC}, showed excepted behaviour. As it perfomed $Y$$\leftarrow$$ Y+ A*B $. The marked circle in the Figure \ref{fig:figures/Verylog/Simulation_MAC.PNG}, highlights the asychron reset and the reset of $Y$.
 
 

@@ -1,8 +1,9 @@
 \subsubsection{Result FSM}
-Testing the FSM, we tried three scenario, what happend when there is no updates in run and rest. when reset goes up in the middle of the clock cycle, and the same when run goes down.
+Testing the FSM, we tried three scenario, what happend when there is no updates in run and rest, an ideal scenario, when the input reset goes high in the middle of the clock cycle, and when run goes low in the middle of a clock cyckle.
 
 \begin{enumerate}
-    \item Run=1, Reset=0
+    \item \textbf{Ideal(RUN=1, RESET=0)}
+    The tesbench for the ideal scenario:
     \begin{lstlisting}
 module TESTFSM3;
 	reg run;
@@ -30,53 +31,25 @@ endmodule
     \end{lstlisting}
 
     \importimagewcaption{figures/Verylog/Simulation_FSM1.PNG}{IDEAL}
+    The simulation for the ideal scenario is shown in Figure \ref{fig:figures/Verylog/Simulation_FSM1.PNG}. The $CLK_{OUT}$ output follows a clearly 3 clock cycle with one pause cycle. The $PAUSE$ wire is also shown in the simulation to make it clear to see when this is 1. Something unexcepted is the first cycle $CLK_{OUT}$ should have started a $CLK$ period earlier, but as the same time this might be alright as the completed MAC-unit(with FSM)-the first multiplication will be 0 (as there haven’t been any results to accumulate).
     
-    \item Run=1, Reset sudenly 1
+    \item \textbf{RUN=1, RESET sudenly 1}
+    The testbench for this scenario is identical to the previous testbench for the ideal scenario, excecpt that the $reset$ initializing has been updated as shown:
 \begin{lstlisting} 
-    module TESTFSM3;
-	reg run;
-	reg reset;
-	reg clk;
-	wire pause; 
-	wire RESET_OUT;	
-	FSM3 FSM_3( .RUN_(run) ,.CLK(clk) ,.RESET(reset) ,.CLK_OUT(CLK_out),.RESET_OUT(RESET_OUT));	
-	initial begin
-		clk=1'b0; forever #1	clk=~clk;
-	end
 	initial begin
 		reset=1'b1; #6; reset=1'b0; #32; reset=1'b1; #10; reset=1'b0;
 	end	
-	initial begin
-		run=1'b1;	
-	end;
-	initial begin
-		#100 $finish;
-	end
-endmodule
 \end{lstlisting}
+Figure\ref{figures/Verylog/Simulation_FSM2.PNG} illustrates that the $PAUSE$ wire(wich is directly depented on the $RESET$ input) and the $RESET_{OUT}$ does not get updated before the rising edge of the $CLK$ signal, marked with the red lines in the figure. This is what was inteded, to ensure that the 8-bit register with the asychron reset, only gets updated with rising edge of the $CLK$-signal. After the $RESET=1$ cycle, its clearly illustrated that $CLK_{OUT}$ restart 3+1 pattern. As mentioned in the previous scenario, $CLK_{OUT}$ starts one $CLK$ cycle later as excepted after the $RESET=1$ signal, but again this might be allright after assembling the FSM with the MAC.
 \importimagewcaption{figures/Verylog/Simulation_FSM2.PNG}{RESET}
-\item suddenly RUN
+\item \textbf{RESET=0, RUN suddenly 0}
+    The testbench for this scenario is identical to the testbench for the ideal scenario, excecpt that the $run$ initializing has been updated as shown:
 \begin{lstlisting} 
-    module TESTFSM3;
-	reg run;
-	reg reset;
-	reg clk;
-	wire pause; 
-	wire RESET_OUT;	
-	FSM3 FSM_3( .RUN_(run) ,.CLK(clk) ,.RESET(reset) ,.CLK_OUT(CLK_out),.RESET_OUT(RESET_OUT));	
-	initial begin
-		clk=1'b0; forever #1	clk=~clk;
-	end
-	initial begin
-		reset=1'b1; #6; reset=1'b0; 
-	end	
 	initial begin
 		run=1'b1; #26; run=1'b0; #10; run=1'b1;	
 	end;
-	initial begin
-		#100 $finish;
-	end
-endmodule
 \end{lstlisting}
-\importimagewcaption{figures/Verylog/Simulation_FSM2.PNG}{RUN}
+\importimagewcaption{figures/Verylog/Simulation_FSM3.PNG}{RUN}
+
 \end{enumerate}
+Figure \ref{fig:figures/Verylog/Simulation_FSM3.PNG} illustrates a sudenly change in RUN_.  CLK dosen't get updated input while RUN_=0, and after RUN_=1 it gets updated at the rising edge of the CLK signal, and contious the 3+1 pattern from where it was before getting interrupted. 
