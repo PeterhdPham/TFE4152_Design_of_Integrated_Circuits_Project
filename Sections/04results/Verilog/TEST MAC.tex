@@ -1,4 +1,123 @@
 \subsubsection{Result MAC}
-Testbench and result for \textbf{Half Adder}, based on the truthtable for the half adder
-\importimagewcaptionw{figures/verilog/Half-adderer.png}{Simulation Halfadder}{}
+For testing the MAC-unit, we tested the subcirciuts, multipliers, adder, and 8-bit register seperarly.
+
+For testing the\textbf{multiplier} we tested it with all possible combination of two 2-bit product, as shown in the testbench.. 
+\begin{lstlisting}
+    `timescale 1 ns / 1 ps
+module TESTMULTIPLIER;
+	reg [0:1] a;  
+	reg [0:1] b;
+	wire [0:3] c;  
+	Multiplier testmultiplikator( .A(a), .B(b), .C(c) );	// Test all combinations
+  	initial begin
+		  a[1]=1'b0; 
+		  forever #5 a[1]=~a[1];
+	  end
+	  initial begin
+		  a[0]=1'b0; 
+		  forever #10 a[0]=~a[0];
+		  end
+	initial begin
+		  b[1]=1'b0; 
+		  forever #20 b[1]=~b[1];
+	end 
+	initial begin
+		  b[0]=1'b0; 
+		  forever #40 b[0]=~b[0];
+	  end
+	initial begin
+		#80 $finish; // End the simulation
+	end
+endmodule
+\end{lstlisting}
+
+The simulations showed excepted output($C$) value, of all $A$ and $B$ input, showed in figure
+\importimagewcaption{figures/Verylog/Simulation_multiplier.PNG}{Simulation of the multiplier}
+
+For testing the \textbf{8-bit register} we set the input($b[0:7]$) to a random 8-bit value. As the same time sent in a reset input in the middle of the clk- signal to check the asychron reset. 
+
+\begin{lstlisting}
+module TESTEIGHTBREG;
+	reg [0:7] B;
+	reg clk_out;
+	reg reset_out; 
+	wire [0:7] Q ;	
+	EIGHT_B_REG EIGHTB( .b(B) ,.CLK_Out(clk_out) ,.RESET_Out(reset_out) ,.q(Q) ); 
+	initial begin
+		clk_out=1'b0;
+		forever #10	clk_out=~clk_out;
+	end	  
+	initial begin
+		reset_out =1'b0;  #15; reset_out =1'b1; #20; reset_out =1'b0; #5; reset_out=1'b1;
+	end	 
+	initial begin
+  		forever	 #12 B = $random; //random 8-bit value as input
+	end	
+	initial begin
+		#100 $finish;
+	end	  
+endmodule	
+\end{lstlisting}
+
+\importimagewcaption{figures/Verylog/Simulation_register.PNG}{Simulation of the 8-bits register}
+
+
+For testing the \textbf{Adding} part, we set first two extrem scenarios on the testbench, and then random inputs- to see if it behaved as it should do
+
+\begin{lstlisting}
+module TEST_ACCUMULATOR;
+	reg [0:7] Q;
+	reg [0:3] c;
+	wire [0:7] B;  
+	Accumulator TESTACCUMULATOR( .q(Q) ,.C(c) ,.b(B) );//random inputs	  
+	initial begin  //extreme scenario
+		Q=255; c=1;
+		#5
+		Q=0; c=0;
+		end
+	initial begin 
+  		forever	 #10 Q = $random;
+	end	  
+	initial begin
+  		forever	 #10 c = $random;
+	end	
+	initial begin
+		#100 $finish;
+	end	  
+endmodule	
+\end{lstlisting}
+\importimagewcaption{figures/Verylog/Simulation_adder.PNG}{Simulation of the adder}
+
+For testing the \textbf{MAC}, we used random inputs and tested the asychron reset.
+\begin{lstlisting}
+    `timescale 1 ns / 1 ps
+module TEST_MAC;
+	reg [0:1] a;
+	reg [0:1] b;
+	reg clk;
+	reg reset;
+	wire [0:7] y;
+	MAC TESTMAC ( .A(a) ,.B(b) ,.Y(y) ,.CLK1(clk) ,.RESET(reset) );	
+	initial begin
+		reset=1'b0; #10; reset=1'b1; #22; reset=1'b0; #10; reset=1'b1;	
+	end
+		initial begin
+			a = 2'b01;
+  		forever	 #10 a = $random;
+        end	  
+	initial begin
+		b=2'b01;
+  		forever	 #10 b = $random;
+	end	
+	initial begin
+		clk=1'b0;
+		forever #5	clk=~clk;
+	end	
+	initial begin
+		#100 $finish;
+	end	
+endmodule	
+\end{lstlisting}
+\importimagewcaption{figures/Verylog/Simulation_MAC.PNG}{Simulation of the MAC}
+
 

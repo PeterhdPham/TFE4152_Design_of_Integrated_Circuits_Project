@@ -9,7 +9,7 @@ In designing our FSM, we used a structured approach inspired by  \cite{allaboute
     \item Draw a logic circuit
 \end{enumerate}
 For \textbf{defining the purpose of the purpose} we have to considered the project's specific criteria and the functional necessities of our MAC unit. The key criteria include:
-\begin{enumerate}
+\begin{itemize}
     \item The FSM has three inputs($CLK$, $RESET$, $RUN$).
     \begin{enumerate}
         \item $RESET$: A binary signal indicating when the circuit should reset
@@ -23,11 +23,11 @@ For \textbf{defining the purpose of the purpose} we have to considered the proje
         \item If Reset=1, , the MAC sequence resets, restarting with three operations followed by a pause when $RESET$ return to 0
     \end{enumerate}
     \item The FSM’s state should only be updated at the positive edge of the $CLK$ signal.
-\end{enumerate}
+\end{itemize}
 
 Our MAC unit updates with the rising edge of the $CLK$ input to our 8-bit register. The plan is to generate a signal indicating the state where output $PAUSE$=1.
 
-For this we designed a \textbf{Statediagram} as shown in figure ... 
+For this we designed a \textbf{Statediagram} illustrated in Figure \ref{fig:figures/drawio/Digital/State_diagram.png}
 
 \importimagewcaptionw{figures/drawio/Digital/State_diagram.png}{State diagram with PAUSE output}{0.6}
 

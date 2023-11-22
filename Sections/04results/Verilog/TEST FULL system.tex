@@ -2,4 +2,111 @@
 To see the results we used verilog as mentioned.
 \import{./Verilog}{TEST MAC.tex}
 \import{./Verilog}{TEST FSM.tex}
+\subsubsection{FULL SYSTEM}
+Full wrong- delta delay
 
+\importimagewcaption{figures/Verylog/FULL.wrong.PNG}{WRONG}
+
+\begin{lstlisting}
+    module TEST_AWESOME_3;
+
+	reg run;
+	reg clk;
+	reg reset;
+	wire [0:7] c;
+	reg [0:1] a;
+	reg [0:1] b;
+	AWESOME_VOL_3 A3( .A(a) ,.B(b), .C(c) ,.RUN(run) ,.CLK(clk) ,.RESET(reset) );	
+	initial begin
+			a = 2'b11;
+		end	  
+	initial begin
+		b=2'b01;
+	end	
+	initial begin
+		clk=1'b0;
+		forever #1	clk=~clk;
+	end
+	initial begin
+		reset=1'b1;
+		#2;
+		reset=1'b0;
+	end;
+	initial begin  
+		run=1'b1;
+	end;
+	initial begin
+		#100 $finish;
+	end
+endmodule
+\end{lstlisting}
+
+skriv at det er delta delay- hva vi gjorde legg til bilde av med de ekstra klokkene
+\importimagewcaption{figures/Verylog/FULL.right_ideal.PNG}{IDEAL}
+
+\begin{lstlisting}
+    module TEST_AWESOME_3;
+
+	reg run;
+	reg clk;
+	reg reset;
+	wire [0:7] c;
+	reg [0:1] a;
+	reg [0:1] b;
+	AWESOME_VOL_3 A3( .A(a) ,.B(b), .C(c) ,.RUN(run) ,.CLK(clk) ,.RESET(reset) );	
+	initial begin
+			a = 2'b11;
+		end	  
+	initial begin
+		b=2'b01;
+	end	
+	initial begin
+		clk=1'b0;
+		forever #1	clk=~clk;
+	end
+	initial begin
+		reset=1'b1; #2; reset=1'b0; #32; reset=1'b1; #10;reset=1'b0;	
+	end;
+	initial begin  
+		run=1'b1;
+	end;
+	initial begin
+		#100 $finish;
+	end
+endmodule
+\end{lstlisting}
+\importimagewcaption{figures/Verylog/FULL.RESET.PNG}{RESET}
+\begin{lstlisting}
+    module TEST_AWESOME_3;
+
+	reg run;
+	reg clk;
+	reg reset;
+	wire [0:7] c;
+	reg [0:1] a;
+	reg [0:1] b;
+	AWESOME_VOL_3 A3( .A(a) ,.B(b), .C(c) ,.RUN(run) ,.CLK(clk) ,.RESET(reset) );	
+	initial begin
+			a = 2'b11;
+		end	  
+	initial begin
+		b=2'b01;
+	end	
+	initial begin
+		clk=1'b0;
+		forever #1	clk=~clk;
+	end
+	initial begin
+		reset=1'b1;
+		#2;
+		reset=1'b0;
+	end;
+	initial begin  
+		run=1'b1; #32; run=1'b0; #10; run=1'b1;
+	end;
+	initial begin
+		#100 $finish;
+	end
+endmodule
+\end{lstlisting}
+\importimagewcaption{figures/Verylog/FULL.RUN.PNG}{RUN}
