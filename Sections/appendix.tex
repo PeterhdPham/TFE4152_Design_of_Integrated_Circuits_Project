@@ -1,5 +1,8 @@
-\section{Appendix}
-\subsection{Aimspice}
+\section*{Appendix}
+\addcontentsline{toc}{section}{Appendix}
+
+\textbf{A AIMSPice Code}
+\addcontentsline{toc}{subsection}{A AIMSPice Code}
 
 \begin{lstlisting}
 * --------------------------------------------------------------
@@ -55,6 +58,9 @@
 .ends
 \end{lstlisting}
 
+\textbf{A.1 Scenarios}
+\addcontentsline{toc}{subsubsection}{A.1 Scenarios}
+
 \begin{lstlisting}
 *inputScenarioW1.cir:
 
@@ -75,8 +81,8 @@ vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 35n 80n)
 .tran 0.0001n 200n 10n
 \end{lstlisting}
 
-inputScenarioW3.cir:
 \begin{lstlisting}
+*inputScenarioW3.cir:
 *Waveform: To Test the Synchronous Reset
 vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
 vres Reset 0 pulse (vdd_value 0 5n 0.1n 0.1n 10n 40n)       
@@ -120,6 +126,9 @@ vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)
 .tran 0.01 9000n 5100n
 \end{lstlisting}
 
+\textbf{A.2 Device parameters}
+\addcontentsline{toc}{subsubsection}{A.2 Device parameters}
+
 \begin{lstlisting}
 * param.cir:
 
@@ -143,13 +152,11 @@ vdd 1 0 vdd_value
 \end{lstlisting}
 
 
+% Adding the second appendix section with an alphabetical label
+\textbf{B. Verilog Code}
+\addcontentsline{toc}{subsection}{B. Verilog Code}
 
-\begin{lstlisting}
-* Device parameters for N-MOSFETs:
-.param N_Width= 0.1u
-.param N_Length = 0.1u
+% Subsections of the second appendix section
+\textbf{A.1 Scenarios}
+\addcontentsline{toc}{subsubsection}{A.1 Scenarios}
 
-* Device parameters for P-MOSFETs:
-.param P_Width= 0.3u
-.param P_Length = 0.1u
-\end{lstlisting}
