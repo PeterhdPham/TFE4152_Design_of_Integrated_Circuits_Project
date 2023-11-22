@@ -5,7 +5,7 @@ The \textbf{D-flip flop} (DFF) circuit is based on figure ...ref.. in section...
 \imagesidebyside{figures/drawio/Logic/LOGIC_DFF.png}{Without reset input}{figures/drawio/Logic/LOGIC_DFF_with_reset.png}{With reset input}{Diagram of a DFF}{DFF}{0.49}
 D-flip flop with asychron reset designed in verilog:
 \begin{lstlisting}
-module Dflipflop( CLK ,RESET ,DATA ,Q);
+module Async_flipflop( CLK ,RESET ,DATA ,Q);
 input CLK ;
 input RESET ;
 input DATA ;
@@ -28,14 +28,14 @@ input CLK_Out ;
 input RESET_Out ;
 output [0:7] q ;
 
-Dflipflop u0 (	.CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[0]) ,.Q(q[0])); 
-Dflipflop u1 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[1]) ,.Q(q[1]));
-Dflipflop u2 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[2]) ,.Q(q[2]));
-Dflipflop u3 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[3]) ,.Q(q[3]));
-Dflipflop u4 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[4]) ,.Q(q[4]));
-Dflipflop u5 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[5]) ,.Q(q[5]));
-Dflipflop u6 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[6]) ,.Q(q[6]));
-Dflipflop u7 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[7]) ,.Q(q[7]));
+Async_Dflipflop u0 (	.CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[0]) ,.Q(q[0])); 
+Async_Dflipflop u1 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[1]) ,.Q(q[1]));
+Async_Dflipflop u2 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[2]) ,.Q(q[2]));
+Async_Dflipflop u3 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[3]) ,.Q(q[3]));
+Async_Dflipflop u4 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[4]) ,.Q(q[4]));
+Async_Dflipflop u5 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[5]) ,.Q(q[5]));
+Async_Dflipflop u6 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[6]) ,.Q(q[6]));
+Async_Dflipflop u7 ( .CLK(CLK_Out) ,.RESET(RESET_Out) ,.DATA(b[7]) ,.Q(q[7]));
 endmodule
 \end{lstlisting}
 
