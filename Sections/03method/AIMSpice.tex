@@ -2,9 +2,9 @@
 In the AIMSpice part of this project the 1-bit version of the register from sec \ref{sec:Method for Accumulater} i.e. a single DFF with reset from figure \ref{subfig:figures/drawio/Logic/LOGIC_DFF_with_reset.png} have been simulated, with a desire for minimizing the static leakage power consumption while keeping the functionality for all the corners mentioned in sec \ref{sec:Process corners} and the temperatures $0^o C$, $27^o C$ and $70^o C$. The timings mentioned in sec \ref{sec:Delays} and the maximizing of noise margins explained in sec \ref{sec:CMOS} were also taken into consideration when chosing the parameters for the simulations.
 
 \subsubsection{AIMSpice-implementation}
-The DFF were simulated using gpdk 90nm technology, where the implementation at a transistor level can be seen in Fig. \ref{fig:figures/drawio/Transistor/transistor_circuit_DFF.png}. Here NAND21 and NAND22 represents the 2-input NAND gates in figure \ref{subfig:figures/drawio/Logic/LOGIC_DFF_with_reset.png} while NAND31-NAND34 represents the 3-input NANDS. A, B and C are the inputs of each NAND gate and O represents the output from the gates.
+The DFF were simulated using gpdk 90nm technology, where the implementation at a transistor level can be seen in Fig. \ref{fig:figures/drawio/Transistor/whole_transistors_only.png}. Here NAND21 and NAND22 represents the 2-input NAND gates in figure \ref{subfig:figures/drawio/Logic/LOGIC_DFF_with_reset.png} while NAND31-NAND34 represents the 3-input NANDS. A, B and C are the inputs of each NAND gate and O represents the output from the gates.
 
-\importimagewcaptionh{figures/drawio/Transistor/transistor_circuit_DFF.png}{The implemented DFF at a transistor level}{0.95}
+\importimagewcaptionh{figures/drawio/Transistor/whole_transistors_only.png}{The implemented DFF at a transistor level}{0.95}
 
 Given the theoretical background provided in sec \ref{sec:CMOS}, and the constraints of the technology (90nm) and from the problem, an assumption of how adjusting the MOSFET parameters can help achieve the the desired characteristics: 
 
@@ -24,7 +24,7 @@ Given the theoretical background provided in sec \ref{sec:CMOS}, and the constra
 
     \item \textbf{Supply Voltage $0V\leq V_{DD}\leq 1V$:}
     \begin{itemize}
-        \item Lowering $V_{DD}$ is another effective way to reduce static leakage power (Equation \ref{eq:leakage_power}). However, this also reduces the drive strength as a lower $V_{DD}$ will lead to a lower $V_{DS}$ given the transistor level circuit from Fig. \ref{fig:figures/drawio/Transistor/transistor_circuit_DFF.png}, affecting the circuit's performance. As a reduced $V_{DD}$ implies a reduced $V_{GS}$ we can see from Equation \ref{eq:parasitic_resistance} that this will lead to a slower circuit.
+        \item Lowering $V_{DD}$ is another effective way to reduce static leakage power (Equation \ref{eq:leakage_power}). However, this also reduces the drive strength as a lower $V_{DD}$ will lead to a lower $V_{DS}$ given the transistor level circuit from Fig. \ref{fig:figures/drawio/Transistor/whole_transistors_only.png}, affecting the circuit's performance. As a reduced $V_{DD}$ implies a reduced $V_{GS}$ we can see from Equation \ref{eq:parasitic_resistance} that this will lead to a slower circuit.
     \end{itemize}
 
     \item \textbf{Conclusion:}
