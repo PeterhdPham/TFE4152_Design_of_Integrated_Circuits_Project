@@ -3,7 +3,7 @@
 Addition is a fundamental arithmetic operation and a cruical component of the MAC's functionality. Two ways to buildblocks for a bigger adder is with the use of half-adder and full-adder as building blocks (refer til datdig)
 
 
-The \textbf{Half Adder} is a fundamental component in digital electronics, characterized by its ability to process two single-bit inputs and produce a one-bit sum and a one-bit carry as outputs. By analyzing the Table \ref{Truthtable for Half Adder} we can derivate the Boolean expresion that define the actual circuit for the Half Adder.
+The \textbf{Half Adder} is a fundamental component in digital electronics, characterized by its ability to process two single-bit inputs and produce a one-bit sum and a one-bit carry as outputs. The Table \ref{Truthtable for Half Adder} gives the Boolean expresion that define the actual circuit for the Half Adder.
 
 
 \begin{table}[H]
@@ -22,7 +22,7 @@ The \textbf{Half Adder} is a fundamental component in digital electronics, chara
     \end{tabular}
 \end{table}
 
-From the Table \ref{Truthtable for Half Adder},  we get this Boolean expresion:
+From the Table \ref{Truthtable for Half Adder},  gives this Boolean expresion:
 \begin{equation}
     \begin{aligned}
         Sum&=\overline{A}B+A\overline{B}\\
@@ -37,7 +37,7 @@ From the Table \ref{Truthtable for Half Adder},  we get this Boolean expresion:
 
 
 While the Half-Adder is adept at managing basic binary addition involving two single-bit inputs, it lacks the capability to handle $Carry$ from previous additions, which is crucial in multi-bit arithmetic operations.
-Unlike the Half Adder, a \textbf{Full Adder} not only processes two input bits, like the Half Adder, but it also has an additional input for the carry bit from previous additions. This feature makes the Full Adder an essential component in more complex arithmetic logic, as it can manage both the current and carried values. By analyzing the Table \ref{Truthtable for Full Adder} we can derivate the Boolean expresiion that define the actual circuit for the Half Adder. 
+Unlike the Half Adder, a \textbf{Full Adder} not only processes two input bits, like the Half Adder, but it also has an additional input for the carry bit from previous additions. This feature makes the Full Adder an essential component in more complex arithmetic logic, as it can manage both the current and carried values. The Table \ref{Truthtable for Full Adder} gives the Boolean expresiion that define the actual circuit for the Half Adder. 
 \begin{table}[H]
     \centering
     \caption{Truthtable for Full Adder} \label{Truthtable for Full Adder}
@@ -57,7 +57,7 @@ Unlike the Half Adder, a \textbf{Full Adder} not only processes two input bits, 
     \end{tabular}
     
 \end{table}
-From Table \ref{Truthtable for Half Adder}, we get this Boolean expresion:
+Table \ref{Truthtable for Half Adder} gives this Boolean expresion:
 \begin{equation}
     \begin{aligned}
         Sum&=\overline{A}B\overline{C}+A\overline{B}\overline{C_{\text{in}}}+\overline{A}\overline{B}C_{\text{in}}+ABC_{\text{in}}\\
