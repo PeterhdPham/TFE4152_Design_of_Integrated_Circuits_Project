@@ -1,8 +1,8 @@
 \subsubsection{Method for Accumulater}
- 
-The \textbf{D-flip flop with asychron} circuit is based on figure ...ref.. in section.... By assembling eight D-flip flop with eight data inputs $b[0:7]$ and corresponding $q[0:7]$ outputs, we make an \textbf{(8-bit register)}. The registers are connected in parallell by having shared $RESET$ and $CLK$ input. 
-!SKRIV MER OM REGISTER-BEGGE SIN DEL SKAL KOMME HER!
 
+The \textbf{D-flip flop} (DFF) circuit is based on figure ...ref.. in section.... By assembling eight D-flip flop with eight data inputs $b[0:7]$ and corresponding $q[0:7]$ outputs, we make an \textbf{(8-bit register)}. The registers are connected in parallell by having shared $RESET$ and $CLK$ input. 
+
+\imagesidebyside{figures/drawio/Logic/LOGIC_DFF.png}{Without reset input}{figures/drawio/Logic/LOGIC_DFF_with_reset.png}{With reset input}{Diagram of a DFF}{DFF}{0.49}
 D-flip flop with asychron reset designed in verilog:
 \begin{lstlisting}
 module Dflipflop( CLK ,RESET ,DATA ,Q);

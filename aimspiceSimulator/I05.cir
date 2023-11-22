@@ -1,4 +1,4 @@
-*Waveform: 1000
+*Waveform: To test static leacage current when Clk:0, Data:0, Reset:1, Q:0
 vclk Clk 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)     
 vd  Data 0 pulse    (vdd_value  0    5n     0.1n    0.1n    5000n     5001n)   
 vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)   

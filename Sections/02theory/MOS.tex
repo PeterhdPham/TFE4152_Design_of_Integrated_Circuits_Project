@@ -1,33 +1,25 @@
-\subsection{MOS}
-MOS short for metal-oxide semiconductor are as of now, the most used technology in microcircuits are MOS transistors. These circuits consist primarily of n-channel (NMOS) and p-channel (PMOS) transistors, and when a microcircuit consist of both NMOS and PMOS transistors it's called a \textit{complementary} MOS (CMOS).\cite[p. 14]{carusone_2012_analog}
-
-\importimagewcaptionw{figures/Analog_Integrated_Circuit_Design/cross_section_NMOS.png}{Cross section of a typical NMOS\cite[p. 14]{carusone_2012_analog}}{0.8}
-
-
-As seen in Fig. \ref{fig:figures/Analog_Integrated_Circuit_Design/cross_section_NMOS.png} MOS transistors consist mainly of $n^+$ source and drain region, sepparated by a $p^-$ substrate in the middle there is a gate made of Polysilicon. Depending on if whenever it is a PMOS or NMOS the transistors works as a switch where the gate voltage $V_G$ controlls current from the source region to drain region. 
-
-The properties of a MOS transistor are mainly affected of distance between the source and drain region called channel length (L) and the width of the channel (W). The supply voltage does also affect the properties ot the transistor. 
-
-Note the operation descriptions and charasteristics of the MOS transistors will be described with respect to a NMOS, PMOS wil behave mostly the same, but opposite and slower.
-
-\subsubsection{MOSFET}
-\textit{Metal-oxide-semiconductor field-effect transistor}, a voltage controlled field-effect transistor using the MOS structure. As it has almost has an infinite input impedance due to the insulating Polysilicon, there will be no current flow between the gate and the source or drain.
+\subsection{CMOS}
+CMOS short for complementary metal-oxide semiconductor are circuits that consist of both NMOS and PMOS transistors.\cite[p. 14]{carusone_2012_analog}. This technology is popular as they are both fast and consume low power. As low static leakage power is often wanted, a technique to minimize this is to use static CMOS. This technique utilizes the PMOS as pull-up (PUN) and NMOS as pull-down (PDN), this the output will be directly connected to either the $V_{DD}$ or ground with an exeption of when it is switching. This way there will never be a direct path from $V_{DD}$ to ground \cite{a2018}. From figure \ref{fig:static_cmos_nand} we can see an implementation of 2-input NAND and 3-Input NAND that are a typical example of a logic gate that usilises Static CMOS.
+\imagesidebyside{figures/drawio/Transistor/transisotr_nand2.png}{2 input NAND}{figures/drawio/Transistor/transistor_nand3.png}{3 input NAND}{Implementation of 2- and 3- input NANDS using static CMOS}{static_cmos_nand}{0.4}
 
 
-\subsubsection{NMOS}
-NMOS transistors works like a switch that are ``on'' when $V_G < V_{tn}$, where $V_{tn}$ is the transistor treshold voltage of the NMOS. As seen in Fig. \ref{fig:figures/Analog_Integrated_Circuit_Design/cross_section_NMOS.png} there is a thin layer of silicon dioxide ($\text{SiO}_2$) working as a insulator between the gate and the substrate. This makes the gate and the surface of the silicon behave like parallel plate capacitor. Whenever $V_G\ll0$ as seen in Fig. \ref{subfig:figures/Analog_Integrated_Circuit_Design/NMOS_off.png} the positive charge in the substrate wil be attracted to the channel region, forming the \textit{accumulated channel}. This is because the substrate is doped $p^-$ leading to the nagative voltage has increasing the channel doping to $p^+$. In this state the only current that flow between the source and drain is the leakage current.
+It is worth noticing that NMOS are faster than PMOS ``(almost twice as fast) and the ON-resistance of NMOS being half of PMOS even with the same geometry and operation condition''\cite{kusumitha_2019_why}. MOSFET technology between $0.18\mu m$ and $0.45\mu m$ have NMOS mobility of $\mu_nC_{ox}\approx 270-280 \frac{\mu A}{V^2}$ and PMOS mobility of $\mu_pC_{ox}\approx 70 \frac{\mu A}{V^2}$ \cite{carusone_2012_analog}. The relation between the channel dimmensions and the mobility og the MOSFETS
 
-In the case where $V_G\gg0$ as shown in Fig. \ref{subfig:figures/Analog_Integrated_Circuit_Design/NMOS_on.png}, the opposite happens. Now the positive voltage leads to an attraction of negative charge from the source and drain regions leading to a current flow between source and drain \cite[p. 16]{carusone_2012_analog}.
+\begin{align}
+    \mu_nC_{ox}\frac{W_n}{L_n}&=\mu_pC_{ox}\frac{W_p}{L_p}\\
+    \beta_n&=\beta_p
+    \label{eq:beta_ratio}
+\end{align}
 
-\imageontop{figures/Analog_Integrated_Circuit_Design/NMOS_off.png}{When $V_G\ll0$, there is an \textit{accumulated channel} resulting in no current flow(other than leakage current).}{figures/Analog_Integrated_Circuit_Design/NMOS_on.png}{When $V_G\gg0$, there is a channel present resulting in a current flow from drain to source}{NMOS transistor \cite[p. 17]{carusone_2012_analog}}{NMOS_transistor_on_off}{0.7}
+is desirable when making CMOS circuits as it maximizes noise margins, making it less prone to the output signal being corrupted. Here $W_n$ and $L_n$ is the width and lenght if the NMOS, while $W_n$ and $L_n$ is the width and lenght if the PMOS. As the MOSFET length are usally the chosen as same for both transistors, the desired behavior can de described as the beta ratio $r$ \cite[p. 90]{neilheweste_2015_cmos}
 
-
-
-\subsubsection{PMOS}
-PMOS transistors in terms of functionality works opposite of the NMOS, where it is ``on'' when $V_G > V_{tp}$ because it uses p-type dopants in the gate region. \cite{a2023_definition}. It also differ from the NMOS by being a lot slower 2-3 times as the ``mobility of electrons are almost twice than of PMOS, the ON-resistance of NMOS will be half of PMOS(with same geometry and operating conditions).''\cite{kusumitha_2019_why}. From table 1.5 \cite[p. 53]{carusone_2012_analog} we get that the mobility of a NMOS ($\mu C_ox$) at $0.18\mu m$ is $270\frac{\mu A}{V^2}$ while the PMOS only has a value of $70\frac{\mu A}{V^2}$.
+\begin{equation}
+    r=\frac{\mu_n W_n}{\mu_p W_p}=1
+    \label{eq:betaratio}
+\end{equation}
 
 \subsubsection{Subthreshold leakage}
-In terms of MOS fransistors, there are three leakage currents that we need to take into consideration: subthreshold leakage, gate leakage, and junction leakage. \cite[p. 42]{carusone_2012_analog} Especially subthreshold leakage. The MOS is in the subthreshold region when the \textit{effective gate-source voltage} ($V_{eff}$) \cite[p. 17]{carusone_2012_analog} given by
+In terms of PMOS and NMOS transistors, there are three leakage currents that should be taken into consideration: subthreshold leakage, gate leakage, and junction leakage. \cite[p. 42]{carusone_2012_analog} Especially subthreshold leakage. The MOSFET is in the subthreshold region when the \textit{effective gate-source voltage} ($V_{eff}$) \cite[p. 17]{carusone_2012_analog} given by
 \begin{equation}
     V_{eff}\equiv V_{GS}-V_{tn}
     \label{eq:effective_gate-source_voltage}
@@ -51,10 +43,10 @@ where
     I_{D0}=(n-1)\mu_nC_{ox}\left(\frac{kT}{q}\right)^2
 \end{equation}
 
-from equation \ref{eq:subthreshold_current} we can se that the current $I_{D(sub-th)}\neq 0$ when $V_{GS}=0V$. This is the so called \textit{subthreshold leakage} given by 
+from equation \ref{eq:subthreshold_current} the current $I_{D(sub-th)}\neq 0$ when $V_{GS}=0V$. This is the so called \textit{subthreshold leakage} given by 
 
 \begin{equation}
-    \mathrm{I}_{\mathrm{off}}=\mathrm{I}_{\mathrm{DO}}\left(\frac{\mathrm{W}}{\mathrm{L}}\right) \mathrm{e}^{\left(-\mathrm{q} \mathrm{V}_{\mathrm{t}} / \mathrm{nkT}\right)}=(\mathrm{n}-1) \mu_{\mathrm{n}} \mathrm{C}_{\mathrm{ox}}\left(\frac{\mathrm{W}}{\mathrm{L}}\right)\left(\frac{\mathrm{kT}}{\mathrm{q}}\right)^2 \mathrm{e}^{\left(-\mathrm{qV} \mathrm{V}_{\mathrm{t}} / \mathrm{nkT}\right)}
+    \mathrm{I}_{\mathrm{off}}=\mathrm{I}_{\mathrm{DO}}\left(\frac{\mathrm{W}}{\mathrm{L}}\right) \mathrm{e}^{\left(-\mathrm{q} \mathrm{V}_{\mathrm{t}} / \mathrm{nkT}\right)}=(\mathrm{n}-1) \mu_{\mathrm{n}} \mathrm{C}_{\mathrm{ox}}\left(\frac{\mathrm{W}}{\mathrm{L}}\right)\left(\frac{\mathrm{kT}}{\mathrm{q}}\right)^2 \mathrm{e}^{\left(-\mathrm{q} \mathrm{V}_{\mathrm{t}} / \mathrm{nkT}\right)}
     \label{eq:subthreshold_leakage}
 \end{equation}
 
@@ -62,10 +54,8 @@ This gives us the static leakage power \cite{departmentofelectronicsystemsntnu_2
 
 \begin{equation}
     P_{stat}=I_{off}\cdot V_{DD}
+    \label{eq:leakage_power}
 \end{equation}
-
-One technique used to reduce the static leakage power is to use static CMOS. This technique utilizes the PMOS as pull-up (PUN) and NMOS as pull-down (PDN), this the output will be directly connected to either the $V_{DD}$ or ground with an exeption of when it is switching. This way there will never be a direct path from $V_{DD}$ to ground \cite{a2018}. From figure \ref{fig:static_cmos_nand} we can see an implementation of 2-input NAND and 3-Input NAND that are a typical example of a logic gate that usilizes Static CMOS.
-\imagesidebyside{figures/drawio/Transistor/transisotr_nand2.png}{2 input NAND}{figures/drawio/Transistor/transistor_nand3.png}{3 input NAND}{Implementation of 2- and 3- input NANDS using static CMOS}{static_cmos_nand}{0.4}
 
 \subsubsection{Delays}
 Another thing that needs to be taken into consideration is the timings of the CMOS circuit. Which in this case is (equation below are with respect to an inverter using Static CMOS) \cite{departmentofelectronicsystemsntnu_2023_delay}
@@ -81,9 +71,10 @@ Another thing that needs to be taken into consideration is the timings of the CM
 \end{itemize}
 
 
-\importimagewcaptionw{figures/FromWeb/propagation_rise_fall.png}{The propagation delays, rise and falltimes of a NMOS transistor\cite{a2014_fig}}{0.7}
+\importimagewcaptionh{figures/FromWeb/propagation_rise_fall.png}{The propagation delays, rise and falltimes of a NMOS transistor\cite{a2014_fig}}{0.4}
 
-As described in sec \ref{sec:NMOS} the gate and surface of the silicon behaves like parallel plate capasitor, the gate capacitance $C_g$ is given by \cite[p. 18]{carusone_2012_analog}
+The gate and surface of the silicon behaves like parallel plate capasitor, the gate capacitance $C_g$ is given by \cite[p. 18]{carusone_2012_analog}
+
 \begin{equation}
     C_g=WLC_{ox}
     \label{eq:gate_capacitance}
@@ -99,7 +90,7 @@ where $C_{ox}$ is the gate capacitance per unit area. This is important as a big
     \label{eq:parasitic_resistance}
 \end{equation}
 
-Where $R_p$ is the parasitic resistance of the PMOS, $R_n$ is the parasitic resistance of the NMOS. and $\beta=\mu C_{ox}\frac{W}{L}$. This gives us the rise time
+Where $R_p$ is the parasitic resistance of the PMOS, $R_n$ is the parasitic resistance of the NMOS. This gives us the rise time
 
 \begin{equation}
     t_r=\tau_p \ln \left(\frac{V_{DD}}{0.9V_{DD}}\right)-\tau_p \ln \left(\frac{V_{DD}}{0.1V_{DD}}\right)
@@ -116,4 +107,4 @@ and fall time
 where $\tau_p=R_pC_{out}$ and $\tau_n=R_nC_{out}$, $C_{out}$ being all the capacitances. \cite{departmentofelectronicsystemsntnu_2023_delay}
 
 \subsubsection{Process corners}
-When applying an integrated circuit (IC) design to a silicon wafer, it is important to simulate processcorners that represetns the extreme scenarios of the parameters in the circuit. This is because a circuit utilising these ICs may run slower or faster then specified. To ensure that the designed ID will handle the extreme scenarios,  front end of line (FEOL) process corners are used to stresstest the IC in the scematic domain. There are 5 different corners: typical-typical (TT), fast-fast (FF), slow-slow (SS), fast-slow (FS), and slow-fast (SF) where the first letter refer to the NMOS corner and the second letter refers to the PMOS corner. These corners will simulate how the IC behaves at different switchtime speeds.
+When applying an integrated circuit (IC) design to a silicon wafer, it is important to simulate processcorners that represetns the extreme scenarios of the parameters in the circuit. This is because a circuit utilising these ICs may run slower or faster then specified. To ensure that the designed ID will handle the extreme scenarios,  front end of line (FEOL) process corners are used to stresstest the IC in the scematic domain. There are 5 different corners: typical-typical (TT), fast-fast (FF), slow-slow (SS), fast-slow (FS), and slow-fast (SF) where the first letter refer to the NMOS corner and the second letter refers to the PMOS corner. These corners will simulate how the IC behaves at different switchtime speeds.\cite{wikipediacontributors_2022_process}
