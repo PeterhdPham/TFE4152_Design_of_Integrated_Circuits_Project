@@ -1,9 +1,12 @@
 \section{Discussion}
 
+\subsection{Functionality}
+From the figures \ref{fig:aimspice_W1_0} to \ref{fig:aimspice_W3_70} we can se that the DFF iinitialised with the prefered parameters works on every corner and temperature. When measuring Leakage power for I2 and I3 we can see that the data are less consistent and there are a lot more outliers in the plots. Given that they still show a trend and some consistency we assume that this isn't a result of the DFF not working at the given state, but how we have computed the current. It was also observed that when looking closely on the output signal from the DFF the value wasn't a perfect $V_{DD}$ high or perfect low as it oscilated around these values ($\pm0.00001V$) 
+
 \subsection{Static leakage power and speed vs PMOS channel width}
 The plan to set the dimmensions $W_P=3W_N=3L_N=3L_P$ has been proven to be effective as this made it easier to try different variations without having to recalculate the ratio of both $\frac{W_P}{L_P}$ and $\frac{W_P}{L_P}$ and then adjusting it to the beta ratio from equation \ref{eq:beta_ratio} to keep the desired performance. This did however prove to be a good plan as in terms of performance as the figures \ref{fig:0.6_delay}, \ref{fig:0.6_I1_I2} and \ref{fig:0.6_I1_I2} shows that when looking at the static leakage power and delays in the region $W_P \pm 0.1\mu m$ looks similar.
 
- One can argue that static leakage power could be less around $0.2\mu M$ at the static scenario I2 and I3, but given the inconsistentcy and variation on the datapoints, one cant be to sure. Given one of the goal was to keep the beta ratio $r$ at one, we didn't test the how this affected the performance ourself, but chose to rely on the theory instead.
+ One can argue that static leakage power could be less around $0.2\mu m$ at the static scenario I2 and I3, but given the inconsistentcy and variation on the datapoints, one cant be to sure. Given one of the goal was to keep the beta ratio $r$ at one, we didn't test the how this affected the performance ourself, but chose to rely on the theory instead.
 
  \subsection{Static leakage power and speed vs supply voltage}
  From the figure \ref{fig:0.3_I1_I2} and \ref{fig:0.3_I3_I4} we can clearly se that it is a growing trend when increasing the voltage, and we would get a lower at a lower $V_{DD}$ value. However, as shown in figure \ref{fig:0.3_delay}, 0.6V marks the beginning of a plateau in regarding the delays, rise- and fall-times, implying that it's a further reductions in voltage will comes at the cost of significantly increased delays, rise- and fall-times within the device.
