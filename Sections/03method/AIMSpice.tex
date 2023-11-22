@@ -1,17 +1,45 @@
 \subsection{AIMSpice}
-In the AIMSpice part of this project the 1-bit version of the register from sec \ref{sec:Method for Accumulater} i.e. a single DFF with reset from figure \ref{figures/drawio/Logic/LOGIC_DFF_with_reset.png} have been simulated, with a desire for minimizing the static leakage power consumption while keeping the functionality for all the corners mentioned in sec \ref{sec:Process corners} and the temperatures $0^o C$, $27^o C$ and $70^o C$. The timings mentioned in sec \ref{sec:Delays} and maximizing of noise margins explained in sec \ref{sec:CMOS} were also taken into consideration when 
-
-The timings mentioned in sec \ref{sec:Delays} as we can see from the equations \ref{eq:subthreshold_leakage}, \ref{eq:gate_capacitance} and \ref{eq:parasitic_resistance}, a change in the parameters $V_{DD}$ and $\frac{W}{L}$ both affect the static power consumption and the timing of the circuit. This way we want to find the sweetspot where we keep a low power without compensating to much on the timings.
+In the AIMSpice part of this project the 1-bit version of the register from sec \ref{sec:Method for Accumulater} i.e. a single DFF with reset from figure \ref{subfig:figures/drawio/Logic/LOGIC_DFF_with_reset.png} have been simulated, with a desire for minimizing the static leakage power consumption while keeping the functionality for all the corners mentioned in sec \ref{sec:Process corners} and the temperatures $0^o C$, $27^o C$ and $70^o C$. The timings mentioned in sec \ref{sec:Delays} and the maximizing of noise margins explained in sec \ref{sec:CMOS} were also taken into consideration when chosing the parameters for the simulations.
 
 \subsubsection{AIMSpice-implementation}
-The DFF were implemented using gpdk 90nm technology, where the implementation at a transistor level can be seen in Fig. \ref{fig:figures/drawio/Transistor/transistor_circuit_DFF.png} First the logic gates were implemented as subcircuits
+The DFF were simulated using gpdk 90nm technology, where the implementation at a transistor level can be seen in Fig. \ref{fig:figures/drawio/Transistor/transistor_DFF_with_reset.png}. Here NAND21 and NAND22 represents the 2-input NAND gates in figure \ref{subfig:figures/drawio/Logic/LOGIC_DFF_with_reset.png} while NAND31-NAND34 represents the 3-input NANDS. A, B and C are the inputs of each NAND gate and O represents the output from the gates.
 
-\importimagewcaptionh{figures/drawio/Transistor/transistor_circuit_DFF.png}{The implemented DFF at a transistor level}{0.9}
+\importimagewcaptionh{figures/drawio/Transistor/transistor_DFF_with_reset.png}{The implemented DFF at a transistor level}{0.95}
 
-The fuctionality were simulated using three different wave pulses to show how the DFF samples alternating data at rising edge, how it samples data when data stays the same for a few clock cycles and lastly the reset functionality:
+Given the theoretical background provided in sec \ref{sec:CMOS}, an assumption of how  adjusting the MOSFET parameters can help achieve the the desired characteristics:
+
+\begin{enumerate}
+    \item \textbf{Width:}
+    \begin{itemize}
+        \item From Equation \ref{eq:subthreshold_leakage}, a smaller width ($W$) for both NMOS and PMOS will lead to reduced subthreshold leakage (\(I_{off}\)), as \(I_{off}\) is proportional to $\frac{W}{L}$. This reduction in leakage current directly decreases static leakage power (\(P_{stat}\)), as shown in Equation \ref{eq:leakage_power}.
+        \item However, a smaller $W$ also means reduced drive strength (current carrying capability) due to an increased resistance as shown in equation \ref{eq:parasitic_resistance}, which can affect the speed of the circuit. This is particularly crucial for PMOS transistors, which have lower mobility (\(\mu_p\)) compared to NMOS (\(\mu_n\)), as indicated in the beta ratio equation (Equation \ref{eq:betaratio}).
+    \end{itemize}
+
+    \item \textbf{Length:}
+    \begin{itemize}
+        \item Increasing the length ($L$) of the transistors reduces subthreshold leakage (Equation \ref{eq:subthreshold_leakage}) due to the inverse relation in the $\frac{W}{L}$ ratio. This also contributes to lowering static leakage power.
+        \item However, increasing $L$ impacts the parasitic capacitance (Equation \ref{eq:gate_capacitance}), which in turn affects the rise time ($t_r$) and fall time ($t_f$) of the circuit (Equations \ref{eq:risetime} and \ref{eq:falltime}). Longer channel lengths can slow down the circuit, affecting the propagation delays ($t_{pLH}$ and $t_{pHL}$).
+    \end{itemize}
 
 
-As shown in table \ref{tab:static_states} we can se that the DFF may be at 12 different static states (output and reset can't both be 0). Given $3+1$ pattern specified in the task in addition to the option of pause we know that the states where Clk=0 will occour more. With the assumption that the active low Reset state will be high more often than low. We end up with 4 states that Well look at when computing the static leakage power. These are the highlighted states in table \ref{tab:static_states}.
+    \item \textbf{Supply Voltage ($V_{DD}$):}
+    \begin{itemize}
+        \item Lowering $V_{DD}$ is another effective way to reduce static leakage power (Equation \ref{eq:leakage_power}). However, this also reduces the drive strength as a lower $V_{DD}$ will lead to a lower $V_{DS}$ given the transistor level circuit from Fig. \ref{fig:figures/drawio/Transistor/transistor_DFF_with_reset.png}, affecting the circuit's performance. As a reduced $V_{DD}$ implies a reduced $V_{GS}$ we can see from Equation \ref{eq:parasitic_resistance} that this will lead to a slower circuit.
+    \end{itemize}
+
+    \item \textbf{Conclusion:}
+    \begin{itemize}
+        \item To satisfy the desire for minimized static leakage power consumption while keeping the functionality for all corners, a strategy would be to slightly reduce W, moderately increase L, and carefully adjust $V_{DD}$.
+        \item This approach should be validated through simulations across all process corners and temperatures to ensure that the changes do not compromise the circuit's functionality, speed, and stability.
+        \item It's a delicate balancing act that requires iterative adjustments and simulations, taking into account the interplay between leakage power, delays, and functional reliability under varying conditions.
+    \end{itemize}
+\end{enumerate}
+
+From equation \ref{eq:subthreshold_leakage} and \ref{eq:leakage_power} we get that
+
+The fuctionality were simulated using three different wave pulses to show how the DFF samples alternating data at rising edge, how it samples data when data stays the same for a few clock cycles and lastly the reset functionality
+
+As shown in table \ref{tab:static_states} the DFF may be at 12 different static states (output and reset can't both be 0). Given $3+1$ pattern specified in the task in addition to the option of pause the states where Clk=0 will occour more. With the assumption that the active low Reset state will be high more often than low one can assume that the states that will occour the most are the ones highlighted in table \ref{tab:static_states}. The static leakage power of the DFF will be simulated using these static states.
 
 \begin{table}[H]
     \centering
@@ -36,6 +64,5 @@ As shown in table \ref{tab:static_states} we can se that the DFF may be at 12 di
     \end{tabular}
 \end{table}
 
-The mobility of the NMOS and PMOS are diffrent, therfore the subcircuit were implemented with an option to edit the parameters for both $\frac{W_N}{L_N}$ and $\frac{W_P}{L_P}$. $\#1-\#9$ are switched out with different parameter values to simulate the spesific physical parameters at different corners, temperatures and wave scenarios.
-
 The increased PMOS channel Width is to compensate for the lower mobility of the PMOS given the equation \ref{eq:parasitic_resistance} in terms of delays. After simulating the for different VDD values, we simulated for different values for device parameters. After all the simulations the CSV files were used to plot the funtionality and computising the delays and the static leakage powers at the different states and scenarios. 
+To streamline the the simulation process a bash script has been used to simulate all the scenarios and then saved the CSV file generated. The process began with running simulations for different VDD values below 1V while the MOSFET parameters were:

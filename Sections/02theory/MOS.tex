@@ -11,7 +11,12 @@ It is worth noticing that NMOS are faster than PMOS ``(almost twice as fast) and
     \label{eq:beta_ratio}
 \end{align}
 
-is desirable when making CMOS circuits as it maximizes noise margins, making it less prone to the output signal being corrupted \cite[p. 90]{neilheweste_2015_cmos}. Here $W_n$ and $L_n$ is the width and lenght if the NMOS, while $W_n$ and $L_n$ is the width and lenght if the PMOS.
+is desirable when making CMOS circuits as it maximizes noise margins, making it less prone to the output signal being corrupted. Here $W_n$ and $L_n$ is the width and lenght if the NMOS, while $W_n$ and $L_n$ is the width and lenght if the PMOS. As the MOSFET length are usally the chosen as same for both transistors, the desired behavior can de described as the beta ratio $r$ \cite[p. 90]{neilheweste_2015_cmos}
+
+\begin{equation}
+    r=\frac{\mu_n W_n}{\mu_p W_p}=1
+    \label{eq:betaratio}
+\end{equation}
 
 \subsubsection{Subthreshold leakage}
 In terms of PMOS and NMOS transistors, there are three leakage currents that should be taken into consideration: subthreshold leakage, gate leakage, and junction leakage. \cite[p. 42]{carusone_2012_analog} Especially subthreshold leakage. The MOSFET is in the subthreshold region when the \textit{effective gate-source voltage} ($V_{eff}$) \cite[p. 17]{carusone_2012_analog} given by
@@ -38,10 +43,10 @@ where
     I_{D0}=(n-1)\mu_nC_{ox}\left(\frac{kT}{q}\right)^2
 \end{equation}
 
-from equation \ref{eq:subthreshold_current} we can se that the current $I_{D(sub-th)}\neq 0$ when $V_{GS}=0V$. This is the so called \textit{subthreshold leakage} given by 
+from equation \ref{eq:subthreshold_current} the current $I_{D(sub-th)}\neq 0$ when $V_{GS}=0V$. This is the so called \textit{subthreshold leakage} given by 
 
 \begin{equation}
-    \mathrm{I}_{\mathrm{off}}=\mathrm{I}_{\mathrm{DO}}\left(\frac{\mathrm{W}}{\mathrm{L}}\right) \mathrm{e}^{\left(-\mathrm{q} \mathrm{V}_{\mathrm{t}} / \mathrm{nkT}\right)}=(\mathrm{n}-1) \mu_{\mathrm{n}} \mathrm{C}_{\mathrm{ox}}\left(\frac{\mathrm{W}}{\mathrm{L}}\right)\left(\frac{\mathrm{kT}}{\mathrm{q}}\right)^2 \mathrm{e}^{\left(-\mathrm{qV} \mathrm{V}_{\mathrm{t}} / \mathrm{nkT}\right)}
+    \mathrm{I}_{\mathrm{off}}=\mathrm{I}_{\mathrm{DO}}\left(\frac{\mathrm{W}}{\mathrm{L}}\right) \mathrm{e}^{\left(-\mathrm{q} \mathrm{V}_{\mathrm{t}} / \mathrm{nkT}\right)}=(\mathrm{n}-1) \mu_{\mathrm{n}} \mathrm{C}_{\mathrm{ox}}\left(\frac{\mathrm{W}}{\mathrm{L}}\right)\left(\frac{\mathrm{kT}}{\mathrm{q}}\right)^2 \mathrm{e}^{\left(-\mathrm{q} \mathrm{V}_{\mathrm{t}} / \mathrm{nkT}\right)}
     \label{eq:subthreshold_leakage}
 \end{equation}
 
@@ -49,6 +54,7 @@ This gives us the static leakage power \cite{departmentofelectronicsystemsntnu_2
 
 \begin{equation}
     P_{stat}=I_{off}\cdot V_{DD}
+    \label{eq:leakage_power}
 \end{equation}
 
 \subsubsection{Delays}
@@ -68,6 +74,7 @@ Another thing that needs to be taken into consideration is the timings of the CM
 \importimagewcaptionh{figures/FromWeb/propagation_rise_fall.png}{The propagation delays, rise and falltimes of a NMOS transistor\cite{a2014_fig}}{0.4}
 
 The gate and surface of the silicon behaves like parallel plate capasitor, the gate capacitance $C_g$ is given by \cite[p. 18]{carusone_2012_analog}
+
 \begin{equation}
     C_g=WLC_{ox}
     \label{eq:gate_capacitance}

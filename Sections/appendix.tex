@@ -4,7 +4,7 @@
 \begin{lstlisting}
 * --------------------------------------------------------------
 * 2-Input NAND Gate
-* Ports: A, B (Inputs), Out (Output), Vdd (Positive Supply), Vss (Ground)
+* Ports: InputA, InputB, Output, Vdd (Positive Supply), Vss (Ground)
 * --------------------------------------------------------------
 .subckt NAND A B Out Vdd Vss
 
@@ -20,8 +20,7 @@
 
 * --------------------------------------------------------------
 * 3-Input NAND Gate
-* Ports: InputA, InputB, InputC (Inputs), Output (Output), 
-* Vdd (Positive Supply), Vss (Ground)
+* Ports: InputA, InputB, InputC, Output, Vdd (Positive Supply), Vss (Ground)
 * --------------------------------------------------------------
 .subckt NAND_3 InputA InputB InputC Output Vdd Vss
 
@@ -39,7 +38,7 @@
 
 * --------------------------------------------------------------
 * DFF with asynchronous reset circuit
-* Ports: CLK, InputData, Reset, Output, Vdd, Vss
+* Ports: CLK, Data, Reset, Output, Vdd (Positive Supply), Vss (Ground)
 * --------------------------------------------------------------
 .subckt DFF CLK D Res Output NandOut3 Vdd Vss
 
@@ -69,7 +68,7 @@ vd  Data 0 pulse (0 vdd_value 10n 0.1n 0.1n 20n 40n)
 \begin{lstlisting}
 *inputScenarioW2.cir:
 
-*Waveform: To Test the Datasampling when Data stays the same for a few Clock Edges
+*Waveform: To Test the Data Sampling when Data stays the same for a few Clock Edges
 vclk Clk 0 pulse (0 vdd_value 5n 0.1n 0.1n 10n 20n)     
 vres Reset 0 pulse (0 vdd_value 0 0.1n 0.1n 0n 0n)       
 vd  Data 0 pulse (0 vdd_value 10n pRiseT pFallT 35n 80n)     
@@ -122,35 +121,35 @@ vres Reset 0 pulse  (0  vdd_value    5n     0.1n    0.1n    5000n     5001n)
 \end{lstlisting}
 
 \begin{lstlisting}
-    * param.cir:
-    
-    * Scenarios:
-    .include gpdk90nm_#1.cir 
-    .include DFF.cir
-    .include inputScenario#3
-    .option temp= #5
-    
-    * Device global parameters:
-    .param vdd_value = #4
-    vdd 1 0 vdd_value
-    
-    * Device parameters for N-MOSFETs:
-    .param N_Width= #6
-    .param N_Length = #7
-    
-    * Device parameters for P-MOSFETs:
-    .param P_Width= #8
-    .param P_Length = #9
-    \end{lstlisting}
-    
-    To streamline the the simulation process a bash script has been used to simulate all the scenarios and then saved the CSV file generated. The process began with running simulations for different VDD values below 1V while the MOSFET parameters were:
-    
-    \begin{lstlisting}
-    * Device parameters for N-MOSFETs:
-    .param N_Width= 0.1u
-    .param N_Length = 0.1u
-    
-    * Device parameters for P-MOSFETs:
-    .param P_Width= 0.3u
-    .param P_Length = 0.1u
-    \end{lstlisting}
+* param.cir:
+
+* Scenarios:
+.include gpdk90nm_#1.cir 
+.include DFF.cir
+.include inputScenario#3
+.option temp= #5
+
+* Device global parameters:
+.param vdd_value = #4
+vdd 1 0 vdd_value
+
+* Device parameters for N-MOSFETs:
+.param N_Width= #6
+.param N_Length = #7
+
+* Device parameters for P-MOSFETs:
+.param P_Width= #8
+.param P_Length = #9
+\end{lstlisting}
+
+
+
+\begin{lstlisting}
+* Device parameters for N-MOSFETs:
+.param N_Width= 0.1u
+.param N_Length = 0.1u
+
+* Device parameters for P-MOSFETs:
+.param P_Width= 0.3u
+.param P_Length = 0.1u
+\end{lstlisting}
