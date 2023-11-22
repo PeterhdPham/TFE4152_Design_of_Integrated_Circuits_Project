@@ -2,9 +2,9 @@
 To see the results we used verilog as mentioned.
 \import{./Verilog}{TEST MAC.tex}
 \import{./Verilog}{TEST FSM.tex}
+\subsubsection{FULL SYSTEM}
 Full wrong- delta delay
-
-\importimagewcaption{figures/Verylog/FULL.wrong.PNG}{WRONG}
+The test of the complete system, involves constant input values $A$ and $B$, and the first scenario we are testing an ideal scenario with no change on input $RESET=0$ and $RUN=1$.
 
 \begin{lstlisting}
     module TEST_AWESOME_3;
@@ -34,77 +34,33 @@ Full wrong- delta delay
 	initial begin
     #100;
      $finish;
-	end
-    endmodule
-\end{lstlisting}
-\subsubsection{FULL SYSTEM}
+	 end
+	 endmodule
+	\end{lstlisting}
+	\importimagewcaption{figures/Verylog/FULL.wrong.PNG}{WRONG}
 
-skriv at det er delta delay- hva vi gjorde legg til bilde av med de ekstra klokkene
+	The output $C$ had an unexcepted behaviour as it updated on every $CLK$ cycle and didn't follow the $CLK_{OUTPUT}$. This is because of a glitch in Active HDL caused by delta delay \cite{delta}. The way we manipluated it was by setting in a delay on the $CLK_{OUT}$ and $RESET_{OUT}$ signal from the FSM, as shown in figure
+	
+	\importimagewcaption{figures/drawio/RTL/RTL_FSM.png}{Insert delay on the output for the FSM}
+
+	After this modification we got an excepted result as the Figure \ref{fig:figures/Verylog/FULL.right_ideal.PNG} shows, where it follows the $CLK_{OUT}$ pattern.
 \importimagewcaption{figures/Verylog/FULL.right_ideal.PNG}{IDEAL}
 
-\begin{lstlisting}
-    module TEST_AWESOME_3;
+The next scenario, was to see what happend when \textbf{RESET} got changed suddenly, the difference between the current testbench and the ideal is the updated value in reset:
 
-	reg run;
-	reg clk;
-	reg reset;
-	wire [0:7] c;
-	reg [0:1] a;
-	reg [0:1] b;
-	AWESOME_VOL_3 A3( .A(a) ,.B(b), .C(c) ,.RUN(run) ,.CLK(clk) ,.RESET(reset) );	
+\begin{lstlisting}
 	initial begin
-			a = 2'b11;
-		end	  
-	initial begin
-		b=2'b01;
-	end	
-	initial begin
-		clk=1'b0;
-		forever #1	clk=~clk;
+		reset=1'b1; #2; reset=1'b0; #32; reset=1'b1; #10;reset=1'b0;
 	end
-	initial begin
-		reset=1'b1; #2; reset=1'b0; #32; reset=1'b1; #10;reset=1'b0;	
-	end;
-	initial begin  
-		run=1'b1;
-	end;
-	initial begin
-		#100 $finish;
-	end
-endmodule
 \end{lstlisting}
 \importimagewcaption{figures/Verylog/FULL.RESET.PNG}{RESET}
-\begin{lstlisting}
-    module TEST_AWESOME_3;
+Figure \ref{fig:figures/Verylog/FULL.RESET.PNG} shows excepted behaviour, the value gets updated by the rising edge of $CLK$ and $C$ value gets retset.
 
-	reg run;
-	reg clk;
-	reg reset;
-	wire [0:7] c;
-	reg [0:1] a;
-	reg [0:1] b;
-	AWESOME_VOL_3 A3( .A(a) ,.B(b), .C(c) ,.RUN(run) ,.CLK(clk) ,.RESET(reset) );	
-	initial begin
-			a = 2'b11;
-		end	  
-	initial begin
-		b=2'b01;
-	end	
-	initial begin
-		clk=1'b0;
-		forever #1	clk=~clk;
-	end
-	initial begin
-		reset=1'b1;
-		#2;
-		reset=1'b0;
-	end;
+The next scenario, was to see what happend when \textbf{RUN} got changed suddenly, the difference between the current testbench and the ideal is the updated value in run:
+\begin{lstlisting}
 	initial begin  
 		run=1'b1; #32; run=1'b0; #10; run=1'b1;
 	end;
-	initial begin
-		#100 $finish;
-	end
-endmodule
 \end{lstlisting}
 \importimagewcaption{figures/Verylog/FULL.RUN.PNG}{RUN}
+Figure \ref{fig:figures/Verylog/FULL.RUN.PNG} shows excepted behaviour, where $C$ dosen't update its value while $RUN=0$. And 3+1 pattern contious from where it left after $RUN$ goes back to 0. 

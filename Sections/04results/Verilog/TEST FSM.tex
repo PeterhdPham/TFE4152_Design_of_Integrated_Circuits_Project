@@ -11,7 +11,7 @@ module TESTFSM3;
 	reg clk;
 	wire pause; 
 	wire RESET_OUT;	
-	FSM3 FSM_3( .RUN_(run) ,.CLK(clk) ,.RESET(reset) ,.CLK_OUT(CLK_out),.RESET_OUT(RESET_OUT));	
+	FSM3 FSM_3( .$RUN_$(run) ,.CLK(clk) ,.RESET(reset) ,.CLK_OUT(CLK_out),.RESET_OUT(RESET_OUT));	
 	initial begin
 		clk=1'b0;
 		forever #1	clk=~clk;
@@ -52,4 +52,4 @@ Figure\ref{figures/Verylog/Simulation_FSM2.PNG} illustrates that the $PAUSE$ wir
 \importimagewcaption{figures/Verylog/Simulation_FSM3.PNG}{RUN}
 
 \end{enumerate}
-Figure \ref{fig:figures/Verylog/Simulation_FSM3.PNG} illustrates a sudenly change in RUN_.  CLK dosen't get updated input while RUN_=0, and after RUN_=1 it gets updated at the rising edge of the CLK signal, and contious the 3+1 pattern from where it was before getting interrupted. 
+Figure \ref{fig:figures/Verylog/Simulation_FSM3.PNG} illustrates a sudenly change in $RUN_a$.  CLK dosen't get updated input while $RUN_a$=0, and after $RUN_a$=1 it gets updated at the rising edge of the CLK signal, and contious the 3+1 pattern from where it was before getting interrupted. 
